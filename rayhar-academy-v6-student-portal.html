@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - RAYHAR ACADEMY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a3a52 0%, #2d5a7b 100%);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1a3a52;
+            font-size: 12px;
+        }
+
+        .academy-name h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .header-buttons button {
+            background: #d4af37;
+            color: #1a3a52;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .header-buttons button:hover {
+            background: #b8941e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .portal-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .portal-header h2 {
+            color: #1a3a52;
+            margin-bottom: 1rem;
+        }
+
+        .login-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        .login-section h3 {
+            color: #1a3a52;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #1a3a52;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .login-button {
+            width: 100%;
+            background: linear-gradient(135deg, #1a3a52 0%, #2d5a7b 100%);
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .login-button:hover {
+            transform: scale(1.02);
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .student-header {
+            background: linear-gradient(135deg, #1a3a52 0%, #2d5a7b 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .student-header h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-tabs button {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs button:hover {
+            color: #1a3a52;
+            border-bottom-color: #d4af37;
+        }
+
+        .nav-tabs button.active {
+            color: #1a3a52;
+            border-bottom-color: #d4af37;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .content-section h4 {
+            color: #1a3a52;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #d4af37;
+        }
+
+        .info-card h5 {
+            color: #1a3a52;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-card p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .course-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-top: 4px solid #d4af37;
+        }
+
+        .course-card h5 {
+            color: #1a3a52;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-card p {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .progress-bar {
+            background: #eee;
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 0.8rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #d4af37;
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .button {
+            background: #d4af37;
+            color: #1a3a52;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background: #b8941e;
+        }
+
+        .logout-button {
+            background: #d4af37;
+            color: #1a3a52;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .logout-button:hover {
+            background: #b8941e;
+        }
+
+        .announcement {
+            background: #f0f8ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #1a3a52;
+            margin-bottom: 1rem;
+        }
+
+        .announcement h5 {
+            color: #1a3a52;
+            margin-bottom: 0.5rem;
+        }
+
+        .announcement p {
+            font-size: 0.95rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background: #d4f1d4;
+            color: #1a5c1a;
+        }
+
+        .status-pending {
+            background: #fff4d4;
+            color: #b8941e;
+        }
+
+        .document-list {
+            list-style: none;
+        }
+
+        .document-list li {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .document-list li:last-child {
+            border-bottom: none;
+        }
+
+        .download-button {
+            background: #1a3a52;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .download-button:hover {
+            background: #2d5a7b;
+        }
+
+        footer {
+            background: #1a3a52;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-tabs button {
+                padding: 0.8rem;
+                border-bottom: none;
+                border-left: 3px solid transparent;
+            }
+
+            .nav-tabs button:hover {
+                border-bottom-color: transparent;
+                border-left-color: #d4af37;
+            }
+
+            .nav-tabs button.active {
+                border-bottom-color: transparent;
+                border-left-color: #d4af37;
+            }
+
+            .card-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo">RA</div>
+                <div class="academy-name">
+                    <h1>RAYHAR ACADEMY</h1>
+                </div>
+            </div>
+            <div class="header-buttons" id="headerButtons">
+                <button onclick="goHome()">← Back to Academy</button>
+                <button class="logout-button" onclick="logout()" id="logoutBtn" style="display:none;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- LOGIN SECTION -->
+        <div id="loginSection" class="login-section">
+            <h3>Student Portal Login</h3>
+            <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">Enter your credentials to access your account</p>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="login-button">Login to Portal</button>
+            </form>
+
+            <p style="text-align: center; color: #666; margin-top: 1.5rem; font-size: 0.95rem;">
+                If you don't have an account, please <strong>apply through the main academy website</strong>.
+            </p>
+        </div>
+
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboard" class="dashboard">
+            <!-- Student Header -->
+            <div class="student-header">
+                <h2>Welcome, <span id="studentName">Student</span></h2>
+                <p>Student ID: <span id="studentId">RAYHAR-2026-001</span></p>
+                <p style="margin-top: 0.5rem;">Status: <span class="status-badge status-active">Active</span></p>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button class="active" onclick="showTab('overview')">📊 Overview</button>
+                <button onclick="showTab('courses')">📚 My Courses</button>
+                <button onclick="showTab('materials')">📄 Study Materials</button>
+                <button onclick="showTab('announcements')">📢 Announcements</button>
+                <button onclick="showTab('calendar')">📅 Calendar</button>
+                <button onclick="showTab('documents')">📋 Documents</button>
+            </div>
+
+            <!-- TAB: OVERVIEW -->
+            <div id="overview" class="tab-content active">
+                <div class="content-section">
+                    <h4>Student Profile</h4>
+                    <div class="card-list">
+                        <div class="info-card">
+                            <h5>Full Name</h5>
+                            <p id="profileName">Yusuf Abubakar</p>
+                        </div>
+                        <div class="info-card">
+                            <h5>Email</h5>
+                            <p id="profileEmail">student@example.com</p>
+                        </div>
+                        <div class="info-card">
+                            <h5>Department</h5>
+                            <p id="profileDept">Computer Science</p>
+                        </div>
+                        <div class="info-card">
+                            <h5>Enrollment Status</h5>
+                            <p><span class="status-badge status-active">Enrolled</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h4>Enrollment Information</h4>
+                    <div class="info-card">
+                        <h5>Admission Letter</h5>
+                        <p>Your official admission letter is available for download.</p>
+                        <button class="button" onclick="downloadDocument('admission-letter')">📥 Download Admission Letter</button>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h4>Quick Links</h4>
+                    <p style="margin-bottom: 1rem;">Access important information quickly:</p>
+                    <div class="card-list">
+                        <div class="info-card">
+                            <h5>📞 Contact Support</h5>
+                            <p>Need help? Contact us via WhatsApp at +93 773 045 769</p>
+                        </div>
+                        <div class="info-card">
+                            <h5>📅 Academic Calendar</h5>
+                            <p>View important dates and deadlines.</p>
+                        </div>
+                        <div class="info-card">
+                            <h5>🎓 Certification</h5>
+                            <p>Learn about how certificates are awarded.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: MY COURSES -->
+            <div id="courses" class="tab-content">
+                <div class="content-section">
+                    <h4>Your Enrolled Courses</h4>
+                    <div class="card-list">
+                        <div class="course-card">
+                            <h5>Course Name</h5>
+                            <p><strong>Department:</strong> Computer Science</p>
+                            <p><strong>Instructor:</strong> Course Instructor</p>
+                            <p><strong>Schedule:</strong> Live Class via Google Meet</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-active">In Progress</span></p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%;"></div>
+                            </div>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem;">60% Complete</p>
+                            <button class="button" onclick="accessCourse()" style="margin-top: 1rem;">Join Class →</button>
+                        </div>
+
+                        <div class="course-card">
+                            <h5>Additional Courses</h5>
+                            <p>More courses will appear here as you enroll in additional programs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h4>Class Information</h4>
+                    <div class="info-card">
+                        <h5>Live Classes</h5>
+                        <p>Classes are held via Google Meet. Links and access codes are provided by your instructor.</p>
+                    </div>
+                    <div class="info-card">
+                        <h5>Recorded Lessons</h5>
+                        <p>Recordings of all classes are uploaded to the Study Materials section within 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: STUDY MATERIALS -->
+            <div id="materials" class="tab-content">
+                <div class="content-section">
+                    <h4>Study Materials & Resources</h4>
+                    <p>Below are the learning materials for your enrolled courses:</p>
+
+                    <div class="info-card" style="margin-top: 1.5rem;">
+                        <h5>📚 Course Textbooks & Guides</h5>
+                        <p>Official course materials and study guides prepared by your instructors.</p>
+                        <button class="button" onclick="downloadDocument('study-guide')">📥 Download</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h5>🎥 Recorded Lectures</h5>
+                        <p>Video recordings of all live classes for your reference and review.</p>
+                        <button class="button" onclick="downloadDocument('lecture-video')">📥 View Videos</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h5>📝 Assignment Guidelines</h5>
+                        <p>Instructions and guidelines for submitting your coursework.</p>
+                        <button class="button" onclick="downloadDocument('assignments')">📥 Download</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h5>📖 Reference Materials</h5>
+                        <p>Additional reading materials and references to deepen your understanding.</p>
+                        <button class="button" onclick="downloadDocument('references')">📥 Download</button>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h4>How to Download Materials</h4>
+                    <p>Click the "Download" button next to each resource. All materials are in PDF or video format and available 24/7.</p>
+                </div>
+            </div>
+
+            <!-- TAB: ANNOUNCEMENTS -->
+            <div id="announcements" class="tab-content">
+                <div class="content-section">
+                    <h4>Latest Announcements</h4>
+
+                    <div class="announcement">
+                        <h5>📚 New Study Materials Available</h5>
+                        <p><strong>Date:</strong> September 2026</p>
+                        <p>New recorded lectures and study guides have been uploaded. Please review them before your next assignment.</p>
+                    </div>
+
+                    <div class="announcement">
+                        <h5>🎓 Upcoming Examination Schedule</h5>
+                        <p><strong>Date:</strong> September 2026</p>
+                        <p>The examination schedule for your course has been released. Check the Academic Calendar section for dates and times.</p>
+                    </div>
+
+                    <div class="announcement">
+                        <h5>💬 Class Discussion Forum Now Active</h5>
+                        <p><strong>Date:</strong> September 2026</p>
+                        <p>A discussion forum has been opened where you can ask questions and interact with classmates. All instructors will monitor the forum regularly.</p>
+                    </div>
+
+                    <div class="announcement">
+                        <h5>✅ Assignment Submission Deadline</h5>
+                        <p><strong>Date:</strong> September 2026</p>
+                        <p>Please submit your current assignment by the deadline. Late submissions may not be graded. Contact your instructor if you need an extension.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: CALENDAR -->
+            <div id="calendar" class="tab-content">
+                <div class="content-section">
+                    <h4>Academic Calendar</h4>
+                    <p>Important dates and deadlines for your studies:</p>
+
+                    <div class="info-card" style="margin-top: 1.5rem;">
+                        <h5>Flexible Admission</h5>
+                        <p><strong>Status:</strong> <span class="status-badge status-active">Open Year-Round</span></p>
+                        <p>Students can apply and enroll at any time. There is no fixed admission period.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h5>Class Schedule</h5>
+                        <p><strong>Schedule:</strong> According to your course</p>
+                        <p>Your specific class schedule will be provided by your instructor. Classes are held via Google Meet.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h5>Assignment Due Dates</h5>
+                        <p>Assignment deadlines are announced in class and via email. Check your course page regularly.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h5>Examination Period</h5>
+                        <p>Examinations will be scheduled according to your course calendar. You will receive advance notice of exam dates.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h5>Results Release</h5>
+                        <p>Results are typically released within 2-3 weeks of the examination date.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h5>Certificate Issuance</h5>
+                        <p>Upon successful completion of your course, your certificate will be issued and made available for download.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: DOCUMENTS -->
+            <div id="documents" class="tab-content">
+                <div class="content-section">
+                    <h4>Downloadable Documents</h4>
+
+                    <div class="info-card">
+                        <h5>Official Documents</h5>
+                        <p>Access your official academy documents:</p>
+                        <ul class="document-list">
+                            <li>
+                                <span>📄 Admission Letter</span>
+                                <button class="download-button" onclick="downloadDocument('admission')">Download</button>
+                            </li>
+                            <li>
+                                <span>📋 Student Handbook</span>
+                                <button class="download-button" onclick="downloadDocument('handbook')">Download</button>
+                            </li>
+                            <li>
+                                <span>📚 Course Syllabus</span>
+                                <button class="download-button" onclick="downloadDocument('syllabus')">Download</button>
+                            </li>
+                            <li>
+                                <span>🎓 Certificate (Upon Completion)</span>
+                                <button class="download-button" onclick="downloadDocument('certificate')" style="opacity: 0.5;">Download</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h4>Policy Documents</h4>
+                    <div class="info-card">
+                        <h5>Academy Policies</h5>
+                        <p>Important policies and procedures you should be aware of:</p>
+                        <ul class="document-list">
+                            <li>
+                                <span>📖 Student Code of Conduct</span>
+                                <button class="download-button" onclick="downloadDocument('conduct')">Download</button>
+                            </li>
+                            <li>
+                                <span>⚖️ Academic Integrity Policy</span>
+                                <button class="download-button" onclick="downloadDocument('integrity')">Download</button>
+                            </li>
+                            <li>
+                                <span>📝 Assignment & Submission Guidelines</span>
+                                <button class="download-button" onclick="downloadDocument('guidelines')">Download</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 RAYHAR ACADEMY. Student Portal</p>
+        <p>For Knowledge and Leadership</p>
+        <p>Contact: +93 773 045 769 | Instagram: @rahyaracademy2026</p>
+    </footer>
+
+    <script>
+        // PORTAL FUNCTIONALITY
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Simulate login (in real app, this would connect to a backend)
+            const studentName = email.split('@')[0];
+            
+            document.getElementById('studentName').textContent = studentName.charAt(0).toUpperCase() + studentName.slice(1);
+            document.getElementById('profileName').textContent = studentName.charAt(0).toUpperCase() + studentName.slice(1);
+            document.getElementById('profileEmail').textContent = email;
+
+            // Hide login, show dashboard
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('logoutBtn').style.display = 'block';
+
+            // Clear form
+            event.target.reset();
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active from all buttons
+            const buttons = document.querySelectorAll('.nav-tabs button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab and mark button as active
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function downloadDocument(docType) {
+            alert(`Downloading: ${docType.toUpperCase()}\n\nIn a real system, this would download the document.\n\nFor now, you can contact us at +93 773 045 769 to request documents.`);
+        }
+
+        function accessCourse() {
+            alert('Course Access\n\nYour instructor will provide Google Meet links for live classes.\n\nCheck announcements for the latest class link and schedule.');
+        }
+
+        function logout() {
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function goHome() {
+            // Redirect to main website
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
