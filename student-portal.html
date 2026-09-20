@@ -5,250 +5,84 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RAYHAR ACADEMY — Student Portal</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
 <style>
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f4f6f9;
-  color:#172033;
-}
-
-header{
-  background:#071a3d;
-  color:white;
-  padding:14px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.brand img{
-  width:46px;
-  height:46px;
-  border-radius:8px;
-  object-fit:cover;
-  background:white;
-}
-
-.brand h1{
-  font-size:18px;
-  margin:0;
-}
-
-.brand p{
-  margin:3px 0 0;
-  color:#d7b45b;
-  font-size:11px;
-}
-
-.logout{
-  background:#c9972b;
-  color:white;
-  border:0;
-  border-radius:7px;
-  padding:9px 13px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.container{
-  max-width:1150px;
-  margin:auto;
-  padding:20px 16px;
-}
-
-.welcome,
-.section{
-  background:white;
-  border-radius:14px;
-  padding:20px;
-  margin-bottom:18px;
-  box-shadow:0 3px 15px rgba(0,0,0,.06);
-}
-
-.welcome h2,
-.section h3{
-  margin:0 0 7px;
-  color:#071a3d;
-}
-
-.muted{
-  color:#667085;
-  font-size:14px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:14px;
-}
-
-.card{
-  background:white;
-  border-radius:12px;
-  padding:18px;
-  border-top:4px solid #c9972b;
-  box-shadow:0 3px 15px rgba(0,0,0,.05);
-}
-
-.card h3{
-  margin:0 0 8px;
-  color:#071a3d;
-}
-
-.card p{
-  font-size:13px;
-  color:#667085;
-  line-height:1.5;
-  margin:0;
-}
-
-.num{
-  font-size:28px;
-  font-weight:bold;
-  color:#071a3d;
-  margin-bottom:5px;
-}
-
-.row{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:10px;
-}
-
-.info{
-  background:#f7f8fa;
-  border-radius:8px;
-  padding:12px;
-}
-
-.label{
-  display:block;
-  font-size:11px;
-  color:#667085;
-  margin-bottom:4px;
-}
-
-.value{
-  font-weight:bold;
-  word-break:break-word;
-}
-
-.list{
-  display:grid;
-  gap:10px;
-}
-
-.item{
-  padding:13px;
-  border:1px solid #e5e7eb;
-  border-radius:9px;
-}
-
-.item strong{
-  color:#071a3d;
-}
-
-.item small{
-  display:block;
-  color:#667085;
-  margin-top:4px;
-}
-
-.empty{
-  color:#667085;
-  font-size:14px;
-  padding:8px 0;
-}
-
-.notice{
-  background:#fff8e8;
-  border-left:5px solid #c9972b;
-  padding:14px;
-  border-radius:8px;
-  color:#5d481b;
-  margin-top:18px;
-}
-
-.loading{
-  padding:20px;
-  text-align:center;
-  color:#667085;
-}
-
-footer{
-  text-align:center;
-  padding:25px;
-  color:#667085;
-  font-size:13px;
-}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f9;color:#172033}
+header{background:#071a3d;color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:46px;height:46px;border-radius:8px;object-fit:cover;background:#fff}
+.brand h1{font-size:18px;margin:0}
+.brand p{margin:3px 0 0;color:#d7b45b;font-size:11px}
+button{background:#c9972b;color:#fff;border:0;border-radius:7px;padding:9px 13px;font-weight:bold;cursor:pointer}
+.container{max-width:1150px;margin:auto;padding:20px 16px}
+.welcome,.section{background:#fff;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 3px 15px rgba(0,0,0,.06)}
+h2,h3{color:#071a3d;margin:0 0 8px}
+.muted,.empty{color:#667085;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.card{background:#fff;border-radius:12px;padding:18px;border-top:4px solid #c9972b;box-shadow:0 3px 15px rgba(0,0,0,.05)}
+.num{font-size:28px;font-weight:bold;color:#071a3d}
+.card h3{margin:5px 0}
+.card p{font-size:13px;color:#667085;margin:0;line-height:1.5}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.info{background:#f7f8fa;border-radius:8px;padding:12px}
+.label{display:block;font-size:11px;color:#667085;margin-bottom:4px}
+.value{font-weight:bold;word-break:break-word}
+.list{display:grid;gap:10px}
+.item{padding:14px;border:1px solid #e5e7eb;border-radius:9px}
+.item strong{color:#071a3d}
+.item small{display:block;color:#667085;margin-top:5px;line-height:1.5}
+.dept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.dept{border:1px solid #d9c27a;border-radius:10px;padding:15px;background:#fffdf5}
+.dept strong{color:#071a3d}
+.dept span{display:block;color:#667085;font-size:12px;margin-top:5px}
+.notice{background:#fff8e8;border-left:5px solid #c9972b;padding:14px;border-radius:8px;color:#5d481b;margin-top:18px}
+footer{text-align:center;padding:25px;color:#667085;font-size:13px}
 </style>
 </head>
 
 <body>
 
 <header>
-
 <div class="brand">
 <img src="logo.jpg" alt="RAYHAR ACADEMY logo">
-
 <div>
 <h1>RAYHAR ACADEMY</h1>
 <p>FOR KNOWLEDGE AND LEADERSHIP</p>
 </div>
 </div>
 
-<button class="logout" onclick="logout()">Logout</button>
-
+<button onclick="logout()">Logout</button>
 </header>
-
 
 <main class="container">
 
 <section class="welcome">
-
-<h2>
-Welcome, <span id="welcomeName">Student</span> 👋
-</h2>
-
-<p class="muted">
-Your RAYHAR ACADEMY student dashboard.
-</p>
-
+<h2>Welcome, <span id="welcomeName">Student</span> 👋</h2>
+<p class="muted">Your personal RAYHAR ACADEMY learning dashboard.</p>
 </section>
-
 
 <div class="grid">
 
 <div class="card">
-<div class="num" id="enrollmentCount">—</div>
-<h3>My Enrollments</h3>
-<p>Departments and learning enrollment information.</p>
+<div class="num" id="departmentCount">—</div>
+<h3>My Departments</h3>
+<p>Departments you selected to study.</p>
 </div>
-
 
 <div class="card">
 <div class="num" id="assignmentCount">—</div>
 <h3>Assignments</h3>
-<p>Published assignments available to you.</p>
+<p>Published assignments for your departments.</p>
 </div>
-
 
 <div class="card">
 <div class="num" id="resultCount">—</div>
 <h3>Results</h3>
 <p>Your published academic results.</p>
 </div>
-
 
 <div class="card">
 <div class="num" id="certificateCount">—</div>
@@ -257,7 +91,6 @@ Your RAYHAR ACADEMY student dashboard.
 </div>
 
 </div>
-
 
 <section class="section">
 
@@ -286,99 +119,85 @@ Your RAYHAR ACADEMY student dashboard.
 </div>
 
 <div class="info">
-<span class="label">Department</span>
-<span class="value" id="department">—</span>
-</div>
-
-<div class="info">
 <span class="label">Study Level</span>
 <span class="value" id="studyLevel">—</span>
 </div>
 
 </div>
-
 </section>
-
 
 <section class="section">
 
-<h3>My Enrollments</h3>
+<h3>My Departments</h3>
 
-<div id="enrollments" class="list">
-<div class="loading">Loading...</div>
+<p class="muted">
+These are the departments you selected during registration.
+</p>
+
+<div id="departments" class="dept-grid">
+<div class="empty">Loading...</div>
 </div>
 
 </section>
 
-
 <section class="section">
 
-<h3>Assignments</h3>
+<h3>My Assignments</h3>
 
 <div id="assignments" class="list">
-<div class="loading">Loading...</div>
+<div class="empty">Loading...</div>
 </div>
 
 </section>
 
-
 <section class="section">
 
-<h3>Results</h3>
+<h3>My Results</h3>
 
 <div id="results" class="list">
-<div class="loading">Loading...</div>
+<div class="empty">Loading...</div>
 </div>
 
 </section>
-
 
 <section class="section">
 
-<h3>Certificates</h3>
+<h3>My Certificates</h3>
 
 <div id="certificates" class="list">
-<div class="loading">Loading...</div>
+<div class="empty">Loading...</div>
 </div>
 
 </section>
-
 
 <section class="section">
 
 <h3>Announcements</h3>
 
 <div id="announcements" class="list">
-<div class="loading">Loading...</div>
+<div class="empty">Loading...</div>
 </div>
 
 </section>
 
-
 <div class="notice">
-
 <strong>RAYHAR ACADEMY:</strong>
-
-Your private student information is protected by the Supabase database security policies.
-
+Your private student information is protected by Supabase database security policies.
 </div>
 
 </main>
 
-
 <footer>
-
 © 2026 RAYHAR ACADEMY — FOR KNOWLEDGE AND LEADERSHIP
-
 </footer>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="config.js"></script>
-
-
 <script>
+
+const supabaseClient =
+window.supabase.createClient(
+window.SUPABASE_URL,
+window.SUPABASE_PUBLISHABLE_KEY
+);
 
 const esc = s =>
 String(s ?? "").replace(
@@ -392,14 +211,10 @@ c => ({
 }[c])
 );
 
-
-const empty = (el,msg="Nothing available yet.") => {
-
-document.getElementById(el).innerHTML =
-'<div class="empty">'+msg+'</div>';
-
+const showEmpty = (id,msg) => {
+document.getElementById(id).innerHTML =
+'<div class="empty">' + esc(msg) + '</div>';
 };
-
 
 async function loadStudent(){
 
@@ -407,105 +222,143 @@ const {
 data:{session}
 } = await supabaseClient.auth.getSession();
 
-
 if(!session){
-
 location.href="student-auth.html";
-
 return;
+}
+
+const uid = session.user.id;
+
+const {
+data:profile,
+error:profileError
+} = await supabaseClient
+.from("profiles")
+.select("*")
+.eq("id",uid)
+.single();
+
+if(profileError) throw profileError;
+
+
+const {
+data:enrollments,
+error:enrollError
+} = await supabaseClient
+.from("enrollments")
+.select("id,department_id,status,study_level,departments(name)")
+.eq("student_id",uid);
+
+if(enrollError) throw enrollError;
+
+
+const departmentIds =
+(enrollments || [])
+.map(x => x.department_id)
+.filter(Boolean);
+
+
+let assignments = [];
+
+if(departmentIds.length){
+
+const {
+data,
+error
+} = await supabaseClient
+.from("assignments")
+.select(`
+id,
+title,
+description,
+department_id,
+study_level,
+due_at,
+max_score,
+departments(name)
+`)
+.eq("published",true)
+.in("department_id",departmentIds);
+
+if(error) throw error;
+
+assignments = data || [];
 
 }
 
 
-const uid = session.user.id;
-
-
-document.getElementById("email").textContent =
-session.user.email || "—";
-
-
-const [
-profileResponse,
-enrollmentResponse,
-assignmentResponse,
-resultResponse,
-certificateResponse,
-announcementResponse
-] = await Promise.all([
-
-supabaseClient
-.from("profiles")
-.select("*")
-.eq("id",uid)
-.single(),
-
-supabaseClient
-.from("enrollments")
-.select("*, departments(name)")
-.eq("student_id",uid),
-
-supabaseClient
-.from("assignments")
-.select("*, departments(name)")
-.eq("published",true),
-
-supabaseClient
+const {
+data:results,
+error:resultError
+} = await supabaseClient
 .from("results")
-.select("*, exams(title,exam_date)")
+.select(`
+id,
+score,
+grade,
+remarks,
+created_at,
+exams(
+title,
+exam_date,
+department_id,
+departments(name)
+)
+`)
 .eq("student_id",uid)
-.eq("published",true),
+.eq("published",true);
 
-supabaseClient
+if(resultError) throw resultError;
+
+
+const {
+data:certificates,
+error:certError
+} = await supabaseClient
 .from("certificates")
 .select("*")
 .eq("student_id",uid)
-.eq("status","valid"),
+.eq("status","valid");
 
-supabaseClient
+if(certError) throw certError;
+
+
+const {
+data:announcements,
+error:annError
+} = await supabaseClient
 .from("announcements")
 .select("*")
 .eq("published",true)
-.order("published_at",{ascending:false})
+.order("published_at",{ascending:false});
 
-]);
-
-
-const profile = profileResponse.data;
-const enrollments = enrollmentResponse.data;
-const assignments = assignmentResponse.data;
-const results = resultResponse.data;
-const certificates = certificateResponse.data;
-const announcements = announcementResponse.data;
+if(annError) throw annError;
 
 
-if(profile){
-
-const name = profile.full_name || "Student";
-
-document.getElementById("welcomeName").textContent = name;
-
-document.getElementById("fullName").textContent = name;
+document.getElementById("welcomeName").textContent =
+profile.full_name || "Student";
 
 document.getElementById("studentId").textContent =
 profile.student_id || "—";
 
+document.getElementById("fullName").textContent =
+profile.full_name || "—";
+
+document.getElementById("email").textContent =
+profile.email || session.user.email || "—";
+
 document.getElementById("phone").textContent =
 profile.phone || "—";
-
-document.getElementById("department").textContent =
-profile.department || "—";
 
 document.getElementById("studyLevel").textContent =
 profile.study_level || "—";
 
-}
 
-
-document.getElementById("enrollmentCount").textContent =
+document.getElementById("departmentCount").textContent =
 enrollments?.length || 0;
 
 document.getElementById("assignmentCount").textContent =
-assignments?.length || 0;
+assignments.length;
 
 document.getElementById("resultCount").textContent =
 results?.length || 0;
@@ -516,18 +369,22 @@ certificates?.length || 0;
 
 if(enrollments?.length){
 
-document.getElementById("enrollments").innerHTML =
+document.getElementById("departments").innerHTML =
 enrollments.map(x =>
 
-'<div class="item">' +
+'<div class="dept">' +
 
 '<strong>' +
-esc(x.departments?.name || x.department_id || "Department") +
+esc(x.departments?.name || "Department") +
 '</strong>' +
 
-'<small>Status: ' +
+'<span>Status: ' +
 esc(x.status || "Active") +
-'</small>' +
+'</span>' +
+
+'<span>Level: ' +
+esc(x.study_level || profile.study_level || "—") +
+'</span>' +
 
 '</div>'
 
@@ -535,12 +392,15 @@ esc(x.status || "Active") +
 
 }else{
 
-empty("enrollments");
+showEmpty(
+"departments",
+"No departments selected."
+);
 
 }
 
 
-if(assignments?.length){
+if(assignments.length){
 
 document.getElementById("assignments").innerHTML =
 assignments.map(x =>
@@ -551,8 +411,20 @@ assignments.map(x =>
 esc(x.title || "Assignment") +
 '</strong>' +
 
+'<small>Department: ' +
+esc(x.departments?.name || "—") +
+'</small>' +
+
 '<small>' +
-esc(x.description || "Published assignment") +
+esc(x.description || "No description provided.") +
+'</small>' +
+
+'<small>Due: ' +
+esc(
+x.due_at
+? new Date(x.due_at).toLocaleString()
+: "Not specified"
+) +
 '</small>' +
 
 '</div>'
@@ -561,7 +433,10 @@ esc(x.description || "Published assignment") +
 
 }else{
 
-empty("assignments");
+showEmpty(
+"assignments",
+"No assignments are available for your departments yet."
+);
 
 }
 
@@ -577,12 +452,18 @@ results.map(x =>
 esc(x.exams?.title || "Exam") +
 '</strong>' +
 
+'<small>Department: ' +
+esc(x.exams?.departments?.name || "—") +
+'</small>' +
+
 '<small>Score: ' +
 esc(x.score ?? "—") +
-
 ' | Grade: ' +
 esc(x.grade ?? "—") +
+'</small>' +
 
+'<small>' +
+esc(x.remarks || "") +
 '</small>' +
 
 '</div>'
@@ -591,7 +472,10 @@ esc(x.grade ?? "—") +
 
 }else{
 
-empty("results");
+showEmpty(
+"results",
+"No published results yet."
+);
 
 }
 
@@ -608,7 +492,18 @@ esc(x.certificate_number || "Certificate") +
 '</strong>' +
 
 '<small>' +
-esc(x.title || x.certificate_type || "Valid certificate") +
+esc(
+x.title ||
+"RAYHAR ACADEMY Certificate"
+) +
+'</small>' +
+
+'<small>Issued: ' +
+esc(
+x.issued_at
+? new Date(x.issued_at).toLocaleDateString()
+: "—"
+) +
 '</small>' +
 
 '</div>'
@@ -617,7 +512,10 @@ esc(x.title || x.certificate_type || "Valid certificate") +
 
 }else{
 
-empty("certificates");
+showEmpty(
+"certificates",
+"No certificates have been issued yet."
+);
 
 }
 
@@ -637,13 +535,24 @@ esc(x.title || "Announcement") +
 esc(x.message || "") +
 '</small>' +
 
+'<small>' +
+esc(
+x.published_at
+? new Date(x.published_at).toLocaleDateString()
+: ""
+) +
+'</small>' +
+
 '</div>'
 
 ).join("");
 
 }else{
 
-empty("announcements");
+showEmpty(
+"announcements",
+"No announcements yet."
+);
 
 }
 
@@ -663,11 +572,19 @@ loadStudent().catch(error => {
 
 console.error(error);
 
-location.href="student-auth.html";
+document.body.innerHTML = `
+<div style="padding:30px;font-family:Arial">
+<h2>Unable to load the student portal</h2>
+<p>Please log in again.</p>
+<button onclick="location.href='student-auth.html'">
+Back to Login
+</button>
+</div>
+`;
 
 });
 
 </script>
 
 </body>
-  </html>
+</html>
