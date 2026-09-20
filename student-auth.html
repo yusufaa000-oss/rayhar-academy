@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RAYHAR ACADEMY — Student Account</title>
+<style>
+body{margin:0;background:#07111f;color:#f7f0df;font-family:Arial}.wrap{max-width:520px;margin:auto;padding:25px 18px}
+.card{background:#0d1b2e;border:1px solid #b89445;border-radius:16px;padding:20px;margin:15px 0}
+input,select,button{width:100%;box-sizing:border-box;padding:13px;margin:6px 0;border-radius:9px}
+input,select{background:#07111f;color:white;border:1px solid #44546b}button{background:#d4af5a;border:0;font-weight:bold}
+.secondary{background:transparent;color:#d4af5a;border:1px solid #d4af5a}.hidden{display:none}.gold{color:#d4af5a}
+</style></head><body><div class="wrap">
+<h1>RAYHAR <span class="gold">ACADEMY</span></h1>
+<div id="auth" class="card"><h2>Create Student Account</h2>
+<input id="name" placeholder="Full name"><input id="email" type="email" placeholder="Email">
+<input id="phone" placeholder="Phone number">
+<select id="dept"><option value="">Select department</option>
+<option>English Department</option><option>Mathematics Department</option><option>Arabic Department</option>
+<option>Fine Art Department</option><option>Medical Science Department</option><option>Computer Science Department</option>
+<option>Science Department</option><option>Quran & Islamic Studies Department</option></select>
+<select id="level"><option value="">Select study level</option><option>Beginner</option><option>Intermediate</option>
+<option>Advanced</option><option>Certificate</option><option>Diploma</option><option>Other</option></select>
+<input id="pass" type="password" placeholder="Password (minimum 6 characters)">
+<button onclick="register()">Create Account</button>
+<hr><h2>Student Login</h2><input id="lemail" type="email" placeholder="Email">
+<input id="lpass" type="password" placeholder="Password"><button class="secondary" onclick="login()">Log In</button>
+<p id="msg"></p></div>
+<div id="profile" class="card hidden"><h2>Welcome, <span id="pname" class="gold"></span></h2>
+<p>Email: <span id="pemail"></span></p><p>Phone: <span id="pphone"></span></p>
+<p>Department: <span id="pdept"></span></p><p>Level: <span id="plevel"></span></p>
+<button class="secondary" onclick="logout()">Log Out</button></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
+<script>
+const msg=t=>document.getElementById("msg").textContent=t;
+async function register(){
+ const full_name=name.value.trim(), email=document.getElementById("email").value.trim(),
+ phone=document.getElementById("phone").value.trim(), department=dept.value,
+ study_level=level.value, password=pass.value;
+ if(!full_name||!email||!password)return msg("Please enter your name, email and password.");
+ const {error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name,phone,department,study_level}}});
+ msg(error?error.message:"Registration successful. Check your email if confirmation is enabled.");
+}
+async function login(){
+ const {error}=await supabaseClient.auth.signInWithPassword({
+ email:document.getElementById("lemail").value.trim(),password:lpass.value});
+ if(error)return msg(error.message); loadProfile();
+}
+async function loadProfile(){
+ const {data:{user}}=await supabaseClient.auth.getUser(); if(!user)return;
+ const {data,error}=await supabaseClient.from("profiles").select("*").eq("id",user.id).single();
+ if(error)return msg(error.message);
+ auth.classList.add("hidden");profile.classList.remove("hidden");
+ pname.textContent=data.full_name;pemail.textContent=data.email||user.email||"";
+ pphone.textContent=data.phone||"Not provided";pdept.textContent=data.department||"Not selected";plevel.textContent=data.study_level||"Not selected";
+}
+async function logout(){await supabaseClient.auth.signOut();location.reload()}
+supabaseClient.auth.onAuthStateChange((event,session)=>{if(session)loadProfile()});
+</script></body></html>
