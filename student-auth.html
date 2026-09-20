@@ -1,650 +1,670 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAYHAR ACADEMY - Student Account</title>
 
-<title>RAYHAR ACADEMY — Student Account</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
 
-<style>
-*{
-  box-sizing:border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-  margin:0;
-  background:#07111f;
-  color:#f7f0df;
-  font-family:Arial,Helvetica,sans-serif;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #071120;
+      color: #ffffff;
+    }
 
-.wrap{
-  max-width:520px;
-  margin:auto;
-  padding:25px 18px;
-}
+    .container {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 18px 14px 40px;
+    }
 
-.logo{
-  text-align:center;
-  margin-bottom:20px;
-}
+    .brand {
+      text-align: center;
+      margin-bottom: 15px;
+    }
 
-.logo img{
-  width:90px;
-  height:90px;
-  object-fit:cover;
-  border-radius:50%;
-  border:3px solid #d4af5a;
-}
+    .brand img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid #d8b354;
+      background: #071120;
+    }
 
-h1{
-  text-align:center;
-  margin:10px 0 4px;
-}
+    .brand h1 {
+      margin: 8px 0 2px;
+      font-size: 22px;
+      color: #ffffff;
+    }
 
-.subtitle{
-  text-align:center;
-  color:#d4af5a;
-  font-size:13px;
-}
+    .brand h1 span {
+      color: #d8b354;
+    }
 
-.card{
-  background:#0d1b2e;
-  border:1px solid #b89445;
-  border-radius:16px;
-  padding:20px;
-  margin:18px 0;
-}
+    .brand p {
+      margin: 0;
+      font-size: 10px;
+      color: #d8b354;
+      letter-spacing: 0.5px;
+    }
 
-h2{
-  margin-top:0;
-  color:#d4af5a;
-}
+    .card {
+      border: 1px solid #8d7432;
+      border-radius: 12px;
+      padding: 16px;
+      background: #0b1a2d;
+    }
 
-input,
-select,
-button{
-  width:100%;
-  box-sizing:border-box;
-  padding:13px;
-  margin:7px 0;
-  border-radius:9px;
-  font-size:15px;
-}
+    h2 {
+      color: #d8b354;
+      font-size: 17px;
+      margin: 0 0 14px;
+    }
 
-input,
-select{
-  background:#07111f;
-  color:white;
-  border:1px solid #44546b;
-}
+    .section-title {
+      color: #d8b354;
+      font-size: 14px;
+      font-weight: bold;
+      margin: 16px 0 8px;
+    }
 
-button{
-  background:#d4af5a;
-  color:#07111f;
-  border:0;
-  font-weight:bold;
-  cursor:pointer;
-}
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 7px;
+      border: 1px solid #31445c;
+      background: #071120;
+      color: #ffffff;
+      outline: none;
+    }
 
-.secondary{
-  background:transparent;
-  color:#d4af5a;
-  border:1px solid #d4af5a;
-}
+    input:focus,
+    select:focus {
+      border-color: #d8b354;
+    }
 
-hr{
-  border:0;
-  border-top:1px solid #334155;
-  margin:25px 0;
-}
+    .departments {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
 
-.message{
-  margin-top:12px;
-  padding:10px;
-  border-radius:8px;
-  line-height:1.5;
-}
+    .department-option {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px;
+      border: 1px solid #31445c;
+      border-radius: 7px;
+      background: #071120;
+      cursor: pointer;
+    }
 
-.hidden{
-  display:none;
-}
+    .department-option:hover {
+      border-color: #d8b354;
+    }
 
-.gold{
-  color:#d4af5a;
-}
+    .department-option input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: #d8b354;
+    }
 
-.info{
-  background:#07111f;
-  border-radius:9px;
-  padding:12px;
-  margin:8px 0;
-}
+    .department-option span {
+      font-size: 13px;
+      color: #ffffff;
+    }
 
-.label{
-  display:block;
-  color:#9ca3af;
-  font-size:12px;
-  margin-bottom:4px;
-}
+    .hint {
+      font-size: 12px;
+      color: #aeb9c8;
+      line-height: 1.5;
+      margin: 4px 0 12px;
+    }
 
-.value{
-  color:white;
-  font-weight:bold;
-  word-break:break-word;
-}
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 7px;
+      border: 1px solid #d8b354;
+      background: #d8b354;
+      color: #071120;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 4px;
+    }
 
-.student-id{
-  font-size:20px;
-  color:#d4af5a;
-}
+    button:hover {
+      opacity: 0.92;
+    }
 
-.small{
-  color:#9ca3af;
-  font-size:12px;
-  line-height:1.5;
-}
-</style>
+    .login-btn {
+      background: transparent;
+      color: #d8b354;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .success {
+      display: block;
+      background: #103b28;
+      color: #b9f2ce;
+    }
+
+    .error {
+      display: block;
+      background: #4b1717;
+      color: #ffd0d0;
+    }
+
+    .profile {
+      display: none;
+      margin-top: 15px;
+      border-top: 1px solid #24364d;
+      padding-top: 15px;
+    }
+
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #1d2d40;
+      font-size: 12px;
+    }
+
+    .profile-row strong {
+      color: #d8b354;
+    }
+
+    .portal-btn {
+      margin-top: 12px;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #24364d;
+      margin: 18px 0;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="wrap">
+<div class="container">
 
-  <div class="logo">
+  <div class="brand">
     <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
-    <h1>RAYHAR <span class="gold">ACADEMY</span></h1>
-    <div class="subtitle">FOR KNOWLEDGE AND LEADERSHIP</div>
+    <h1>RAYHAR <span>ACADEMY</span></h1>
+    <p>FOR KNOWLEDGE AND LEADERSHIP</p>
   </div>
 
-  <!-- ACCOUNT AREA -->
-  <div id="authCard" class="card">
+  <div class="card">
 
+    <!-- CREATE ACCOUNT -->
     <h2>Create Student Account</h2>
 
     <input
-      id="name"
       type="text"
-      placeholder="Full name"
+      id="name"
+      placeholder="Full Name"
+      autocomplete="name"
     >
 
     <input
-      id="email"
       type="email"
-      placeholder="Email address"
+      id="email"
+      placeholder="Email Address"
+      autocomplete="email"
     >
 
     <input
-      id="phone"
       type="tel"
-      placeholder="Phone number"
+      id="phone"
+      placeholder="Phone Number"
+      autocomplete="tel"
     >
 
-    <select id="dept">
-      <option value="">Select department</option>
-      <option value="English Department">English Department</option>
-      <option value="Mathematics Department">Mathematics Department</option>
-      <option value="Arabic Department">Arabic Department</option>
-      <option value="Fine Art Department">Fine Art Department</option>
-      <option value="Medical Science Department">Medical Science Department</option>
-      <option value="Computer Science Department">Computer Science Department</option>
-      <option value="Science Department">Science Department</option>
-      <option value="Quran & Islamic Studies Department">Quran & Islamic Studies Department</option>
-    </select>
+    <div class="section-title">Choose Your Study Level</div>
 
     <select id="level">
-      <option value="">Select study level</option>
+      <option value="">Select Study Level</option>
       <option value="Beginner">Beginner</option>
       <option value="Intermediate">Intermediate</option>
       <option value="Advanced">Advanced</option>
       <option value="Certificate">Certificate</option>
       <option value="Diploma">Diploma</option>
-      <option value="Other">Other</option>
+      <option value="Other">Other Level</option>
     </select>
 
+    <div class="section-title">
+      Select the Departments You Want to Study
+    </div>
+
+    <div class="hint">
+      You can choose one department, several departments, or all departments.
+      You are free to choose what you want to learn.
+    </div>
+
+    <div class="departments">
+
+      <label class="department-option">
+        <input type="checkbox" name="department" value="English Department">
+        <span>English Department</span>
+      </label>
+
+      <label class="department-option">
+        <input type="checkbox" name="department" value="Mathematics Department">
+        <span>Mathematics Department</span>
+      </label>
+
+      <label class="department-option">
+        <input type="checkbox" name="department" value="Arabic Department">
+        <span>Arabic Department</span>
+      </label>
+
+      <label class="department-option">
+        <input type="checkbox" name="department" value="Fine Art Department">
+        <span>Fine Art Department</span>
+      </label>
+
+      <label class="department-option">
+        <input type="checkbox" name="department" value="Medical Science Department">
+        <span>Medical Science Department</span>
+      </label>
+
+      <label class="department-option">
+        <input type="checkbox" name="department" value="Computer Science Department">
+        <span>Computer Science Department</span>
+      </label>
+
+      <label class="department-option">
+        <input type="checkbox" name="department" value="Science Department">
+        <span>Science Department</span>
+      </label>
+
+      <label class="department-option">
+        <input type="checkbox" name="department" value="Quran & Islamic Studies Department">
+        <span>Quran &amp; Islamic Studies Department</span>
+      </label>
+
+    </div>
+
     <input
-      id="pass"
       type="password"
-      placeholder="Password (minimum 6 characters)"
+      id="pass"
+      placeholder="Password"
+      autocomplete="new-password"
     >
 
-    <button onclick="register()">
+    <button id="signupBtn">
       Create Student Account
     </button>
 
-    <div id="registerMessage"></div>
+    <div id="signupMessage" class="message"></div>
 
     <hr>
 
+    <!-- LOGIN -->
     <h2>Student Login</h2>
 
     <input
-      id="lemail"
       type="email"
-      placeholder="Email address"
+      id="lemail"
+      placeholder="Email Address"
+      autocomplete="email"
     >
 
     <input
-      id="lpass"
       type="password"
+      id="lpass"
       placeholder="Password"
+      autocomplete="current-password"
     >
 
-    <button
-      class="secondary"
-      onclick="login()"
-    >
+    <button id="loginBtn" class="login-btn">
       Log In
     </button>
 
-    <div id="loginMessage"></div>
+    <div id="loginMessage" class="message"></div>
 
-  </div>
+    <!-- PROFILE -->
+    <div id="profile" class="profile">
 
+      <h2>Student Information</h2>
 
-  <!-- PROFILE -->
-  <div id="profileCard" class="card hidden">
+      <div class="profile-row">
+        <strong>Student ID</strong>
+        <span id="pStudentId"></span>
+      </div>
 
-    <h2>
-      Welcome,
-      <span id="pname" class="gold"></span>
-    </h2>
+      <div class="profile-row">
+        <strong>Name</strong>
+        <span id="pName"></span>
+      </div>
 
-    <div class="info">
-      <span class="label">Student ID</span>
-      <span id="pstudentid" class="student-id"></span>
+      <div class="profile-row">
+        <strong>Email</strong>
+        <span id="pEmail"></span>
+      </div>
+
+      <div class="profile-row">
+        <strong>Phone</strong>
+        <span id="pPhone"></span>
+      </div>
+
+      <div class="profile-row">
+        <strong>Study Level</strong>
+        <span id="pLevel"></span>
+      </div>
+
+      <div class="profile-row">
+        <strong>Departments</strong>
+        <span id="pDepartments"></span>
+      </div>
+
+      <button
+        class="portal-btn"
+        onclick="window.location.href='student-portal.html'"
+      >
+        Open Student Portal
+      </button>
+
     </div>
-
-    <div class="info">
-      <span class="label">Email</span>
-      <span id="pemail" class="value"></span>
-    </div>
-
-    <div class="info">
-      <span class="label">Phone</span>
-      <span id="pphone" class="value"></span>
-    </div>
-
-    <div class="info">
-      <span class="label">Department</span>
-      <span id="pdept" class="value"></span>
-    </div>
-
-    <div class="info">
-      <span class="label">Study Level</span>
-      <span id="plevel" class="value"></span>
-    </div>
-
-    <p class="small">
-      Your student account has been connected to the RAYHAR ACADEMY
-      student database.
-    </p>
-
-    <button
-      class="secondary"
-      onclick="goPortal()"
-    >
-      Open Student Portal
-    </button>
-
-    <button
-      class="secondary"
-      onclick="logout()"
-    >
-      Log Out
-    </button>
 
   </div>
 
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="config.js"></script>
-
-
 <script>
 
-function showMessage(id,text,type="normal"){
-
-  const box=document.getElementById(id);
-
-  box.textContent=text;
-
-  box.className="message";
-
-  if(type==="error"){
-    box.style.background="#451a1a";
-    box.style.color="#fecaca";
-  }
-
-  if(type==="success"){
-    box.style.background="#12351f";
-    box.style.color="#bbf7d0";
-  }
-
-}
-
-
-async function register(){
-
-  const full_name=
-    document.getElementById("name").value.trim();
-
-  const email=
-    document.getElementById("email").value.trim();
-
-  const phone=
-    document.getElementById("phone").value.trim();
-
-  const department=
-    document.getElementById("dept").value;
-
-  const study_level=
-    document.getElementById("level").value;
-
-  const password=
-    document.getElementById("pass").value;
-
-
-  if(!full_name){
-    showMessage(
-      "registerMessage",
-      "Please enter your full name.",
-      "error"
-    );
-    return;
-  }
-
-
-  if(!email){
-    showMessage(
-      "registerMessage",
-      "Please enter your email address.",
-      "error"
-    );
-    return;
-  }
-
-
-  if(!department){
-    showMessage(
-      "registerMessage",
-      "Please select your department.",
-      "error"
-    );
-    return;
-  }
-
-
-  if(!study_level){
-    showMessage(
-      "registerMessage",
-      "Please select your study level.",
-      "error"
-    );
-    return;
-  }
-
-
-  if(password.length < 6){
-    showMessage(
-      "registerMessage",
-      "Password must contain at least 6 characters.",
-      "error"
-    );
-    return;
-  }
-
-
-  showMessage(
-    "registerMessage",
-    "Creating your student account..."
+  const supabaseClient = window.supabase.createClient(
+    window.SUPABASE_URL,
+    window.SUPABASE_PUBLISHABLE_KEY
   );
 
+  function showMessage(element, message, type) {
+    element.textContent = message;
+    element.className = "message " + type;
+  }
 
-  try{
+  function getSelectedDepartments() {
+    return Array.from(
+      document.querySelectorAll('input[name="department"]:checked')
+    ).map(input => input.value);
+  }
 
-    const {
-      data,
-      error
-    } =
-    await supabaseClient.auth.signUp({
+  // CREATE ACCOUNT
+  document.getElementById("signupBtn").addEventListener("click", async function () {
 
-      email:email,
+    const name =
+      document.getElementById("name").value.trim();
 
-      password:password,
+    const email =
+      document.getElementById("email").value.trim();
 
-      options:{
-        data:{
-          full_name:full_name,
-          phone:phone,
-          department:department,
-          study_level:study_level
+    const phone =
+      document.getElementById("phone").value.trim();
+
+    const level =
+      document.getElementById("level").value;
+
+    const password =
+      document.getElementById("pass").value;
+
+    const departments =
+      getSelectedDepartments();
+
+    const message =
+      document.getElementById("signupMessage");
+
+    message.className = "message";
+    message.textContent = "";
+
+    if (!name) {
+      showMessage(message, "Please enter your full name.", "error");
+      return;
+    }
+
+    if (!email) {
+      showMessage(message, "Please enter your email address.", "error");
+      return;
+    }
+
+    if (!phone) {
+      showMessage(message, "Please enter your phone number.", "error");
+      return;
+    }
+
+    if (!level) {
+      showMessage(message, "Please select your study level.", "error");
+      return;
+    }
+
+    if (departments.length === 0) {
+      showMessage(
+        message,
+        "Please select at least one department.",
+        "error"
+      );
+      return;
+    }
+
+    if (password.length < 6) {
+      showMessage(
+        message,
+        "Password must be at least 6 characters.",
+        "error"
+      );
+      return;
+    }
+
+    this.disabled = true;
+    this.textContent = "Creating Account...";
+
+    const { data, error } =
+      await supabaseClient.auth.signUp({
+
+        email: email,
+
+        password: password,
+
+        options: {
+          data: {
+            full_name: name,
+            phone: phone,
+            study_level: level,
+            departments: departments
+          }
         }
-      }
 
-    });
+      });
 
+    this.disabled = false;
+    this.textContent = "Create Student Account";
 
-    if(error){
-
+    if (error) {
       showMessage(
-        "registerMessage",
-        "Registration failed: "+error.message,
+        message,
+        "Registration failed: " + error.message,
         "error"
       );
-
       return;
     }
 
-
-    if(data.user){
-
-      showMessage(
-        "registerMessage",
-        "Student account created successfully. You can now log in.",
-        "success"
-      );
-
-      document.getElementById("lemail").value=email;
-
-      document.getElementById("lpass").value="";
-
-    }
-
-  }catch(error){
-
     showMessage(
-      "registerMessage",
-      "Something went wrong: "+error.message,
-      "error"
+      message,
+      "Student account created successfully. Your selected departments have been saved.",
+      "success"
     );
 
-  }
-
-}
+  });
 
 
-async function login(){
+  // LOGIN
+  document.getElementById("loginBtn").addEventListener("click", async function () {
 
-  const email=
-    document.getElementById("lemail").value.trim();
+    const email =
+      document.getElementById("lemail").value.trim();
 
-  const password=
-    document.getElementById("lpass").value;
+    const password =
+      document.getElementById("lpass").value;
 
+    const message =
+      document.getElementById("loginMessage");
 
-  if(!email || !password){
+    message.className = "message";
+    message.textContent = "";
 
-    showMessage(
-      "loginMessage",
-      "Please enter your email and password.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  showMessage(
-    "loginMessage",
-    "Logging in..."
-  );
-
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-    await supabaseClient.auth.signInWithPassword({
-
-      email:email,
-
-      password:password
-
-    });
-
-
-    if(error){
-
+    if (!email || !password) {
       showMessage(
-        "loginMessage",
-        "Login failed: "+error.message,
+        message,
+        "Please enter your email and password.",
         "error"
       );
-
       return;
     }
 
+    this.disabled = true;
+    this.textContent = "Logging In...";
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+    this.disabled = false;
+    this.textContent = "Log In";
+
+    if (error) {
+      showMessage(
+        message,
+        "Login failed: " + error.message,
+        "error"
+      );
+      return;
+    }
+
+    showMessage(
+      message,
+      "Login successful.",
+      "success"
+    );
 
     await loadProfile();
 
-  }catch(error){
-
-    showMessage(
-      "loginMessage",
-      "Something went wrong: "+error.message,
-      "error"
-    );
-
-  }
-
-}
+  });
 
 
-async function loadProfile(){
+  // LOAD PROFILE
+  async function loadProfile() {
 
-  const {
-    data:{
-      user
-    }
-  } =
-  await supabaseClient.auth.getUser();
+    const {
+      data: { user }
+    } = await supabaseClient.auth.getUser();
 
-
-  if(!user){
-    return;
-  }
-
-
-  const {
-    data,
-    error
-  } =
-  await supabaseClient
-    .from("profiles")
-    .select("*")
-    .eq("id",user.id)
-    .single();
-
-
-  if(error){
-
-    showMessage(
-      "loginMessage",
-      "Account created, but profile could not be loaded: "+error.message,
-      "error"
-    );
-
-    return;
-  }
-
-
-  document.getElementById("pname").textContent=
-    data.full_name || user.email;
-
-
-  document.getElementById("pstudentid").textContent=
-    data.student_id || "Generating...";
-
-
-  document.getElementById("pemail").textContent=
-    data.email || user.email || "—";
-
-
-  document.getElementById("pphone").textContent=
-    data.phone || "Not provided";
-
-
-  document.getElementById("pdept").textContent=
-    data.department || "Not selected";
-
-
-  document.getElementById("plevel").textContent=
-    data.study_level || "Not selected";
-
-
-  document
-    .getElementById("authCard")
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById("profileCard")
-    .classList
-    .remove("hidden");
-
-}
-
-
-function goPortal(){
-
-  window.location.href="student-portal.html";
-
-}
-
-
-async function logout(){
-
-  await supabaseClient.auth.signOut();
-
-  location.reload();
-
-}
-
-
-supabaseClient.auth.onAuthStateChange(
-  (event,session)=>{
-
-    if(session){
-
-      setTimeout(
-        ()=>loadProfile(),
-        0
-      );
-
+    if (!user) {
+      return;
     }
 
-  }
-);
+    const {
+      data: profile,
+      error
+    } = await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single();
 
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    document.getElementById("pStudentId").textContent =
+      profile.student_id || "Not assigned";
+
+    document.getElementById("pName").textContent =
+      profile.full_name || "";
+
+    document.getElementById("pEmail").textContent =
+      profile.email || user.email || "";
+
+    document.getElementById("pPhone").textContent =
+      profile.phone || "";
+
+    document.getElementById("pLevel").textContent =
+      profile.study_level || "";
+
+    // Get all departments selected by this student
+    const {
+      data: enrollments,
+      error: enrollmentError
+    } = await supabaseClient
+      .from("enrollments")
+      .select(`
+        department_id,
+        status,
+        departments (
+          name
+        )
+      `)
+      .eq("student_id", user.id);
+
+    if (enrollmentError) {
+      console.error(enrollmentError);
+      document.getElementById("pDepartments").textContent =
+        "Unable to load";
+    } else {
+
+      const names = (enrollments || [])
+        .filter(item => item.departments)
+        .map(item => item.departments.name);
+
+      document.getElementById("pDepartments").textContent =
+        names.length ? names.join(", ") : "None selected";
+    }
+
+    document.getElementById("profile").style.display = "block";
+  }
+
+
+  // CHECK IF ALREADY LOGGED IN
+  (async function () {
+
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (session) {
+      await loadProfile();
+    }
+
+  })();
 
 </script>
 
 </body>
- </html>
+  </html>
