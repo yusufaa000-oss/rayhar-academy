@@ -3,36 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Portal | RAYHAR ACADEMY</title>
+<title>RAYHAR ACADEMY — Student Portal</title>
 <style>
-:root{--navy:#071a3a;--navy2:#0d2b5b;--gold:#d4af37;--gold2:#f0cf62;--cream:#fffaf0;--text:#172033;--muted:#65748c;--line:#e6eaf1}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f6f8fc;color:var(--text);line-height:1.6}
-header{background:var(--navy);padding:18px 0;color:#fff}.container{width:min(1050px,92%);margin:auto}
-.brand{display:flex;align-items:center;gap:12px;font-weight:800}.brand img{width:48px;height:48px;object-fit:contain;background:#fff;border-radius:50%}.brand small{display:block;color:var(--gold2);font-size:10px;letter-spacing:1px}
-.hero{text-align:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:55px 0}.hero h1{font-size:40px;margin:10px 0}.hero p{color:#e5ebf6}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:35px 0}.card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:22px;box-shadow:0 8px 25px rgba(7,26,58,.08)}.card h3{color:var(--navy);margin-top:0}
-.notice{background:var(--cream);border-left:5px solid var(--gold);padding:17px;margin:25px 0;border-radius:8px}
-.btn{display:inline-block;background:var(--gold);color:var(--navy);padding:12px 18px;border-radius:8px;font-weight:800}
-footer{margin-top:50px;background:#041127;color:#dce4f2;padding:30px 0;text-align:center}
-.small{font-size:13px;color:var(--muted)}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.hero h1{font-size:32px}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f9;color:#172033}
+header{background:#071a3d;color:white;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:48px;height:48px;border-radius:8px;object-fit:cover;background:white}
+.brand h1{font-size:20px;margin:0}
+.brand p{margin:3px 0 0;font-size:12px;color:#d7b45b}
+.logout{background:#c9972b;color:white;border:0;border-radius:7px;padding:10px 14px;font-weight:bold;cursor:pointer}
+.container{max-width:1150px;margin:auto;padding:25px 18px}
+.welcome{background:white;border-radius:14px;padding:24px;box-shadow:0 3px 15px rgba(0,0,0,.07);margin-bottom:22px}
+.welcome h2{margin:0 0 8px;color:#071a3d}
+.welcome p{margin:0;color:#667085}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.card{background:white;border-radius:12px;padding:20px;box-shadow:0 3px 15px rgba(0,0,0,.06);border-top:4px solid #c9972b}
+.card .icon{font-size:28px;margin-bottom:10px}
+.card h3{margin:0 0 7px;color:#071a3d}
+.card p{color:#667085;font-size:14px;line-height:1.5;margin:0 0 15px}
+.btn{display:inline-block;text-decoration:none;background:#071a3d;color:white;padding:9px 13px;border-radius:7px;font-size:13px}
+.profile{margin-top:22px;background:white;border-radius:12px;padding:22px;box-shadow:0 3px 15px rgba(0,0,0,.06)}
+.profile h3{color:#071a3d;margin-top:0}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.info{background:#f7f8fa;border-radius:8px;padding:12px}
+.label{display:block;font-size:12px;color:#667085;margin-bottom:4px}
+.value{font-weight:bold}
+.notice{margin-top:22px;background:#fff8e8;border-left:5px solid #c9972b;padding:15px;border-radius:8px;color:#5d481b}
+footer{text-align:center;padding:25px;color:#667085;font-size:13px}
+@media(max-width:600px){header{align-items:flex-start}.brand h1{font-size:17px}.logout{padding:8px 10px}}
 </style>
 </head>
 <body>
-<header><div class="container brand"><img src="logo.jpg" alt="RAYHAR ACADEMY logo"><div>RAYHAR ACADEMY<small>FOR KNOWLEDGE AND LEADERSHIP</small></div></div></header>
-<section class="hero"><div class="container"><h1>Student Portal</h1><p>Your future student services and learning space.</p></div></section>
+
+<header>
+  <div class="brand">
+    <img src="logo.jpg" alt="RAYHAR ACADEMY logo">
+    <div>
+      <h1>RAYHAR ACADEMY</h1>
+      <p>FOR KNOWLEDGE AND LEADERSHIP</p>
+    </div>
+  </div>
+  <button class="logout" onclick="logout()">Logout</button>
+</header>
+
 <main class="container">
-<div class="notice"><strong>Portal development:</strong> This page is currently the front-end structure for the RAYHAR ACADEMY Student Portal. Secure student accounts, private records and database-backed services will require a proper backend before real student information is stored here.</div>
-<div class="grid">
-<div class="card"><h3>Student Profile</h3><p>View and manage student information after secure login is connected.</p></div>
-<div class="card"><h3>My Courses</h3><p>View enrolled courses, departments and learning information.</p></div>
-<div class="card"><h3>Learning Materials</h3><p>Access study materials and recorded lessons when available.</p></div>
-<div class="card"><h3>Assignments</h3><p>View assignments and future submission information.</p></div>
-<div class="card"><h3>Results &amp; Exams</h3><p>Future area for examination results and academic progress.</p></div>
-<div class="card"><h3>Certificates &amp; Documents</h3><p>Future area for eligible certificates and downloadable student documents.</p></div>
-</div>
-<p style="text-align:center"><a class="btn" href="index.html">← Back to RAYHAR ACADEMY</a></p>
+  <section class="welcome">
+    <h2>Student Portal</h2>
+    <p>Welcome to your RAYHAR ACADEMY student dashboard.</p>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="icon">👤</div>
+      <h3>My Profile</h3>
+      <p>View and manage your student information.</p>
+      <a class="btn" href="#profile">Open Profile</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📚</div>
+      <h3>My Courses</h3>
+      <p>View your enrolled courses and learning information.</p>
+      <a class="btn" href="#">View Courses</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📝</div>
+      <h3>Assignments</h3>
+      <p>Access assignments and future submission tools.</p>
+      <a class="btn" href="#">Assignments</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>Results & Grades</h3>
+      <p>View academic results when they become available.</p>
+      <a class="btn" href="#">View Results</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📅</div>
+      <h3>Class Schedule</h3>
+      <p>View your classes and scheduled learning activities.</p>
+      <a class="btn" href="#">Schedule</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📄</div>
+      <h3>Documents</h3>
+      <p>Access admission letters, certificates and other documents.</p>
+      <a class="btn" href="#">Documents</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📢</div>
+      <h3>Announcements</h3>
+      <p>Stay updated with academy announcements and notices.</p>
+      <a class="btn" href="#">Announcements</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">💬</div>
+      <h3>Messages</h3>
+      <p>Access future communication with the academy.</p>
+      <a class="btn" href="#">Messages</a>
+    </div>
+  </section>
+
+  <section class="profile" id="profile">
+    <h3>Student Information</h3>
+    <div class="row">
+      <div class="info"><span class="label">Full Name</span><span class="value" id="fullName">Student</span></div>
+      <div class="info"><span class="label">Email</span><span class="value" id="email">Not available</span></div>
+      <div class="info"><span class="label">Phone</span><span class="value" id="phone">Not available</span></div>
+      <div class="info"><span class="label">Department</span><span class="value" id="department">Not available</span></div>
+      <div class="info"><span class="label">Study Level</span><span class="value" id="studyLevel">Not available</span></div>
+    </div>
+  </section>
+
+  <div class="notice">
+    <strong>Notice:</strong> Some portal services are currently being developed and will become available as RAYHAR ACADEMY expands its online student system.
+  </div>
 </main>
-<footer><div class="container">© 2026 RAYHAR ACADEMY • For Knowledge and Leadership</div></footer>
+
+<footer>
+  © 2026 RAYHAR ACADEMY — FOR KNOWLEDGE AND LEADERSHIP
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+async function loadStudent(){
+  try{
+    const {data:{session}} = await supabaseClient.auth.getSession();
+    if(!session){
+      window.location.href="student-auth.html";
+      return;
+    }
+
+    const {data:user} = await supabaseClient.auth.getUser();
+    if(user && user.user){
+      document.getElementById("email").textContent = user.user.email || "Not available";
+
+      const {data:profile} = await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id", user.user.id)
+        .single();
+
+      if(profile){
+        document.getElementById("fullName").textContent = profile.full_name || "Student";
+        document.getElementById("phone").textContent = profile.phone || "Not available";
+        document.getElementById("department").textContent = profile.department || "Not available";
+        document.getElementById("studyLevel").textContent = profile.study_level || "Not available";
+      }
+    }
+  }catch(error){
+    console.error(error);
+  }
+}
+
+async function logout(){
+  try{
+    await supabaseClient.auth.signOut();
+  }finally{
+    window.location.href="student-auth.html";
+  }
+}
+
+loadStudent();
+</script>
 </body>
 </html>
