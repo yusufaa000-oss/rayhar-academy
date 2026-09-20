@@ -1,56 +1,650 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>RAYHAR ACADEMY — Student Account</title>
+
 <style>
-body{margin:0;background:#07111f;color:#f7f0df;font-family:Arial}.wrap{max-width:520px;margin:auto;padding:25px 18px}
-.card{background:#0d1b2e;border:1px solid #b89445;border-radius:16px;padding:20px;margin:15px 0}
-input,select,button{width:100%;box-sizing:border-box;padding:13px;margin:6px 0;border-radius:9px}
-input,select{background:#07111f;color:white;border:1px solid #44546b}button{background:#d4af5a;border:0;font-weight:bold}
-.secondary{background:transparent;color:#d4af5a;border:1px solid #d4af5a}.hidden{display:none}.gold{color:#d4af5a}
-</style></head><body><div class="wrap">
-<h1>RAYHAR <span class="gold">ACADEMY</span></h1>
-<div id="auth" class="card"><h2>Create Student Account</h2>
-<input id="name" placeholder="Full name"><input id="email" type="email" placeholder="Email">
-<input id="phone" placeholder="Phone number">
-<select id="dept"><option value="">Select department</option>
-<option>English Department</option><option>Mathematics Department</option><option>Arabic Department</option>
-<option>Fine Art Department</option><option>Medical Science Department</option><option>Computer Science Department</option>
-<option>Science Department</option><option>Quran & Islamic Studies Department</option></select>
-<select id="level"><option value="">Select study level</option><option>Beginner</option><option>Intermediate</option>
-<option>Advanced</option><option>Certificate</option><option>Diploma</option><option>Other</option></select>
-<input id="pass" type="password" placeholder="Password (minimum 6 characters)">
-<button onclick="register()">Create Account</button>
-<hr><h2>Student Login</h2><input id="lemail" type="email" placeholder="Email">
-<input id="lpass" type="password" placeholder="Password"><button class="secondary" onclick="login()">Log In</button>
-<p id="msg"></p></div>
-<div id="profile" class="card hidden"><h2>Welcome, <span id="pname" class="gold"></span></h2>
-<p>Email: <span id="pemail"></span></p><p>Phone: <span id="pphone"></span></p>
-<p>Department: <span id="pdept"></span></p><p>Level: <span id="plevel"></span></p>
-<button class="secondary" onclick="logout()">Log Out</button></div></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#07111f;
+  color:#f7f0df;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+.wrap{
+  max-width:520px;
+  margin:auto;
+  padding:25px 18px;
+}
+
+.logo{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.logo img{
+  width:90px;
+  height:90px;
+  object-fit:cover;
+  border-radius:50%;
+  border:3px solid #d4af5a;
+}
+
+h1{
+  text-align:center;
+  margin:10px 0 4px;
+}
+
+.subtitle{
+  text-align:center;
+  color:#d4af5a;
+  font-size:13px;
+}
+
+.card{
+  background:#0d1b2e;
+  border:1px solid #b89445;
+  border-radius:16px;
+  padding:20px;
+  margin:18px 0;
+}
+
+h2{
+  margin-top:0;
+  color:#d4af5a;
+}
+
+input,
+select,
+button{
+  width:100%;
+  box-sizing:border-box;
+  padding:13px;
+  margin:7px 0;
+  border-radius:9px;
+  font-size:15px;
+}
+
+input,
+select{
+  background:#07111f;
+  color:white;
+  border:1px solid #44546b;
+}
+
+button{
+  background:#d4af5a;
+  color:#07111f;
+  border:0;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.secondary{
+  background:transparent;
+  color:#d4af5a;
+  border:1px solid #d4af5a;
+}
+
+hr{
+  border:0;
+  border-top:1px solid #334155;
+  margin:25px 0;
+}
+
+.message{
+  margin-top:12px;
+  padding:10px;
+  border-radius:8px;
+  line-height:1.5;
+}
+
+.hidden{
+  display:none;
+}
+
+.gold{
+  color:#d4af5a;
+}
+
+.info{
+  background:#07111f;
+  border-radius:9px;
+  padding:12px;
+  margin:8px 0;
+}
+
+.label{
+  display:block;
+  color:#9ca3af;
+  font-size:12px;
+  margin-bottom:4px;
+}
+
+.value{
+  color:white;
+  font-weight:bold;
+  word-break:break-word;
+}
+
+.student-id{
+  font-size:20px;
+  color:#d4af5a;
+}
+
+.small{
+  color:#9ca3af;
+  font-size:12px;
+  line-height:1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <div class="logo">
+    <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
+    <h1>RAYHAR <span class="gold">ACADEMY</span></h1>
+    <div class="subtitle">FOR KNOWLEDGE AND LEADERSHIP</div>
+  </div>
+
+  <!-- ACCOUNT AREA -->
+  <div id="authCard" class="card">
+
+    <h2>Create Student Account</h2>
+
+    <input
+      id="name"
+      type="text"
+      placeholder="Full name"
+    >
+
+    <input
+      id="email"
+      type="email"
+      placeholder="Email address"
+    >
+
+    <input
+      id="phone"
+      type="tel"
+      placeholder="Phone number"
+    >
+
+    <select id="dept">
+      <option value="">Select department</option>
+      <option value="English Department">English Department</option>
+      <option value="Mathematics Department">Mathematics Department</option>
+      <option value="Arabic Department">Arabic Department</option>
+      <option value="Fine Art Department">Fine Art Department</option>
+      <option value="Medical Science Department">Medical Science Department</option>
+      <option value="Computer Science Department">Computer Science Department</option>
+      <option value="Science Department">Science Department</option>
+      <option value="Quran & Islamic Studies Department">Quran & Islamic Studies Department</option>
+    </select>
+
+    <select id="level">
+      <option value="">Select study level</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+      <option value="Certificate">Certificate</option>
+      <option value="Diploma">Diploma</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <input
+      id="pass"
+      type="password"
+      placeholder="Password (minimum 6 characters)"
+    >
+
+    <button onclick="register()">
+      Create Student Account
+    </button>
+
+    <div id="registerMessage"></div>
+
+    <hr>
+
+    <h2>Student Login</h2>
+
+    <input
+      id="lemail"
+      type="email"
+      placeholder="Email address"
+    >
+
+    <input
+      id="lpass"
+      type="password"
+      placeholder="Password"
+    >
+
+    <button
+      class="secondary"
+      onclick="login()"
+    >
+      Log In
+    </button>
+
+    <div id="loginMessage"></div>
+
+  </div>
+
+
+  <!-- PROFILE -->
+  <div id="profileCard" class="card hidden">
+
+    <h2>
+      Welcome,
+      <span id="pname" class="gold"></span>
+    </h2>
+
+    <div class="info">
+      <span class="label">Student ID</span>
+      <span id="pstudentid" class="student-id"></span>
+    </div>
+
+    <div class="info">
+      <span class="label">Email</span>
+      <span id="pemail" class="value"></span>
+    </div>
+
+    <div class="info">
+      <span class="label">Phone</span>
+      <span id="pphone" class="value"></span>
+    </div>
+
+    <div class="info">
+      <span class="label">Department</span>
+      <span id="pdept" class="value"></span>
+    </div>
+
+    <div class="info">
+      <span class="label">Study Level</span>
+      <span id="plevel" class="value"></span>
+    </div>
+
+    <p class="small">
+      Your student account has been connected to the RAYHAR ACADEMY
+      student database.
+    </p>
+
+    <button
+      class="secondary"
+      onclick="goPortal()"
+    >
+      Open Student Portal
+    </button>
+
+    <button
+      class="secondary"
+      onclick="logout()"
+    >
+      Log Out
+    </button>
+
+  </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="config.js"></script>
+
+
 <script>
-const msg=t=>document.getElementById("msg").textContent=t;
+
+function showMessage(id,text,type="normal"){
+
+  const box=document.getElementById(id);
+
+  box.textContent=text;
+
+  box.className="message";
+
+  if(type==="error"){
+    box.style.background="#451a1a";
+    box.style.color="#fecaca";
+  }
+
+  if(type==="success"){
+    box.style.background="#12351f";
+    box.style.color="#bbf7d0";
+  }
+
+}
+
+
 async function register(){
- const full_name=name.value.trim(), email=document.getElementById("email").value.trim(),
- phone=document.getElementById("phone").value.trim(), department=dept.value,
- study_level=level.value, password=pass.value;
- if(!full_name||!email||!password)return msg("Please enter your name, email and password.");
- const {error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name,phone,department,study_level}}});
- msg(error?error.message:"Registration successful. Check your email if confirmation is enabled.");
+
+  const full_name=
+    document.getElementById("name").value.trim();
+
+  const email=
+    document.getElementById("email").value.trim();
+
+  const phone=
+    document.getElementById("phone").value.trim();
+
+  const department=
+    document.getElementById("dept").value;
+
+  const study_level=
+    document.getElementById("level").value;
+
+  const password=
+    document.getElementById("pass").value;
+
+
+  if(!full_name){
+    showMessage(
+      "registerMessage",
+      "Please enter your full name.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!email){
+    showMessage(
+      "registerMessage",
+      "Please enter your email address.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!department){
+    showMessage(
+      "registerMessage",
+      "Please select your department.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(!study_level){
+    showMessage(
+      "registerMessage",
+      "Please select your study level.",
+      "error"
+    );
+    return;
+  }
+
+
+  if(password.length < 6){
+    showMessage(
+      "registerMessage",
+      "Password must contain at least 6 characters.",
+      "error"
+    );
+    return;
+  }
+
+
+  showMessage(
+    "registerMessage",
+    "Creating your student account..."
+  );
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient.auth.signUp({
+
+      email:email,
+
+      password:password,
+
+      options:{
+        data:{
+          full_name:full_name,
+          phone:phone,
+          department:department,
+          study_level:study_level
+        }
+      }
+
+    });
+
+
+    if(error){
+
+      showMessage(
+        "registerMessage",
+        "Registration failed: "+error.message,
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(data.user){
+
+      showMessage(
+        "registerMessage",
+        "Student account created successfully. You can now log in.",
+        "success"
+      );
+
+      document.getElementById("lemail").value=email;
+
+      document.getElementById("lpass").value="";
+
+    }
+
+  }catch(error){
+
+    showMessage(
+      "registerMessage",
+      "Something went wrong: "+error.message,
+      "error"
+    );
+
+  }
+
 }
+
+
 async function login(){
- const {error}=await supabaseClient.auth.signInWithPassword({
- email:document.getElementById("lemail").value.trim(),password:lpass.value});
- if(error)return msg(error.message); loadProfile();
+
+  const email=
+    document.getElementById("lemail").value.trim();
+
+  const password=
+    document.getElementById("lpass").value;
+
+
+  if(!email || !password){
+
+    showMessage(
+      "loginMessage",
+      "Please enter your email and password.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "loginMessage",
+    "Logging in..."
+  );
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient.auth.signInWithPassword({
+
+      email:email,
+
+      password:password
+
+    });
+
+
+    if(error){
+
+      showMessage(
+        "loginMessage",
+        "Login failed: "+error.message,
+        "error"
+      );
+
+      return;
+    }
+
+
+    await loadProfile();
+
+  }catch(error){
+
+    showMessage(
+      "loginMessage",
+      "Something went wrong: "+error.message,
+      "error"
+    );
+
+  }
+
 }
+
+
 async function loadProfile(){
- const {data:{user}}=await supabaseClient.auth.getUser(); if(!user)return;
- const {data,error}=await supabaseClient.from("profiles").select("*").eq("id",user.id).single();
- if(error)return msg(error.message);
- auth.classList.add("hidden");profile.classList.remove("hidden");
- pname.textContent=data.full_name;pemail.textContent=data.email||user.email||"";
- pphone.textContent=data.phone||"Not provided";pdept.textContent=data.department||"Not selected";plevel.textContent=data.study_level||"Not selected";
+
+  const {
+    data:{
+      user
+    }
+  } =
+  await supabaseClient.auth.getUser();
+
+
+  if(!user){
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id",user.id)
+    .single();
+
+
+  if(error){
+
+    showMessage(
+      "loginMessage",
+      "Account created, but profile could not be loaded: "+error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  document.getElementById("pname").textContent=
+    data.full_name || user.email;
+
+
+  document.getElementById("pstudentid").textContent=
+    data.student_id || "Generating...";
+
+
+  document.getElementById("pemail").textContent=
+    data.email || user.email || "—";
+
+
+  document.getElementById("pphone").textContent=
+    data.phone || "Not provided";
+
+
+  document.getElementById("pdept").textContent=
+    data.department || "Not selected";
+
+
+  document.getElementById("plevel").textContent=
+    data.study_level || "Not selected";
+
+
+  document
+    .getElementById("authCard")
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById("profileCard")
+    .classList
+    .remove("hidden");
+
 }
-async function logout(){await supabaseClient.auth.signOut();location.reload()}
-supabaseClient.auth.onAuthStateChange((event,session)=>{if(session)loadProfile()});
-</script></body></html>
+
+
+function goPortal(){
+
+  window.location.href="student-portal.html";
+
+}
+
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  location.reload();
+
+}
+
+
+supabaseClient.auth.onAuthStateChange(
+  (event,session)=>{
+
+    if(session){
+
+      setTimeout(
+        ()=>loadProfile(),
+        0
+      );
+
+    }
+
+  }
+);
+
+
+</script>
+
+</body>
+ </html>
