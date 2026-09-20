@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RAYHAR ACADEMY — For Knowledge and Leadership. Accessible online education from Afghanistan.">
+<title>RAYHAR ACADEMY | For Knowledge and Leadership</title>
+<style>
+:root{
+  --navy:#071a3a;
+  --navy2:#0d2b5b;
+  --gold:#d4af37;
+  --gold2:#f0cf62;
+  --cream:#fffaf0;
+  --white:#ffffff;
+  --text:#172033;
+  --muted:#61708a;
+  --line:#e6eaf1;
+  --shadow:0 12px 35px rgba(7,26,58,.10);
+}
+*{box-sizing:border-box;scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:#fff;line-height:1.65}
+a{text-decoration:none;color:inherit}
+img{max-width:100%}
+.container{width:min(1120px,92%);margin:auto}
+header{position:sticky;top:0;z-index:50;background:rgba(7,26,58,.97);box-shadow:0 3px 15px rgba(0,0,0,.12)}
+.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;color:#fff;font-weight:800}
+.brand img{width:48px;height:48px;object-fit:contain;border-radius:50%;background:#fff}
+.brand span{line-height:1.1}
+.brand small{display:block;color:var(--gold2);font-size:10px;letter-spacing:1.3px;margin-top:4px}
+nav{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+nav a{color:#fff;font-size:13px;font-weight:700}
+nav a:hover{color:var(--gold2)}
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:78px 0 72px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:330px;height:330px;border:1px solid rgba(212,175,55,.25);border-radius:50%;right:-120px;top:-120px}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:45px;align-items:center}
+.eyebrow{color:var(--gold2);font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:13px}
+h1{font-size:clamp(38px,7vw,70px);line-height:1.05;margin:14px 0}
+.hero p{font-size:18px;color:#e9eef8;max-width:720px}
+.btn{display:inline-block;padding:13px 20px;border-radius:8px;font-weight:800;margin:7px 7px 0 0;border:1px solid var(--gold)}
+.btn-primary{background:var(--gold);color:var(--navy)}
+.btn-outline{color:#fff}
+.hero-logo{display:flex;justify-content:center}
+.hero-logo img{width:min(320px,80%);aspect-ratio:1;object-fit:contain;background:#fff;border-radius:24px;padding:12px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
+section{padding:70px 0}
+.section-head{text-align:center;max-width:800px;margin:0 auto 35px}
+.section-head h2{font-size:34px;color:var(--navy);margin:0 0 10px}
+.section-head p{color:var(--muted)}
+.kicker{color:#9a7711;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;font-size:12px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:25px;box-shadow:var(--shadow)}
+.card h3{color:var(--navy);margin-top:0}
+.principles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.principle{border-top:4px solid var(--gold);background:var(--cream);padding:20px;border-radius:10px}
+.principle b{display:block;color:var(--navy);margin-bottom:6px}
+.departments{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.dept{background:var(--navy);color:#fff;border-radius:14px;padding:24px;min-height:150px;border-bottom:4px solid var(--gold)}
+.dept h3{color:var(--gold2);font-size:18px;margin-top:0}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.level{padding:20px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;text-align:center}
+.level b{display:block;color:var(--navy);margin-bottom:5px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+ul{padding-left:20px}
+li{margin:7px 0}
+.notice{border-left:5px solid var(--gold);background:var(--cream);padding:18px 20px;border-radius:8px}
+.cta{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;text-align:center}
+.cta h2{color:#fff;font-size:36px}
+.cta p{max-width:700px;margin:0 auto 20px;color:#e7edf8}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+.socials{display:flex;gap:10px;flex-wrap:wrap}
+.social{border:1px solid var(--line);padding:10px 14px;border-radius:8px;font-weight:700;color:var(--navy)}
+footer{background:#041127;color:#dce4f2;padding:40px 0}
+.footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:25px}
+footer h3{color:var(--gold2)}
+footer a{color:#dce4f2}
+.small{font-size:13px;color:#aebbd0}
+@media(max-width:850px){
+  nav{display:none}.hero-grid,.about-grid,.split,.contact,.footer-grid{grid-template-columns:1fr}
+  .principles{grid-template-columns:repeat(2,1fr)}
+  .departments{grid-template-columns:repeat(2,1fr)}
+  .levels{grid-template-columns:repeat(2,1fr)}
+  .hero{text-align:center}.hero p{margin-left:auto;margin-right:auto}
+}
+@media(max-width:520px){
+  .principles,.departments,.levels{grid-template-columns:1fr}
+  section{padding:52px 0}.brand span{font-size:14px}.hero{padding:60px 0}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="#home">
+      <img src="logo.jpg" alt="RAYHAR ACADEMY logo">
+      <span>RAYHAR ACADEMY<small>FOR KNOWLEDGE AND LEADERSHIP</small></span>
+    </a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#academic">Academic</a>
+      <a href="#admissions">Admissions</a>
+      <a href="#resources">Resources</a>
+      <a href="#contact">Contact</a>
+      <a href="student-auth.html">Student Portal</a>
+    </nav>
+  </div>
+</header>
+
+<main id="home">
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Online Education • Afghanistan</div>
+      <h1>RAYHAR ACADEMY</h1>
+      <p><strong>For Knowledge and Leadership.</strong></p>
+      <p>Transformative, accessible online learning designed to help students build knowledge, develop practical skills, think critically, and lead with purpose.</p>
+      <a class="btn btn-primary" href="#admissions">ENROLL NOW — IT'S FREE!</a>
+      <a class="btn btn-outline" href="#academic">Explore Academics</a>
+    </div>
+    <div class="hero-logo"><img src="logo.jpg" alt="RAYHAR ACADEMY official logo"></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">About RAYHAR ACADEMY</div>
+      <h2>Education With Purpose</h2>
+      <p>Accessible online education focused on knowledge, practical learning, mentorship, critical thinking and leadership.</p>
+    </div>
+    <div class="about-grid">
+      <div class="card">
+        <h3>Our Mission</h3>
+        <p>To make meaningful education accessible to learners from diverse backgrounds by providing free, mentor-guided online learning that develops knowledge, practical abilities, critical thinking, creativity, integrity and leadership.</p>
+      </div>
+      <div class="card">
+        <h3>Our Vision</h3>
+        <p>To contribute to a world where access to quality learning is not limited by geography or background, and where educated, ethical and capable people use knowledge to create positive change in their communities and beyond.</p>
+      </div>
+      <div class="card">
+        <h3>Our Goals & Objectives</h3>
+        <ul>
+          <li>Expand access to learning without unnecessary financial barriers.</li>
+          <li>Support students through mentorship and meaningful teacher interaction.</li>
+          <li>Connect academic theory with practical projects and real-world challenges.</li>
+          <li>Encourage critical thinking, creativity, responsibility and integrity.</li>
+          <li>Develop learners who can contribute positively to society and lead with purpose.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Who We Welcome</h3>
+        <p>RAYHAR ACADEMY welcomes beginners, students, learners developing existing knowledge, and people seeking new academic or professional opportunities. Admission is open and flexible, subject to the academy's learning arrangements.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f7f9fc">
+  <div class="container">
+    <div class="section-head"><div class="kicker">Our Principles</div><h2>What Guides Our Learning</h2></div>
+    <div class="principles">
+      <div class="principle"><b>Accessibility</b>Learning opportunities without unnecessary barriers.</div>
+      <div class="principle"><b>Academic Excellence</b>Strong theoretical and academic foundations.</div>
+      <div class="principle"><b>Practical Learning</b>Applying knowledge through projects and real-world challenges.</div>
+      <div class="principle"><b>Mentorship</b>Guidance and support throughout the learning journey.</div>
+      <div class="principle"><b>Critical Thinking</b>Developing independent and analytical thinkers.</div>
+      <div class="principle"><b>Leadership</b>Preparing students to lead responsibly and purposefully.</div>
+      <div class="principle"><b>Integrity</b>Promoting ethical conduct and responsibility.</div>
+      <div class="principle"><b>Lifelong Learning</b>Encouraging continuous personal and professional development.</div>
+    </div>
+  </div>
+</section>
+
+<section id="academic">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Academic</div>
+      <h2>Transformative Education Without Barriers</h2>
+      <p>RAYHAR ACADEMY combines academic foundations, practical projects, mentorship and online learning to support students at different stages.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:28px">
+      <h3>Learning Beyond the Classroom</h3>
+      <p>Education at RAYHAR ACADEMY extends beyond theoretical knowledge. Through mentorship, practical projects, collaborative learning, and engagement with real-world challenges, students are encouraged to apply what they learn and develop the confidence to solve problems creatively and responsibly.</p>
+      <h3>Developing Leaders for a Changing World</h3>
+      <p>Beyond technical mastery, RAYHAR ACADEMY seeks to develop global leaders across diverse academic disciplines by cultivating expertise alongside integrity, critical thinking, creativity, responsibility, and a commitment to meaningful contribution to society.</p>
+    </div>
+
+    <div class="section-head"><div class="kicker">Departments</div><h2>Academic Departments</h2></div>
+    <div class="departments">
+      <div class="dept"><h3>English Department</h3><p>Learning and development in English language and related academic areas.</p></div>
+      <div class="dept"><h3>Mathematics Department</h3><p>Academic learning focused on mathematical knowledge, reasoning and problem solving.</p></div>
+      <div class="dept"><h3>Arabic Department</h3><p>Learning and development in Arabic language and related areas of study.</p></div>
+      <div class="dept"><h3>Fine Art Department</h3><p>Creative learning that encourages artistic expression and development.</p></div>
+      <div class="dept"><h3>Medical Science Department</h3><p>Academic learning in medical science areas offered by the academy.</p></div>
+      <div class="dept"><h3>Computer Science Department</h3><p>Learning related to computing, technology and computer science.</p></div>
+      <div class="dept"><h3>Science Department</h3><p>Academic study and exploration across science-related areas.</p></div>
+      <div class="dept"><h3>Quran &amp; Islamic Studies Department</h3><p>Learning focused on the Qur'an and Islamic studies.</p></div>
+    </div>
+
+    <div class="section-head" style="margin-top:55px"><div class="kicker">Levels</div><h2>Levels of Study</h2><p>Learning opportunities are available across different stages, according to the relevant course or program.</p></div>
+    <div class="levels">
+      <div class="level"><b>Beginner</b>For students starting their learning journey.</div>
+      <div class="level"><b>Intermediate</b>For students building on existing knowledge.</div>
+      <div class="level"><b>Advanced</b>For deeper and more advanced study.</div>
+      <div class="level"><b>Certificate</b>Structured learning leading to certification.</div>
+      <div class="level"><b>Diploma</b>More comprehensive academic and practical study.</div>
+    </div>
+
+    <div class="split" style="margin-top:28px">
+      <div class="card">
+        <h3>Flexible Admission &amp; Academic Calendar</h3>
+        <div class="notice"><strong>Admission is open and flexible.</strong> Students can apply at any time. There is no admission fee.</div>
+        <p>Academic activities are organized according to the schedule of each class or program. Students receive information about classes, assignments, examinations and other academic activities through the academy's learning channels.</p>
+        <p><strong>Holiday schedule:</strong> No fixed holiday schedule is currently established.</p>
+      </div>
+      <div class="card">
+        <h3>Assessment &amp; Certification</h3>
+        <p>Students may participate in assignments, class participation, practical or project-based activities, student-teacher interaction and examinations as part of their learning and assessment.</p>
+        <p>Students who successfully complete the requirements of their respective course or program will be eligible to receive a RAYHAR ACADEMY certificate in accordance with the academy's certification requirements.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:28px">
+      <h3>Online Learning Experience</h3>
+      <div class="split">
+        <div>
+          <ul>
+            <li><strong>Live classes:</strong> Online video classes, primarily through Google Meet.</li>
+            <li><strong>Recorded lessons:</strong> Lessons will also be made available to students for review and self-paced study.</li>
+            <li><strong>Assignments:</strong> Learning activities designed to reinforce understanding.</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li><strong>Student-teacher interaction:</strong> Direct communication, questions and guidance.</li>
+            <li><strong>Study materials:</strong> Relevant materials to support academic preparation.</li>
+            <li><strong>Examinations:</strong> Exams form part of the assessment process.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="admissions" style="background:#f7f9fc">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Admissions</div>
+      <h2>Start Your Learning Journey</h2>
+      <p>Anyone can apply. Admission is free and applications are open at any time.</p>
+    </div>
+    <div class="card">
+      <h3>Admission Information</h3>
+      <ul>
+        <li><strong>Eligibility:</strong> Open to students and learners interested in the academy's available learning opportunities.</li>
+        <li><strong>Admission fee:</strong> None.</li>
+        <li><strong>Application period:</strong> Flexible — applications can be submitted anytime.</li>
+        <li><strong>Learning format:</strong> Online.</li>
+      </ul>
+      <a class="btn btn-primary" href="mailto:rayharacademy2026@gmail.com?subject=RAYHAR%20ACADEMY%20Admission%20Inquiry">Apply / Contact Admissions</a>
+      <p class="small">A full online application form and secure admissions system can be connected when the academy's application fields and backend are finalized.</p>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="section-head"><div class="kicker">Resources</div><h2>Academy Resources</h2><p>Useful information and resources for students and visitors.</p></div>
+    <div class="departments">
+      <div class="dept"><h3>News &amp; Announcements</h3><p>Updates about classes, admissions, examinations and academy activities.</p></div>
+      <div class="dept"><h3>Certificates</h3><p>Information about academy certification and completed learning.</p></div>
+      <div class="dept"><h3>Gallery</h3><p>A place for academy activities, events and learning moments.</p></div>
+      <div class="dept"><h3>Testimonials</h3><p>Student experiences and reflections can be added here.</p></div>
+      <div class="dept"><h3>Academic Calendar</h3><p>Academic dates and schedules will be published as they become available.</p></div>
+      <div class="dept"><h3>Downloadable Documents</h3><p>Student and academy documents can be made available here.</p></div>
+      <div class="dept"><h3>Teachers &amp; Staff</h3><p>The academy team directory will be added as staff information is provided.</p></div>
+      <div class="dept"><h3>Student Portal</h3><p>Access the student portal for future student services and learning resources.</p><a class="btn btn-primary" href="student-auth.html">Open Portal</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <h2>Knowledge. Leadership. Purpose.</h2>
+    <p>Begin your learning journey with RAYHAR ACADEMY and grow through knowledge, mentorship, practical learning and meaningful academic engagement.</p>
+    <a class="btn btn-primary" href="#admissions">ENROLL NOW — IT'S FREE!</a>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="section-head"><div class="kicker">Contact</div><h2>Connect With RAYHAR ACADEMY</h2></div>
+    <div class="contact">
+      <div class="card">
+        <h3>Academy Information</h3>
+        <p><strong>Location:</strong> Afghanistan</p>
+        <p><strong>Phone / WhatsApp:</strong> <a href="tel:0774301351">0774301351</a></p>
+        <p><strong>Instagram:</strong> <a href="https://instagram.com/rahyaracademy2026" target="_blank" rel="noopener">@rahyaracademy2026</a></p>
+        <p><strong>LinkedIn:</strong> Knowledge and Leadership</p>
+      </div>
+      <div class="card">
+        <h3>Social Media</h3>
+        <div class="socials">
+          <a class="social" href="https://instagram.com/rahyaracademy2026" target="_blank" rel="noopener">Instagram</a>
+          <a class="social" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="social" href="https://wa.me/93774301351" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+        <p class="small">Official email and additional social links can be added when you provide them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <div><h3>RAYHAR ACADEMY</h3><p>For Knowledge and Leadership.</p><p class="small">Online-based academy • Afghanistan</p></div>
+    <div><h3>Quick Links</h3><p><a href="#academic">Academic</a></p><p><a href="#admissions">Admissions</a></p><p><a href="student-auth.html">Student Portal</a></p></div>
+    <div><h3>Contact</h3><p><a href="tel:0774301351">0774301351</a></p><p><a href="https://wa.me/93774301351" target="_blank" rel="noopener">WhatsApp</a></p></div>
+  </div>
+  <div class="container small" style="margin-top:25px;border-top:1px solid rgba(255,255,255,.12);padding-top:18px">© 2026 RAYHAR ACADEMY. For Knowledge and Leadership.</div>
+</footer>
+</body>
+</html>
