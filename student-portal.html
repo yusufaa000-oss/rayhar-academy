@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Student Portal | RAYHAR ACADEMY TEST</title>
+  <title>Student Portal | RAYHAR ACADEMY</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
@@ -68,22 +68,23 @@
       cursor: pointer;
     }
 
-    button:active {
-      transform: scale(.98);
-    }
-
     main {
       max-width: 1000px;
       margin: auto;
       padding: 16px;
     }
 
-    .welcome {
+    .welcome,
+    .section,
+    .card {
       background: white;
       border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    }
+
+    .welcome {
       padding: 20px;
       margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
     }
 
     .welcome h1 {
@@ -105,11 +106,8 @@
     }
 
     .card {
-      background: white;
-      border-radius: 10px;
       padding: 15px;
       border-top: 3px solid #d8a62a;
-      box-shadow: 0 2px 8px rgba(0,0,0,.05);
     }
 
     .card-number {
@@ -130,11 +128,8 @@
     }
 
     .section {
-      background: white;
-      border-radius: 12px;
       padding: 16px;
       margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.05);
     }
 
     .section h2 {
@@ -166,6 +161,7 @@
       word-break: break-word;
     }
 
+    .department,
     .item {
       border: 1px solid #e5e7eb;
       border-left: 4px solid #d8a62a;
@@ -175,21 +171,25 @@
       background: #fff;
     }
 
+    .department:last-child,
     .item:last-child {
       margin-bottom: 0;
     }
 
+    .department strong,
     .item strong {
       display: block;
       margin-bottom: 7px;
       font-size: 14px;
     }
 
+    .department span,
     .item small {
       display: block;
       color: #667085;
       line-height: 1.5;
       margin-top: 4px;
+      font-size: 12px;
     }
 
     .empty {
@@ -208,30 +208,6 @@
       line-height: 1.5;
     }
 
-    .department {
-      padding: 12px;
-      background: #f7f8fa;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-
-    .department:last-child {
-      margin-bottom: 0;
-    }
-
-    .department strong {
-      display: block;
-      color: #071a3d;
-      margin-bottom: 4px;
-    }
-
-    .department span {
-      display: block;
-      font-size: 12px;
-      color: #777;
-      margin-top: 3px;
-    }
-
     textarea {
       width: 100%;
       min-height: 130px;
@@ -242,11 +218,6 @@
       font-family: inherit;
       font-size: 13px;
       margin-top: 12px;
-      outline: none;
-    }
-
-    textarea:focus {
-      border-color: #d8a62a;
     }
 
     .submit-row {
@@ -266,13 +237,6 @@
       color: #087443;
     }
 
-    .footer {
-      text-align: center;
-      color: #777;
-      font-size: 11px;
-      padding: 25px 10px 40px;
-    }
-
     .notice {
       background: #fff9e8;
       border-left: 4px solid #d8a62a;
@@ -280,6 +244,13 @@
       border-radius: 6px;
       font-size: 12px;
       color: #5b4a1c;
+    }
+
+    .footer {
+      text-align: center;
+      color: #777;
+      font-size: 11px;
+      padding: 25px 10px 40px;
     }
 
     @media (max-width: 700px) {
@@ -396,6 +367,7 @@
 
   <section class="section">
     <h2>My Departments</h2>
+
     <div id="departments">
       <div class="empty">Checking your departments...</div>
     </div>
@@ -403,6 +375,7 @@
 
   <section class="section">
     <h2>My Assignments</h2>
+
     <p style="font-size:12px;color:#777;">
       Complete your assignments and submit your work below.
     </p>
@@ -447,14 +420,20 @@
   © 2026 RAYHAR ACADEMY — FOR KNOWLEDGE AND LEADERSHIP
 </div>
 
-
 <script>
 
-const supabaseClient = window.supabase.createClient(
-  window.SUPABASE_URL,
-  window.SUPABASE_PUBLISHABLE_KEY
-);
+/*
+ IMPORTANT:
+ config.js already creates window.supabaseClient.
+ We use that client instead of creating another one.
+*/
 
+const client = window.supabaseClient;
+
+
+/* -----------------------------
+   BASIC HELPERS
+------------------------------ */
 
 function esc(value) {
   return String(value ?? "")
@@ -465,7 +444,6 @@ function esc(value) {
     .replace(/'/g, "&#039;");
 }
 
-
 function put(id, value) {
   const element = document.getElementById(id);
 
@@ -473,7 +451,6 @@ function put(id, value) {
     element.textContent = value ?? "—";
   }
 }
-
 
 function html(id, content) {
   const element = document.getElementById(id);
@@ -483,22 +460,27 @@ function html(id, content) {
   }
 }
 
-
 function showError(id, message) {
-
   html(
     id,
-    `<div class="error">
-      ${esc(message)}
-    </div>`
+    `<div class="error">${esc(message)}</div>`
   );
-
 }
 
 
+/* -----------------------------
+   AUTHENTICATION
+------------------------------ */
+
 async function getLoggedInUser() {
 
-  const result = await supabaseClient.auth.getSession();
+  if (!client) {
+    throw new Error(
+      "Supabase client was not loaded. Please check config.js."
+    );
+  }
+
+  const result = await client.auth.getSession();
 
   if (result.error) {
     throw result.error;
@@ -515,9 +497,13 @@ async function getLoggedInUser() {
 }
 
 
+/* -----------------------------
+   PROFILE
+------------------------------ */
+
 async function loadProfile(user) {
 
-  const result = await supabaseClient
+  const result = await client
     .from("profiles")
     .select(
       "id,student_id,full_name,email,phone,study_level,status"
@@ -532,7 +518,6 @@ async function loadProfile(user) {
   }
 
   if (!result.data) {
-
     throw new Error(
       "No student profile was found for this account."
     );
@@ -574,9 +559,13 @@ async function loadProfile(user) {
 }
 
 
+/* -----------------------------
+   DEPARTMENTS
+------------------------------ */
+
 async function loadDepartments(user) {
 
-  const result = await supabaseClient
+  const result = await client
     .from("enrollments")
     .select(
       "id,department_id,study_level,status"
@@ -586,7 +575,8 @@ async function loadDepartments(user) {
   if (result.error) {
 
     throw new Error(
-      "Department error: " + result.error.message
+      "Department error: " +
+      result.error.message
     );
   }
 
@@ -615,9 +605,11 @@ async function loadDepartments(user) {
       .filter(Boolean);
 
   const departmentsResult =
-    await supabaseClient
+    await client
       .from("departments")
-      .select("id,name,description,active")
+      .select(
+        "id,name,description,active"
+      )
       .in("id", departmentIds);
 
   if (departmentsResult.error) {
@@ -644,7 +636,9 @@ async function loadDepartments(user) {
     enrollments.map(enrollment => {
 
       const department =
-        departmentMap[enrollment.department_id];
+        departmentMap[
+          enrollment.department_id
+        ];
 
       return `
         <div class="department">
@@ -682,6 +676,10 @@ async function loadDepartments(user) {
 }
 
 
+/* -----------------------------
+   ASSIGNMENTS
+------------------------------ */
+
 async function loadAssignments(
   user,
   departmentIds
@@ -702,7 +700,7 @@ async function loadAssignments(
   }
 
   const result =
-    await supabaseClient
+    await client
       .from("assignments")
       .select(
         "id,title,description,department_id,study_level,due_at,max_score,published"
@@ -745,71 +743,35 @@ async function loadAssignments(
     return;
   }
 
-  const assignmentIds =
-    assignments.map(
-      assignment => assignment.id
-    );
-
-  const submissionsResult =
-    await supabaseClient
-      .from("assignment_submissions")
-      .select(
-        "id,assignment_id,submission_text,submitted_at,score,feedback,status"
-      )
-      .eq(
-        "student_id",
-        user.id
-      )
-      .in(
-        "assignment_id",
-        assignmentIds
-      );
-
-  if (submissionsResult.error) {
-
-    throw new Error(
-      "Submission error: " +
-      submissionsResult.error.message
-    );
-  }
-
-  const submissions =
-    submissionsResult.data || [];
-
-  const departmentsResult =
-    await supabaseClient
+  const departmentResult =
+    await client
       .from("departments")
       .select("id,name")
-      .in("id", departmentIds);
+      .in(
+        "id",
+        departmentIds
+      );
 
-  if (departmentsResult.error) {
+  if (departmentResult.error) {
 
     throw new Error(
       "Department lookup error: " +
-      departmentsResult.error.message
+      departmentResult.error.message
     );
   }
 
   const departmentMap = {};
 
-  (departmentsResult.data || [])
+  (departmentResult.data || [])
     .forEach(department => {
       departmentMap[department.id] =
         department.name;
     });
 
-
   html(
     "assignments",
 
     assignments.map(assignment => {
-
-      const submission =
-        submissions.find(
-          item =>
-            item.assignment_id ===
-            assignment.id
-        );
 
       const dueDate =
         assignment.due_at
@@ -817,7 +779,6 @@ async function loadAssignments(
               assignment.due_at
             ).toLocaleString()
           : "Not specified";
-
 
       return `
         <div class="item">
@@ -858,82 +819,6 @@ async function loadAssignments(
             )}
           </small>
 
-          <textarea
-            id="submission-${assignment.id}"
-            placeholder="Write your assignment submission here..."
-          >${esc(
-            submission?.submission_text ||
-            ""
-          )}</textarea>
-
-          <div class="submit-row">
-
-            <button
-              type="button"
-              onclick="submitAssignment('${assignment.id}')"
-            >
-              ${
-                submission
-                  ? "Update Submission"
-                  : "Submit Assignment"
-              }
-            </button>
-
-            <span
-              id="status-${assignment.id}"
-              class="submit-status"
-            >
-              ${
-                submission
-                  ? "Submitted"
-                  : "Not submitted"
-              }
-            </span>
-
-          </div>
-
-          ${
-            submission?.submitted_at
-              ? `
-                <small>
-                  Submitted:
-                  ${esc(
-                    new Date(
-                      submission.submitted_at
-                    ).toLocaleString()
-                  )}
-                </small>
-              `
-              : ""
-          }
-
-          ${
-            submission?.score !== null &&
-            submission?.score !== undefined
-              ? `
-                <small>
-                  <strong>Score:</strong>
-                  ${esc(submission.score)}
-                </small>
-              `
-              : ""
-          }
-
-          ${
-            submission?.feedback
-              ? `
-                <small>
-                  <strong>
-                    Teacher Feedback:
-                  </strong>
-                  ${esc(
-                    submission.feedback
-                  )}
-                </small>
-              `
-              : ""
-          }
-
         </div>
       `;
 
@@ -942,10 +827,14 @@ async function loadAssignments(
 }
 
 
+/* -----------------------------
+   RESULTS
+------------------------------ */
+
 async function loadResults(user) {
 
   const result =
-    await supabaseClient
+    await client
       .from("results")
       .select(
         "id,exam_id,score,grade,remarks,created_at"
@@ -1001,7 +890,7 @@ async function loadResults(user) {
   if (examIds.length) {
 
     const examsResult =
-      await supabaseClient
+      await client
         .from("exams")
         .select(
           "id,title,department_id,exam_date,max_score"
@@ -1029,44 +918,6 @@ async function loadResults(user) {
     examMap[exam.id] = exam;
   });
 
-
-  const departmentIds =
-    exams
-      .map(exam => exam.department_id)
-      .filter(Boolean);
-
-  let departmentMap = {};
-
-  if (departmentIds.length) {
-
-    const departmentsResult =
-      await supabaseClient
-        .from("departments")
-        .select("id,name")
-        .in(
-          "id",
-          departmentIds
-        );
-
-    if (departmentsResult.error) {
-
-      throw new Error(
-        "Result department error: " +
-        departmentsResult.error.message
-      );
-    }
-
-    (departmentsResult.data || [])
-      .forEach(department => {
-
-        departmentMap[
-          department.id
-        ] = department.name;
-
-      });
-  }
-
-
   html(
     "results",
 
@@ -1086,9 +937,201 @@ async function loadResults(user) {
           </strong>
 
           <small>
-            Department:
+            Score:
             ${esc(
-              departmentMap[
-                exam?.department_id
-              ] || "—"
-            )
+              item.score ??
+              "—"
+            )}
+          </small>
+
+          <small>
+            Grade:
+            ${esc(
+              item.grade ||
+              "—"
+            )}
+          </small>
+
+          <small>
+            Remarks:
+            ${esc(
+              item.remarks ||
+              "—"
+            )}
+          </small>
+
+        </div>
+      `;
+
+    }).join("")
+  );
+}
+
+
+/* -----------------------------
+   CERTIFICATES
+------------------------------ */
+
+async function loadCertificates(user) {
+
+  const result =
+    await client
+      .from("certificates")
+      .select(
+        "id,certificate_number,title,issued_at,verification_code,status,completion_details"
+      )
+      .eq(
+        "student_id",
+        user.id
+      )
+      .eq(
+        "status",
+        "valid"
+      )
+      .order(
+        "issued_at",
+        { ascending: false }
+      );
+
+  if (result.error) {
+
+    throw new Error(
+      "Certificate error: " +
+      result.error.message
+    );
+  }
+
+  const certificates =
+    result.data || [];
+
+  put(
+    "certificateCount",
+    certificates.length
+  );
+
+  if (!certificates.length) {
+
+    html(
+      "certificates",
+      `<div class="empty">
+        No valid certificates yet.
+      </div>`
+    );
+
+    return;
+  }
+
+  html(
+    "certificates",
+
+    certificates.map(certificate => {
+
+      return `
+        <div class="item">
+
+          <strong>
+            ${esc(
+              certificate.title ||
+              "Certificate"
+            )}
+          </strong>
+
+          <small>
+            Certificate Number:
+            ${esc(
+              certificate.certificate_number ||
+              "—"
+            )}
+          </small>
+
+          <small>
+            Issued:
+            ${esc(
+              certificate.issued_at
+                ? new Date(
+                    certificate.issued_at
+                  ).toLocaleDateString()
+                : "—"
+            )}
+          </small>
+
+          <small>
+            Verification Code:
+            ${esc(
+              certificate.verification_code ||
+              "—"
+            )}
+          </small>
+
+          <small>
+            Status:
+            ${esc(
+              certificate.status ||
+              "Valid"
+            )}
+          </small>
+
+        </div>
+      `;
+
+    }).join("")
+  );
+}
+
+
+/* -----------------------------
+   ANNOUNCEMENTS
+------------------------------ */
+
+async function loadAnnouncements() {
+
+  const result =
+    await client
+      .from("announcements")
+      .select(
+        "id,title,message,published,published_at"
+      )
+      .eq(
+        "published",
+        true
+      )
+      .order(
+        "published_at",
+        { ascending: false }
+      );
+
+  if (result.error) {
+
+    throw new Error(
+      "Announcement error: " +
+      result.error.message
+    );
+  }
+
+  const announcements =
+    result.data || [];
+
+  if (!announcements.length) {
+
+    html(
+      "announcements",
+      `<div class="empty">
+        No announcements at the moment.
+      </div>`
+    );
+
+    return;
+  }
+
+  html(
+    "announcements",
+
+    announcements.map(announcement => {
+
+      return `
+        <div class="item">
+
+          <strong>
+            ${esc(
+              announcement.title ||
+              "An
