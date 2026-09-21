@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Create Student Account | RAYHAR ACADEMY</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(rgba(5, 10, 20, 0.94), rgba(5, 10, 20, 0.97)),
+        #07111f;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .card {
+      background: #0d1828;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 18px;
+      padding: 35px 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d4af37;
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #b8c1ce;
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+
+    .section-title {
+      color: #d4af37;
+      font-size: 16px;
+      margin: 22px 0 12px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding-bottom: 7px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #e7ebf0;
+      font-size: 14px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px 14px;
+      margin-bottom: 16px;
+      border: 1px solid #2c3b50;
+      border-radius: 9px;
+      background: #091321;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #d4af37;
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.12);
+    }
+
+    select option {
+      background: #091321;
+      color: #fff;
+    }
+
+    .password-note {
+      font-size: 12px;
+      color: #929eae;
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 9px;
+      background: #d4af37;
+      color: #07111f;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background: #e4c45b;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .success {
+      display: block;
+      background: rgba(40, 167, 69, 0.15);
+      border: 1px solid rgba(40, 167, 69, 0.4);
+      color: #75e08a;
+    }
+
+    .error {
+      display: block;
+      background: rgba(220, 53, 69, 0.15);
+      border: 1px solid rgba(220, 53, 69, 0.4);
+      color: #ff8d98;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 22px;
+      color: #aeb8c6;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #d4af37;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 18px;
+      color: #667487;
+      font-size: 12px;
+    }
+
+    @media (max-width: 500px) {
+      .card {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <img src="logo.jpg" alt="RAYHAR ACADEMY Logo" class="logo">
+
+      <h1>RAYHAR ACADEMY</h1>
+
+      <p class="subtitle">
+        Create Your Student Account
+      </p>
+
+      <div id="message" class="message"></div>
+
+      <form id="registerForm">
+
+        <div class="section-title">
+          Personal Information
+        </div>
+
+        <label for="fullName">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          placeholder="Enter your full name"
+          required
+        >
+
+        <label for="studentId">Student ID</label>
+        <input
+          type="text"
+          id="studentId"
+          placeholder="Example: RAYHAR-000002"
+          required
+        >
+
+        <div class="section-title">
+          Academic Information
+        </div>
+
+        <label for="department">Department</label>
+
+        <select id="department" required>
+          <option value="">Select Department</option>
+          <option value="Arabic Department">Arabic Department</option>
+          <option value="Computer Science Department">
+            Computer Science Department
+          </option>
+          <option value="English Department">
+            English Department
+          </option>
+          <option value="Fine Art Department">
+            Fine Art Department
+          </option>
+          <option value="Mathematics Department">
+            Mathematics Department
+          </option>
+          <option value="Medical Science Department">
+            Medical Science Department
+          </option>
+          <option value="Quran & Islamic Studies Department">
+            Quran & Islamic Studies Department
+          </option>
+          <option value="Science Department">
+            Science Department
+          </option>
+        </select>
+
+        <label for="studyLevel">Study Level</label>
+
+        <select id="studyLevel" required>
+          <option value="">Select Study Level</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+
+        <div class="section-title">
+          Account Information
+        </div>
+
+        <label for="email">Email Address</label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email address"
+          required
+        >
+
+        <label for="password">Password</label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Create a password"
+          minlength="6"
+          required
+        >
+
+        <p class="password-note">
+          Password must contain at least 6 characters.
+        </p>
+
+        <label for="confirmPassword">Confirm Password</label>
+
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Enter your password again"
+          minlength="6"
+          required
+        >
+
+        <button type="submit" id="registerButton">
+          Create Student Account
+        </button>
+
+      </form>
+
+      <div class="login-link">
+        Already have an account?
+        <a href="student-auth.html">Login here</a>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      RAYHAR ACADEMY — For Knowledge and Leadership.
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const client = window.supabaseClient;
+
+    const form = document.getElementById("registerForm");
+    const message = document.getElementById("message");
+    const registerButton = document.getElementById("registerButton");
+
+
+    function showMessage(text, type) {
+
+      message.textContent = text;
+
+      message.className = "message " + type;
+
+    }
+
+
+    form.addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      message.className = "message";
+      message.textContent = "";
+
+      const fullName =
+        document.getElementById("fullName").value.trim();
+
+      const studentId =
+        document.getElementById("studentId").value.trim();
+
+      const department =
+        document.getElementById("department").value;
+
+      const studyLevel =
+        document.getElementById("studyLevel").value;
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+
+      if (password !== confirmPassword) {
+
+        showMessage(
+          "Passwords do not match.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (password.length < 6) {
+
+        showMessage(
+          "Password must contain at least 6 characters.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      registerButton.disabled = true;
+
+      registerButton.textContent =
+        "Creating Account...";
+
+
+      try {
+
+        /*
+         * Create Supabase authentication account
+         */
+
+        const {
+          data: authData,
+          error: authError
+        } = await client.auth.signUp({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+        if (authError) {
+
+          throw authError;
+
+        }
+
+
+        if (!authData.user) {
+
+          throw new Error(
+            "Account could not be created."
+          );
+
+        }
+
+
+        /*
+         * Create student profile
+         */
+
+        const {
+          error: profileError
+        } = await client
+          .from("profiles")
+          .insert({
+
+            id: authData.user.id,
+
+            full_name: fullName,
+
+            email: email,
+
+            student_id: studentId,
+
+            department: department,
+
+            study_level: studyLevel,
+
+            status: "active"
+
+          });
+
+
+        if (profileError) {
+
+          console.error(
+            "Profile error:",
+            profileError
+          );
+
+          throw new Error(
+            "The account was created, but the student profile could not be saved. Please contact the administrator."
+          );
+
+        }
+
+
+        /*
+         * Find selected department
+         */
+
+        const {
+          data: departmentData,
+          error: departmentError
+        } = await client
+          .from("departments")
+          .select("id")
+          .eq("name", department)
+          .maybeSingle();
+
+
+        if (departmentError) {
+
+          console.error(
+            "Department error:",
+            departmentError
+          );
+
+        }
+
+
+        /*
+         * Create enrollment
+         */
+
+        if (departmentData) {
+
+          const {
+            error: enrollmentError
+          } = await client
+            .from("enrollments")
+            .insert({
+
+              student_id: authData.user.id,
+
+              department_id: departmentData.id,
+
+              study_level: studyLevel,
+
+              status: "active"
+
+            });
+
+
+          if (enrollmentError) {
+
+            console.error(
+              "Enrollment error:",
+              enrollmentError
+            );
+
+          }
+
+        }
+
+
+        showMessage(
+          "Your student account has been created successfully! Redirecting you to the login page...",
+          "success"
+        );
+
+
+        form.reset();
+
+
+        setTimeout(function() {
+
+          window.location.replace(
+            "student-auth.html"
+          );
+
+        }, 2500);
+
+
+      } catch (error) {
+
+        console.error(
+          "Registration error:",
+          error
+        );
+
+
+        let errorMessage =
+          error.message ||
+          "Something went wrong while creating your account.";
+
+
+        if (
+          errorMessage
+            .toLowerCase()
+            .includes("already registered")
+        ) {
+
+          errorMessage =
+            "This email address is already registered. Please use another email or log in.";
+
+        }
+
+
+        showMessage(
+          errorMessage,
+          "error"
+        );
+
+
+      } finally {
+
+        registerButton.disabled = false;
+
+        registerButton.textContent =
+          "Create Student Account";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+          </html>
