@@ -17,18 +17,21 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #0b0f19;
+      background: #080b12;
       color: #fff;
     }
 
     header {
       background: #05070c;
       border-bottom: 1px solid #c9a227;
-      padding: 18px 20px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .brand {
@@ -52,23 +55,23 @@
 
     .brand p {
       margin: 4px 0 0;
-      font-size: 11px;
-      color: #ccc;
-      letter-spacing: 1px;
+      color: #aaa;
+      font-size: 10px;
+      letter-spacing: 1.5px;
     }
 
     button {
       border: none;
       cursor: pointer;
-      background: #c9a227;
+      background: #d4af37;
       color: #05070c;
-      padding: 10px 16px;
+      padding: 10px 17px;
       border-radius: 7px;
       font-weight: bold;
     }
 
     button:hover {
-      background: #e0c04d;
+      background: #e5c657;
     }
 
     main {
@@ -86,8 +89,8 @@
     }
 
     .welcome p {
-      color: #bbb;
       margin: 0;
+      color: #aaa;
     }
 
     .stats {
@@ -98,8 +101,8 @@
     }
 
     .stat {
-      background: #111827;
-      border: 1px solid #263044;
+      background: #111722;
+      border: 1px solid #252d3d;
       border-radius: 12px;
       padding: 20px;
     }
@@ -113,11 +116,13 @@
 
     .stat span {
       color: #aaa;
+      font-size: 14px;
     }
 
-    .profile {
-      background: #111827;
-      border: 1px solid #263044;
+    .profile,
+    .section {
+      background: #111722;
+      border: 1px solid #252d3d;
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 20px;
@@ -125,42 +130,46 @@
 
     .profile h3,
     .section h3 {
-      margin-top: 0;
+      margin: 0 0 18px;
       color: #d4af37;
     }
 
     .profile-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
     }
 
     .profile-item {
-      background: #0b0f19;
-      padding: 14px;
+      background: #080b12;
+      padding: 15px;
       border-radius: 8px;
+      border: 1px solid #1d2533;
     }
 
     .profile-item small {
       display: block;
-      color: #888;
-      margin-bottom: 5px;
+      color: #777;
+      margin-bottom: 7px;
     }
 
-    .section {
-      background: #111827;
-      border: 1px solid #263044;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
+    .profile-item span {
+      color: #fff;
+      word-break: break-word;
+    }
+
+    .student-id {
+      color: #d4af37 !important;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
     .item {
-      background: #0b0f19;
+      background: #080b12;
       border-left: 3px solid #c9a227;
-      padding: 15px;
+      padding: 16px;
       border-radius: 7px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .item:last-child {
@@ -169,12 +178,54 @@
 
     .item strong {
       color: #fff;
+      font-size: 16px;
     }
 
     .item p {
       color: #aaa;
-      margin: 7px 0 0;
-      line-height: 1.5;
+      margin: 8px 0 0;
+      line-height: 1.6;
+    }
+
+    .department-card {
+      background: #080b12;
+      border: 1px solid #292f3c;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 12px;
+    }
+
+    .department-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .department-name {
+      color: #d4af37;
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .department-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .department-info div {
+      background: #111722;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    .department-info small {
+      display: block;
+      color: #777;
+      margin-bottom: 4px;
+    }
+
+    .department-info span {
+      color: #eee;
     }
 
     .muted {
@@ -183,30 +234,50 @@
 
     .error {
       color: #ff8a8a;
+      line-height: 1.5;
+    }
+
+    .success {
+      color: #9be49b;
+    }
+
+    .loading {
+      color: #aaa;
     }
 
     footer {
       text-align: center;
-      color: #777;
-      padding: 30px 15px;
+      color: #666;
+      padding: 35px 15px;
       font-size: 13px;
     }
 
     @media (max-width: 600px) {
       header {
-        align-items: flex-start;
+        padding: 12px;
+      }
+
+      .brand img {
+        width: 40px;
+        height: 40px;
       }
 
       .brand h1 {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .brand p {
-        font-size: 9px;
+        font-size: 8px;
       }
 
       header button {
         padding: 8px 11px;
+        font-size: 12px;
+      }
+
+      main {
+        width: 92%;
+        margin-top: 22px;
       }
     }
   </style>
@@ -215,26 +286,42 @@
 <body>
 
 <header>
+
   <div class="brand">
+
     <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
 
     <div>
       <h1>RAYHAR ACADEMY</h1>
       <p>FOR KNOWLEDGE AND LEADERSHIP</p>
     </div>
+
   </div>
 
   <button onclick="logout()">Logout</button>
+
 </header>
+
 
 <main>
 
   <div class="welcome">
-    <h2>Welcome, Student 👋</h2>
-    <p>Your personal RAYHAR ACADEMY learning dashboard.</p>
+
+    <h2 id="welcomeTitle">
+      Welcome 👋
+    </h2>
+
+    <p>
+      Your personal RAYHAR ACADEMY learning dashboard.
+    </p>
+
   </div>
 
+
+  <!-- STATISTICS -->
+
   <div class="stats">
+
     <div class="stat">
       <strong id="departmentCount">0</strong>
       <span>My Departments</span>
@@ -254,87 +341,191 @@
       <strong id="certificateCount">0</strong>
       <span>Certificates</span>
     </div>
+
   </div>
 
+
+  <!-- STUDENT PROFILE -->
+
   <section class="profile">
+
     <h3>Student Information</h3>
 
     <div class="profile-grid">
 
       <div class="profile-item">
+
         <small>Student ID</small>
-        <span id="studentId">Checking...</span>
+
+        <span
+          id="studentId"
+          class="student-id"
+        >
+          Loading...
+        </span>
+
       </div>
 
+
       <div class="profile-item">
+
         <small>Full Name</small>
-        <span id="fullName">Checking...</span>
+
+        <span id="fullName">
+          Loading...
+        </span>
+
       </div>
 
+
       <div class="profile-item">
+
         <small>Email</small>
-        <span id="email">Checking...</span>
+
+        <span id="email">
+          Loading...
+        </span>
+
       </div>
 
+
       <div class="profile-item">
+
         <small>Study Level</small>
-        <span id="studyLevel">Checking...</span>
+
+        <span id="studyLevel">
+          Loading...
+        </span>
+
       </div>
+
 
       <div class="profile-item">
+
         <small>Status</small>
-        <span id="status">Checking...</span>
+
+        <span id="status">
+          Loading...
+        </span>
+
       </div>
 
     </div>
+
   </section>
 
+
+  <!-- DEPARTMENTS -->
+
   <section class="section">
+
     <h3>My Departments</h3>
+
     <div id="departments">
-      <p class="muted">Checking your departments...</p>
+
+      <p class="loading">
+        Loading your departments...
+      </p>
+
     </div>
+
   </section>
 
+
+  <!-- ASSIGNMENTS -->
+
   <section class="section">
+
     <h3>My Assignments</h3>
+
     <div id="assignments">
-      <p class="muted">Checking assignments...</p>
+
+      <p class="loading">
+        Loading assignments...
+      </p>
+
     </div>
+
   </section>
 
+
+  <!-- RESULTS -->
+
   <section class="section">
+
     <h3>My Results</h3>
+
     <div id="results">
-      <p class="muted">Checking results...</p>
+
+      <p class="loading">
+        Loading results...
+      </p>
+
     </div>
+
   </section>
 
+
+  <!-- CERTIFICATES -->
+
   <section class="section">
+
     <h3>My Certificates</h3>
+
     <div id="certificates">
-      <p class="muted">Checking certificates...</p>
+
+      <p class="loading">
+        Loading certificates...
+      </p>
+
     </div>
+
   </section>
 
+
+  <!-- ANNOUNCEMENTS -->
+
   <section class="section">
+
     <h3>Announcements</h3>
+
     <div id="announcements">
-      <p class="muted">Checking announcements...</p>
+
+      <p class="loading">
+        Loading announcements...
+      </p>
+
     </div>
+
   </section>
 
 </main>
 
+
 <footer>
+
   © 2026 RAYHAR ACADEMY — For Knowledge and Leadership.
+
 </footer>
 
+
 <script>
+
   const client = window.supabaseClient;
 
+
+  /* =========================
+     HTML ESCAPE
+  ========================= */
+
   function esc(value) {
-    if (value === null || value === undefined) return "";
+
+    if (
+      value === null ||
+      value === undefined
+    ) {
+      return "";
+    }
 
     return String(value)
       .replace(/&/g, "&amp;")
@@ -342,353 +533,779 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+
   }
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
 
   async function logout() {
+
     try {
+
       await client.auth.signOut();
+
     } catch (error) {
-      console.error("Logout error:", error);
+
+      console.error(
+        "Logout error:",
+        error
+      );
+
     }
 
-    window.location.replace("student-auth.html");
+    window.location.replace(
+      "student-auth.html"
+    );
+
   }
 
-  async function loadPortal() {
 
-    if (!client) {
-      document.body.innerHTML =
-        "<h2 style='padding:30px;color:white'>Supabase configuration could not be loaded.</h2>";
-      return;
+  /* =========================
+     LOAD PROFILE
+  ========================= */
+
+  async function loadProfile(user) {
+
+    const {
+      data: profile,
+      error
+    } = await client
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+
+    if (error) {
+
+      console.error(
+        "Profile error:",
+        error
+      );
+
+      document.getElementById(
+        "studentId"
+      ).textContent = "Unavailable";
+
+      document.getElementById(
+        "fullName"
+      ).textContent =
+        user.user_metadata?.full_name ||
+        "Student";
+
+      document.getElementById(
+        "email"
+      ).textContent =
+        user.email || "—";
+
+      return null;
+
     }
 
-    try {
+
+    if (!profile) {
+
+      document.getElementById(
+        "studentId"
+      ).textContent =
+        "Not available";
+
+      document.getElementById(
+        "fullName"
+      ).textContent =
+        user.user_metadata?.full_name ||
+        "Student";
+
+      document.getElementById(
+        "email"
+      ).textContent =
+        user.email || "—";
+
+      document.getElementById(
+        "studyLevel"
+      ).textContent =
+        "Not available";
+
+      document.getElementById(
+        "status"
+      ).textContent =
+        "Not available";
+
+      return null;
+
+    }
+
+
+    document.getElementById(
+      "studentId"
+    ).textContent =
+      profile.student_id || "—";
+
+
+    document.getElementById(
+      "fullName"
+    ).textContent =
+      profile.full_name || "—";
+
+
+    document.getElementById(
+      "email"
+    ).textContent =
+      profile.email ||
+      user.email ||
+      "—";
+
+
+    document.getElementById(
+      "studyLevel"
+    ).textContent =
+      profile.study_level ||
+      "Beginner";
+
+
+    document.getElementById(
+      "status"
+    ).textContent =
+      profile.status ||
+      "Active";
+
+
+    document.getElementById(
+      "welcomeTitle"
+    ).textContent =
+      "Welcome, " +
+      (profile.full_name || "Student") +
+      " 👋";
+
+
+    return profile;
+
+  }
+
+
+  /* =========================
+     LOAD DEPARTMENTS
+  ========================= */
+
+  async function loadDepartments(userId) {
+
+    const container =
+      document.getElementById(
+        "departments"
+      );
+
+
+    const {
+      data: enrollments,
+      error: enrollmentError
+    } = await client
+      .from("enrollments")
+      .select("*")
+      .eq("student_id", userId);
+
+
+    if (enrollmentError) {
+
+      console.error(
+        "Enrollment error:",
+        enrollmentError
+      );
+
+      container.innerHTML =
+        `<p class="error">
+          Unable to load departments:
+          ${esc(enrollmentError.message)}
+        </p>`;
+
+      return;
+
+    }
+
+
+    const list =
+      enrollments || [];
+
+
+    document.getElementById(
+      "departmentCount"
+    ).textContent =
+      list.length;
+
+
+    if (!list.length) {
+
+      container.innerHTML =
+        `<p class="muted">
+          You have not selected any department yet.
+        </p>`;
+
+      return;
+
+    }
+
+
+    /*
+      Get all department IDs
+    */
+
+    const departmentIds =
+      list
+        .map(item =>
+          item.department_id
+        )
+        .filter(Boolean);
+
+
+    let departments = [];
+
+
+    if (departmentIds.length) {
 
       const {
-        data: { session },
-        error: sessionError
-      } = await client.auth.getSession();
-
-      if (sessionError) {
-        throw sessionError;
-      }
-
-      if (!session) {
-        window.location.replace("student-auth.html");
-        return;
-      }
-
-      const user = session.user;
-
-      /*
-       * STUDENT PROFILE
-       */
-      const { data: profile, error: profileError } =
-        await client
-          .from("students")
-          .select("*")
-          .eq("id", user.id)
-          .maybeSingle();
-
-      if (profileError) {
-        console.error("Profile error:", profileError);
-      }
-
-      if (!profile) {
-        document.getElementById("fullName").textContent =
-          user.user_metadata?.full_name || "Student";
-
-        document.getElementById("email").textContent =
-          user.email || "—";
-      } else {
-
-        document.getElementById("studentId").textContent =
-          profile.student_id || "—";
-
-        document.getElementById("fullName").textContent =
-          profile.full_name || "—";
-
-        document.getElementById("email").textContent =
-          profile.email || user.email || "—";
-
-        document.getElementById("studyLevel").textContent =
-          profile.study_level || "—";
-
-        document.getElementById("status").textContent =
-          profile.status || "—";
-      }
+        data,
+        error
+      } = await client
+        .from("departments")
+        .select("*")
+        .in(
+          "id",
+          departmentIds
+        );
 
 
-      /*
-       * ENROLLMENTS
-       */
-      const { data: enrollments, error: enrollmentError } =
-        await client
-          .from("student_enrollments")
-          .select("*")
-          .eq("student_id", user.id);
+      if (error) {
 
-      if (enrollmentError) {
-        console.error("Enrollment error:", enrollmentError);
-
-        document.getElementById("departments").innerHTML =
-          `<p class="error">${esc(enrollmentError.message)}</p>`;
-      } else {
-
-        const list = enrollments || [];
-
-        document.getElementById("departmentCount").textContent =
-          list.length;
-
-        if (!list.length) {
-
-          document.getElementById("departments").innerHTML =
-            '<p class="muted">You are not enrolled in any department yet.</p>';
-
-        } else {
-
-          const departmentIds = list
-            .map(item => item.department_id)
-            .filter(Boolean);
-
-          let departments = [];
-
-          if (departmentIds.length) {
-
-            const { data: departmentData, error: departmentError } =
-              await client
-                .from("departments")
-                .select("*")
-                .in("id", departmentIds);
-
-            if (!departmentError) {
-              departments = departmentData || [];
-            }
-          }
-
-          document.getElementById("departments").innerHTML =
-            list.map(enrollment => {
-
-              const department =
-                departments.find(
-                  d => d.id === enrollment.department_id
-                );
-
-              const name =
-                department?.name ||
-                enrollment.department ||
-                "Department";
-
-              return `
-                <div class="item">
-                  <strong>${esc(name)}</strong>
-                  <p>
-                    Level:
-                    ${esc(enrollment.study_level || "Beginner")}
-                    <br>
-                    Status:
-                    ${esc(enrollment.status || "Active")}
-                  </p>
-                </div>
-              `;
-
-            }).join("");
-        }
-      }
-
-
-      /*
-       * ASSIGNMENTS
-       */
-      const { data: assignments, error: assignmentError } =
-        await client
-          .from("assignments")
-          .select("*")
-          .order("created_at", { ascending: false });
-
-      if (assignmentError) {
-
-        console.error("Assignment error:", assignmentError);
-
-        document.getElementById("assignments").innerHTML =
-          `<p class="error">${esc(assignmentError.message)}</p>`;
+        console.error(
+          "Department error:",
+          error
+        );
 
       } else {
 
-        const list = assignments || [];
+        departments =
+          data || [];
 
-        document.getElementById("assignmentCount").textContent =
-          list.length;
-
-        if (!list.length) {
-
-          document.getElementById("assignments").innerHTML =
-            '<p class="muted">No assignments available yet.</p>';
-
-        } else {
-
-          document.getElementById("assignments").innerHTML =
-            list.map(item => `
-              <div class="item">
-                <strong>${esc(item.title || item.name || "Assignment")}</strong>
-                <p>
-                  ${esc(item.description || "No description available.")}
-                </p>
-              </div>
-            `).join("");
-        }
       }
 
-
-      /*
-       * RESULTS
-       */
-      const { data: results, error: resultError } =
-        await client
-          .from("results")
-          .select("*")
-          .eq("student_id", user.id);
-
-      if (resultError) {
-
-        console.error("Result error:", resultError);
-
-        document.getElementById("results").innerHTML =
-          `<p class="error">${esc(resultError.message)}</p>`;
-
-      } else {
-
-        const list = results || [];
-
-        document.getElementById("resultCount").textContent =
-          list.length;
-
-        if (!list.length) {
-
-          document.getElementById("results").innerHTML =
-            '<p class="muted">No results available yet.</p>';
-
-        } else {
-
-          document.getElementById("results").innerHTML =
-            list.map(item => `
-              <div class="item">
-                <strong>
-                  ${esc(item.subject || item.course || "Result")}
-                </strong>
-
-                <p>
-                  Score:
-                  ${esc(item.score ?? item.mark ?? "—")}
-                  <br>
-                  Grade:
-                  ${esc(item.grade || "—")}
-                </p>
-              </div>
-            `).join("");
-        }
-      }
-
-
-      /*
-       * CERTIFICATES
-       */
-      const { data: certificates, error: certificateError } =
-        await client
-          .from("certificates")
-          .select("*")
-          .eq("student_id", user.id);
-
-      if (certificateError) {
-
-        console.error("Certificate error:", certificateError);
-
-        document.getElementById("certificates").innerHTML =
-          `<p class="error">${esc(certificateError.message)}</p>`;
-
-      } else {
-
-        const list = certificates || [];
-
-        document.getElementById("certificateCount").textContent =
-          list.length;
-
-        if (!list.length) {
-
-          document.getElementById("certificates").innerHTML =
-            '<p class="muted">No certificates available yet.</p>';
-
-        } else {
-
-          document.getElementById("certificates").innerHTML =
-            list.map(item => `
-              <div class="item">
-                <strong>
-                  ${esc(item.title || item.certificate_name || "Certificate")}
-                </strong>
-
-                <p>
-                  ${esc(item.description || "")}
-                </p>
-              </div>
-            `).join("");
-        }
-      }
-
-
-      /*
-       * ANNOUNCEMENTS
-       */
-      const { data: announcements, error: announcementError } =
-        await client
-          .from("announcements")
-          .select("*")
-          .order("created_at", { ascending: false });
-
-      if (announcementError) {
-
-        console.error("Announcement error:", announcementError);
-
-        document.getElementById("announcements").innerHTML =
-          `<p class="error">${esc(announcementError.message)}</p>`;
-
-      } else {
-
-        const list = announcements || [];
-
-        if (!list.length) {
-
-          document.getElementById("announcements").innerHTML =
-            '<p class="muted">No announcements yet.</p>';
-
-        } else {
-
-          document.getElementById("announcements").innerHTML =
-            list.map(item => `
-              <div class="item">
-                <strong>
-                  ${esc(item.title || "Announcement")}
-                </strong>
-
-                <p>
-                  ${esc(item.content || item.message || item.description || "")}
-                </p>
-              </div>
-            `).join("");
-        }
-      }
-
-    } catch (error) {
-
-      console.error("Portal error:", error);
-
-      document.getElementById("departments").innerHTML =
-        `<p class="error">Unable to load portal data: ${esc(error.message)}</p>`;
     }
+
+
+    container.innerHTML =
+      list.map(enrollment => {
+
+        const department =
+          departments.find(
+            item =>
+              item.id ===
+              enrollment.department_id
+          );
+
+
+        const departmentName =
+          department?.name ||
+          "Department";
+
+
+        return `
+
+          <div class="department-card">
+
+            <div class="department-name">
+
+              ${esc(departmentName)}
+
+            </div>
+
+
+            <div class="department-info">
+
+              <div>
+
+                <small>Study Level</small>
+
+                <span>
+                  ${esc(
+                    enrollment.study_level ||
+                    "Beginner"
+                  )}
+                </span>
+
+              </div>
+
+
+              <div>
+
+                <small>Status</small>
+
+                <span>
+                  ${esc(
+                    enrollment.status ||
+                    "Active"
+                  )}
+                </span>
+
+              </div>
+
+
+              <div>
+
+                <small>Enrollment</small>
+
+                <span>
+                  Active Student
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }).join("");
+
   }
 
-  loadPortal();
-</script>
 
-</body>
-</html>
+  /* =========================
+     LOAD ASSIGNMENTS
+  ========================= */
+
+  async function loadAssignments() {
+
+    const container =
+      document.getElementById(
+        "assignments"
+      );
+
+
+    const {
+      data,
+      error
+    } = await client
+      .from("assignments")
+      .select("*")
+      .eq("published", true)
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+    if (error) {
+
+      console.error(
+        "Assignments error:",
+        error
+      );
+
+      container.innerHTML =
+        `<p class="error">
+          Unable to load assignments:
+          ${esc(error.message)}
+        </p>`;
+
+      return;
+
+    }
+
+
+    const list =
+      data || [];
+
+
+    document.getElementById(
+      "assignmentCount"
+    ).textContent =
+      list.length;
+
+
+    if (!list.length) {
+
+      container.innerHTML =
+        `<p class="muted">
+          No assignments available yet.
+        </p>`;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      list.map(item => {
+
+        return `
+
+          <div class="item">
+
+            <strong>
+              ${esc(
+                item.title ||
+                "Assignment"
+              )}
+            </strong>
+
+            <p>
+              ${esc(
+                item.description ||
+                "No description available."
+              )}
+
+              ${
+                item.due_at
+                  ? `<br><br>
+                     Due:
+                     ${esc(
+                       new Date(
+                         item.due_at
+                       ).toLocaleString()
+                     )}`
+                  : ""
+              }
+
+            </p>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }
+
+
+  /* =========================
+     LOAD RESULTS
+  ========================= */
+
+  async function loadResults(userId) {
+
+    const container =
+      document.getElementById(
+        "results"
+      );
+
+
+    const {
+      data,
+      error
+    } = await client
+      .from("results")
+      .select("*")
+      .eq("student_id", userId)
+      .eq("published", true)
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+    if (error) {
+
+      console.error(
+        "Results error:",
+        error
+      );
+
+      container.innerHTML =
+        `<p class="error">
+          Unable to load results:
+          ${esc(error.message)}
+        </p>`;
+
+      return;
+
+    }
+
+
+    const list =
+      data || [];
+
+
+    document.getElementById(
+      "resultCount"
+    ).textContent =
+      list.length;
+
+
+    if (!list.length) {
+
+      container.innerHTML =
+        `<p class="muted">
+          No results available yet.
+        </p>`;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      list.map(item => {
+
+        return `
+
+          <div class="item">
+
+            <strong>
+              Result
+            </strong>
+
+            <p>
+
+              Score:
+              ${esc(
+                item.score ?? "—"
+              )}
+
+              <br>
+
+              Grade:
+              ${esc(
+                item.grade || "—"
+              )}
+
+              <br>
+
+              Remarks:
+              ${esc(
+                item.remarks || "—"
+              )}
+
+            </p>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }
+
+
+  /* =========================
+     LOAD CERTIFICATES
+  ========================= */
+
+  async function loadCertificates(userId) {
+
+    const container =
+      document.getElementById(
+        "certificates"
+      );
+
+
+    const {
+      data,
+      error
+    } = await client
+      .from("certificates")
+      .select("*")
+      .eq("student_id", userId)
+      .order(
+        "issued_at",
+        {
+          ascending: false
+        }
+      );
+
+
+    if (error) {
+
+      console.error(
+        "Certificates error:",
+        error
+      );
+
+      container.innerHTML =
+        `<p class="error">
+          Unable to load certificates:
+          ${esc(error.message)}
+        </p>`;
+
+      return;
+
+    }
+
+
+    const list =
+      data || [];
+
+
+    document.getElementById(
+      "certificateCount"
+    ).textContent =
+      list.length;
+
+
+    if (!list.length) {
+
+      container.innerHTML =
+        `<p class="muted">
+          No certificates available yet.
+        </p>`;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      list.map(item => {
+
+        return `
+
+          <div class="item">
+
+            <strong>
+              ${esc(
+                item.title ||
+                "Certificate"
+              )}
+            </strong>
+
+            <p>
+
+              Certificate Number:
+              ${esc(
+                item.certificate_number ||
+                "—"
+              )}
+
+              <br>
+
+              Issued:
+              ${
+                item.issued_at
+                  ? esc(
+                      new Date(
+                        item.issued_at
+                      ).toLocaleDateString()
+                    )
+                  : "—"
+              }
+
+              <br>
+
+              Status:
+              ${esc(
+                item.status ||
+                "Valid"
+              )}
+
+            </p>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }
+
+
+  /* =========================
+     LOAD ANNOUNCEMENTS
+  ========================= */
+
+  async function loadAnnouncements() {
+
+    const container =
+      document.getElementById(
+        "announcements"
+      );
+
+
+    const {
+      data,
+      error
+    } = await client
+      .from("announcements")
+      .select("*")
+      .eq("published", true)
+      .order(
+        "published_at",
+        {
+          ascending: false
+        }
+      );
+
+
+    if (error) {
+
+      console.error(
+        "Announcements error:",
+        error
+      );
+
+      container.innerHTML =
+        `<p class="error">
+          Unable to load announcements:
+          ${esc(error.message)}
+        </p>`;
+
+      return;
+
+    }
+
+
+    const list =
+      data || [];
+
+
+    if (!list.length) {
+
+      container.innerHTML =
+        `<p class="muted">
+          No announcements yet.
+        </p>`;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      list.map(item => {
+
+        return `
+
+          <div class="item">
+
+            <strong>
+              ${esc(
+                item.title ||
+                "Announcement"
+              )}
+            </strong>
+
+            <p>
+              ${esc(
+                item.message ||
+                "No message available."
+              )}
+            </p>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }
+
+
+  /* =========================
+     START PORTAL
+  ========================= */
+
+  async function loadPortal()
