@@ -37,7 +37,7 @@
       border: 1px solid rgba(212, 175, 55, 0.35);
       border-radius: 18px;
       padding: 35px 30px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
     }
 
     .logo {
@@ -69,7 +69,7 @@
       font-weight: bold;
       margin: 22px 0 13px;
       padding-bottom: 7px;
-      border-bottom: 1px solid rgba(212,175,55,0.2);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
 
     label {
@@ -107,7 +107,7 @@
       border: 1px solid #2c3b50;
       border-radius: 10px;
       padding: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 8px;
     }
 
     .department-option {
@@ -134,7 +134,6 @@
     .hint {
       color: #929eae;
       font-size: 12px;
-      margin-top: -7px;
       margin-bottom: 15px;
     }
 
@@ -171,15 +170,15 @@
 
     .success {
       display: block;
-      background: rgba(40,167,69,0.15);
-      border: 1px solid rgba(40,167,69,0.4);
+      background: rgba(40, 167, 69, 0.15);
+      border: 1px solid rgba(40, 167, 69, 0.4);
       color: #75e08a;
     }
 
     .error {
       display: block;
-      background: rgba(220,53,69,0.15);
-      border: 1px solid rgba(220,53,69,0.4);
+      background: rgba(220, 53, 69, 0.15);
+      border: 1px solid rgba(220, 53, 69, 0.4);
       color: #ff8d98;
     }
 
@@ -211,7 +210,11 @@
 
   <div class="card">
 
-    <img src="logo.jpg" alt="RAYHAR ACADEMY Logo" class="logo">
+    <img
+      src="logo.jpg"
+      alt="RAYHAR ACADEMY Logo"
+      class="logo"
+    >
 
     <h1>RAYHAR ACADEMY</h1>
 
@@ -227,7 +230,9 @@
         Personal Information
       </div>
 
-      <label for="fullName">Full Name</label>
+      <label for="fullName">
+        Full Name
+      </label>
 
       <input
         type="text"
@@ -400,4 +405,368 @@
         Create Student Account
       </button>
 
-    </form
+    </form>
+
+
+    <div class="login-link">
+
+      Already have an account?
+
+      <a href="student-auth.html">
+        Login here
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <div class="footer">
+    RAYHAR ACADEMY — For Knowledge and Leadership.
+  </div>
+
+</div>
+
+
+<script>
+
+const client = window.supabaseClient;
+
+const form =
+  document.getElementById("registerForm");
+
+const message =
+  document.getElementById("message");
+
+const registerButton =
+  document.getElementById("registerButton");
+
+
+function showMessage(text, type) {
+
+  message.textContent = text;
+
+  message.className =
+    "message " + type;
+
+}
+
+
+async function generateStudentId() {
+
+  const {
+    data,
+    error
+  } = await client
+    .from("profiles")
+    .select("student_id")
+    .like("student_id", "RAYHAR-%");
+
+  if (error) {
+    throw error;
+  }
+
+  let highestNumber = 0;
+
+  (data || []).forEach(function(profile) {
+
+    const match =
+      (profile.student_id || "")
+        .match(/^RAYHAR-(\d+)$/);
+
+    if (match) {
+
+      highestNumber =
+        Math.max(
+          highestNumber,
+          parseInt(match[1], 10)
+        );
+
+    }
+
+  });
+
+  return "RAYHAR-" +
+    String(highestNumber + 1)
+      .padStart(6, "0");
+
+}
+
+
+form.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+
+    const fullName =
+      document
+        .getElementById("fullName")
+        .value
+        .trim();
+
+
+    const studyLevel =
+      document
+        .getElementById("studyLevel")
+        .value;
+
+
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
+
+    const password =
+      document
+        .getElementById("password")
+        .value;
+
+
+    const confirmPassword =
+      document
+        .getElementById("confirmPassword")
+        .value;
+
+
+    const selectedDepartments =
+      Array.from(
+        document.querySelectorAll(
+          'input[name="departments"]:checked'
+        )
+      ).map(function(checkbox) {
+
+        return checkbox.value;
+
+      });
+
+
+    if (selectedDepartments.length === 0) {
+
+      showMessage(
+        "Please select at least one department.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (password !== confirmPassword) {
+
+      showMessage(
+        "Passwords do not match.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (password.length < 6) {
+
+      showMessage(
+        "Password must contain at least 6 characters.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    registerButton.disabled = true;
+
+    registerButton.textContent =
+      "Creating Account...";
+
+
+    try {
+
+      const studentId =
+        await generateStudentId();
+
+
+      const {
+        data: authData,
+        error: authError
+      } =
+        await client.auth.signUp({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (authError) {
+        throw authError;
+      }
+
+
+      if (!authData.user) {
+
+        throw new Error(
+          "The account could not be created."
+        );
+
+      }
+
+
+      const {
+        error: profileError
+      } =
+        await client
+          .from("profiles")
+          .insert({
+
+            id: authData.user.id,
+
+            full_name: fullName,
+
+            email: email,
+
+            student_id: studentId,
+
+            department:
+              selectedDepartments[0],
+
+            study_level: studyLevel,
+
+            status: "active"
+
+          });
+
+
+      if (profileError) {
+        throw profileError;
+      }
+
+
+      const {
+        data: departmentsData,
+        error: departmentsError
+      } =
+        await client
+          .from("departments")
+          .select("id, name")
+          .in(
+            "name",
+            selectedDepartments
+          );
+
+
+      if (departmentsError) {
+        throw departmentsError;
+      }
+
+
+      const enrollments =
+        (departmentsData || []).map(
+          function(department) {
+
+            return {
+
+              student_id:
+                authData.user.id,
+
+              department_id:
+                department.id,
+
+              study_level:
+                studyLevel,
+
+              status:
+                "active"
+
+            };
+
+          }
+        );
+
+
+      if (enrollments.length > 0) {
+
+        const {
+          error: enrollmentError
+        } =
+          await client
+            .from("enrollments")
+            .insert(enrollments);
+
+
+        if (enrollmentError) {
+          throw enrollmentError;
+        }
+
+      }
+
+
+      showMessage(
+        "Account created successfully! Your Student ID is " +
+        studentId +
+        ". Taking you to login...",
+        "success"
+      );
+
+
+      setTimeout(function() {
+
+        window.location.href =
+          "student-auth.html";
+
+      }, 1500);
+
+
+    } catch (error) {
+
+      console.error(
+        "Registration error:",
+        error
+      );
+
+
+      let errorMessage =
+        error.message ||
+        "Something went wrong while creating your account.";
+
+
+      if (
+        errorMessage
+          .toLowerCase()
+          .includes("already registered")
+      ) {
+
+        errorMessage =
+          "This email address is already registered. Please use another email or log in.";
+
+      }
+
+
+      showMessage(
+        errorMessage,
+        "error"
+      );
+
+
+    } finally {
+
+      registerButton.disabled = false;
+
+      registerButton.textContent =
+        "Create Student Account";
+
+    }
+
+  });
+
+</script>
+
+</body>
+  </html>
