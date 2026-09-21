@@ -241,7 +241,6 @@
         required
       >
 
-
       <div class="section-title">
         Academic Information
       </div>
@@ -330,7 +329,6 @@
         You can select more than one department.
       </p>
 
-
       <label for="studyLevel">
         Study Level
       </label>
@@ -355,7 +353,6 @@
 
       </select>
 
-
       <div class="section-title">
         Account Information
       </div>
@@ -371,7 +368,6 @@
         required
       >
 
-
       <label for="password">
         Password
       </label>
@@ -383,7 +379,6 @@
         minlength="6"
         required
       >
-
 
       <label for="confirmPassword">
         Confirm Password
@@ -397,7 +392,6 @@
         required
       >
 
-
       <button
         type="submit"
         id="registerButton"
@@ -407,19 +401,14 @@
 
     </form>
 
-
     <div class="login-link">
-
       Already have an account?
-
       <a href="student-auth.html">
         Login here
       </a>
-
     </div>
 
   </div>
-
 
   <div class="footer">
     RAYHAR ACADEMY — For Knowledge and Leadership.
@@ -427,31 +416,30 @@
 
 </div>
 
-
 <script>
 
 const client = window.supabaseClient;
 
-const form =
-  document.getElementById("registerForm");
-
-const message =
-  document.getElementById("message");
-
-const registerButton =
-  document.getElementById("registerButton");
+const form = document.getElementById("registerForm");
+const message = document.getElementById("message");
+const registerButton = document.getElementById("registerButton");
 
 
 function showMessage(text, type) {
 
   message.textContent = text;
-
-  message.className =
-    "message " + type;
+  message.className = "message " + type;
 
 }
 
 
+/*
+  Generate the next Student ID.
+
+  IMPORTANT:
+  This function is called AFTER the user has
+  successfully created their Supabase account.
+*/
 async function generateStudentId() {
 
   const {
@@ -499,19 +487,16 @@ form.addEventListener(
 
     event.preventDefault();
 
-
     const fullName =
       document
         .getElementById("fullName")
         .value
         .trim();
 
-
     const studyLevel =
       document
         .getElementById("studyLevel")
         .value;
-
 
     const email =
       document
@@ -519,18 +504,15 @@ form.addEventListener(
         .value
         .trim();
 
-
     const password =
       document
         .getElementById("password")
         .value;
 
-
     const confirmPassword =
       document
         .getElementById("confirmPassword")
         .value;
-
 
     const selectedDepartments =
       Array.from(
@@ -588,9 +570,10 @@ form.addEventListener(
 
     try {
 
-      const studentId =
-        await generateStudentId();
-
+      /*
+        STEP 1:
+        Create the Supabase authentication account FIRST.
+      */
 
       const {
         data: authData,
@@ -618,6 +601,21 @@ form.addEventListener(
 
       }
 
+
+      /*
+        STEP 2:
+        Now the user is authenticated,
+        so we can access profiles.
+      */
+
+      const studentId =
+        await generateStudentId();
+
+
+      /*
+        STEP 3:
+        Create the student profile.
+      */
 
       const {
         error: profileError
@@ -649,6 +647,11 @@ form.addEventListener(
       }
 
 
+      /*
+        STEP 4:
+        Find the selected departments.
+      */
+
       const {
         data: departmentsData,
         error: departmentsError
@@ -666,6 +669,12 @@ form.addEventListener(
         throw departmentsError;
       }
 
+
+      /*
+        STEP 5:
+        Create an enrollment for every
+        department selected by the student.
+      */
 
       const enrollments =
         (departmentsData || []).map(
@@ -707,6 +716,10 @@ form.addEventListener(
 
       }
 
+
+      /*
+        SUCCESS
+      */
 
       showMessage(
         "Account created successfully! Your Student ID is " +
