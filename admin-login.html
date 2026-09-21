@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Login | RAYHAR ACADEMY</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: #080b12;
+      color: white;
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: #111722;
+      border: 1px solid #c9a227;
+      border-radius: 14px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.4);
+    }
+
+    .logo {
+      width: 75px;
+      height: 75px;
+      display: block;
+      object-fit: contain;
+      background: white;
+      border-radius: 12px;
+      margin: 0 auto 18px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d4af37;
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin: 7px 0 28px;
+    }
+
+    label {
+      display: block;
+      color: #ddd;
+      font-weight: bold;
+      margin: 15px 0 7px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border-radius: 7px;
+      border: 1px solid #30394b;
+      background: #080b12;
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #d4af37;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 13px;
+      border: 0;
+      border-radius: 7px;
+      background: #d4af37;
+      color: #05070c;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e5c657;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 7px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .error {
+      display: block;
+      background: #431d1d;
+      color: #ffaaaa;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 22px;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .back:hover {
+      color: #d4af37;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-card">
+
+    <img
+      src="logo.jpg"
+      alt="RAYHAR ACADEMY"
+      class="logo"
+    >
+
+    <h1>RAYHAR ACADEMY</h1>
+
+    <div class="subtitle">
+      ADMIN LOGIN
+    </div>
+
+    <form id="loginForm">
+
+      <label for="email">
+        Admin Email
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="Enter admin email"
+        required
+      >
+
+      <label for="password">
+        Password
+      </label>
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter password"
+        required
+      >
+
+      <button
+        id="loginButton"
+        type="submit"
+      >
+        ADMIN LOGIN
+      </button>
+
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <a
+      class="back"
+      href="index.html"
+    >
+      ← Back to RAYHAR ACADEMY
+    </a>
+
+  </div>
+
+
+  <script>
+
+    const client = window.supabaseClient;
+
+    const form =
+      document.getElementById("loginForm");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const message =
+      document.getElementById("message");
+
+
+    function showError(text) {
+
+      message.textContent = text;
+
+      message.className = "message error";
+
+    }
+
+
+    form.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+        loginButton.disabled = true;
+
+        loginButton.textContent = "CHECKING...";
+
+        message.className = "message";
+
+
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim();
+
+        const password =
+          document
+            .getElementById("password")
+            .value;
+
+
+        const {
+          data,
+          error
+        } = await client.auth.signInWithPassword({
+          email,
+          password
+        });
+
+
+        if (error) {
+
+          showError(
+            "Invalid admin email or password."
+          );
+
+          loginButton.disabled = false;
+
+          loginButton.textContent =
+            "ADMIN LOGIN";
+
+          return;
+
+        }
+
+
+        const {
+          data: profile,
+          error: profileError
+        } = await client
+
+          .from("profiles")
+
+          .select("role")
+
+          .eq("id", data.user.id)
+
+          .maybeSingle();
+
+
+        if (
+          profileError ||
+          !profile ||
+          profile.role !== "admin"
+        ) {
+
+          await client.auth.signOut({
+            scope: "local"
+          });
+
+          showError(
+            "This account does not have administrator access."
+          );
+
+          loginButton.disabled = false;
+
+          loginButton.textContent =
+            "ADMIN LOGIN";
+
+          return;
+
+        }
+
+
+        window.location.replace(
+          "admin-announcements.html"
+        );
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
