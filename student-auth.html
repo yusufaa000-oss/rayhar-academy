@@ -3,53 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Login | RAYHAR ACADEMY</title>
+  <title>Student Login | RAYHAR ACADEMY</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 
   <style>
-    :root {
-      --navy: #071a3a;
-      --navy-dark: #041127;
-      --gold: #d4af37;
-      --gold-light: #f0cf62;
-      --white: #ffffff;
-      --text: #172033;
-      --muted: #68758a;
-      --line: #dfe5ee;
-      --danger: #b42318;
-      --success: #087443;
-    }
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f7fb;
-      color: var(--text);
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      color: #172033;
     }
 
-    a {
-      text-decoration: none;
-    }
-
-    .topbar {
-      background: var(--navy);
+    .header {
+      background: #071a3a;
       padding: 15px 20px;
     }
 
-    .topbar-inner {
-      width: min(1100px, 94%);
+    .header-inner {
+      max-width: 1100px;
       margin: auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
     }
 
     .brand {
@@ -57,7 +38,8 @@
       align-items: center;
       gap: 10px;
       color: white;
-      font-weight: 800;
+      text-decoration: none;
+      font-weight: bold;
     }
 
     .brand img {
@@ -68,309 +50,220 @@
       border-radius: 50%;
     }
 
-    .brand-name {
-      font-size: 16px;
-    }
-
-    .brand-tagline {
+    .brand small {
       display: block;
-      color: var(--gold-light);
+      color: #d4af37;
       font-size: 8px;
       letter-spacing: 1px;
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
-    .home-link {
-      color: var(--gold-light);
+    .home {
+      color: #f0cf62;
+      text-decoration: none;
       font-size: 14px;
-      font-weight: 700;
     }
 
-    .page {
-      width: min(470px, 94%);
+    .container {
+      width: 94%;
+      max-width: 450px;
       margin: 60px auto;
     }
 
-    .login-card {
-      background: var(--white);
-      border-radius: 16px;
+    .card {
+      background: white;
       padding: 35px;
-      box-shadow: 0 12px 35px rgba(7, 26, 58, 0.10);
-      border: 1px solid #e7ebf2;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     }
 
-    .heading {
+    h1 {
       text-align: center;
+      color: #071a3a;
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #68758a;
       margin-bottom: 30px;
-    }
-
-    .heading h1 {
-      color: var(--navy);
-      margin: 0 0 8px;
-      font-size: 31px;
-    }
-
-    .heading p {
-      color: var(--muted);
-      margin: 0;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
     }
 
     label {
       display: block;
-      font-weight: 700;
-      color: var(--navy);
+      font-weight: bold;
       margin-bottom: 8px;
-      font-size: 14px;
+      color: #071a3a;
     }
 
     input {
+      display: block;
       width: 100%;
-      padding: 14px;
-      border: 1px solid var(--line);
+      height: 48px;
+      padding: 12px;
+      border: 1px solid #d8dee8;
       border-radius: 8px;
-      font-size: 15px;
-      outline: none;
+      font-size: 16px;
+      color: #172033;
       background: white;
-      color: var(--text);
+      outline: none;
+      margin-bottom: 20px;
     }
 
     input:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+      border-color: #d4af37;
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.12);
     }
 
     button {
+      display: block;
       width: 100%;
-      border: 0;
+      height: 50px;
+      border: none;
       border-radius: 8px;
-      padding: 14px;
-      background: var(--gold);
-      color: var(--navy);
+      background: #d4af37;
+      color: #071a3a;
       font-size: 16px;
-      font-weight: 800;
+      font-weight: bold;
       cursor: pointer;
-      margin-top: 5px;
-    }
-
-    button:hover {
-      background: var(--gold-light);
     }
 
     button:disabled {
       opacity: 0.6;
-      cursor: not-allowed;
+    }
+
+    .forgot {
+      display: block;
+      text-align: right;
+      margin-top: -10px;
+      margin-bottom: 22px;
+      color: #967414;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
     }
 
     .message {
       display: none;
-      padding: 13px 15px;
+      padding: 12px;
       border-radius: 8px;
       margin-bottom: 20px;
       font-size: 14px;
       line-height: 1.5;
     }
 
-    .message.error {
+    .error {
       display: block;
       background: #fff1f0;
-      color: var(--danger);
-      border: 1px solid #f5c2c0;
+      color: #b42318;
     }
 
-    .message.success {
+    .success {
       display: block;
       background: #edfdf5;
-      color: var(--success);
-      border: 1px solid #b7e5ce;
+      color: #087443;
     }
 
-    .forgot {
-      display: block;
-      text-align: right;
-      margin-top: 8px;
-      color: #9a7711;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .register-link {
+    .register {
       text-align: center;
-      margin-top: 24px;
-      color: var(--muted);
+      margin-top: 25px;
+      color: #68758a;
       font-size: 14px;
     }
 
-    .register-link a {
-      color: #9a7711;
-      font-weight: 800;
-    }
-
-    .back-home {
-      text-align: center;
-      margin-top: 18px;
-    }
-
-    .back-home a {
-      color: var(--navy);
-      font-size: 13px;
-      font-weight: 700;
+    .register a {
+      color: #967414;
+      font-weight: bold;
+      text-decoration: none;
     }
 
     footer {
       text-align: center;
-      color: var(--muted);
+      color: #68758a;
       font-size: 12px;
       padding: 20px;
-    }
-
-    @media (max-width: 600px) {
-      .login-card {
-        padding: 25px 19px;
-      }
-
-      .heading h1 {
-        font-size: 27px;
-      }
-
-      .home-link {
-        font-size: 12px;
-      }
-
-      .brand-name {
-        font-size: 14px;
-      }
     }
   </style>
 </head>
 
 <body>
 
-  <header class="topbar">
-
-    <div class="topbar-inner">
+  <header class="header">
+    <div class="header-inner">
 
       <a href="index.html" class="brand">
-
-        <img
-          src="logo.jpg"
-          alt="RAYHAR ACADEMY Logo"
-        >
-
-        <span class="brand-name">
+        <img src="logo.jpg" alt="RAYHAR ACADEMY">
+        <span>
           RAYHAR ACADEMY
-
-          <small class="brand-tagline">
-            FOR KNOWLEDGE AND LEADERSHIP
-          </small>
+          <small>FOR KNOWLEDGE AND LEADERSHIP</small>
         </span>
-
       </a>
 
-      <a href="index.html" class="home-link">
-        ← Home
-      </a>
+      <a href="index.html" class="home">← Home</a>
 
     </div>
-
   </header>
 
 
-  <main class="page">
+  <main class="container">
 
-    <div class="login-card">
+    <div class="card">
 
-      <div class="heading">
+      <h1>Student Login</h1>
 
-        <h1>Login</h1>
+      <p class="subtitle">
+        Login to access your RAYHAR ACADEMY portal.
+      </p>
 
-        <p>
-          Welcome back to RAYHAR ACADEMY.
-        </p>
-
-      </div>
-
-
-      <div
-        id="message"
-        class="message"
-      ></div>
+      <div id="message" class="message"></div>
 
 
       <form id="loginForm">
 
-        <div class="form-group">
+        <label for="email">
+          Email Address
+        </label>
 
-          <label for="email">
-            Email Address
-          </label>
-
-          <input
-            type="email"
-            id="email"
-            placeholder="Enter your email address"
-            autocomplete="email"
-            required
-          >
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="password">
-            Password
-          </label>
-
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            required
-          >
-
-          <a
-            href="#"
-            id="forgotPassword"
-            class="forgot"
-          >
-            Forgot password?
-          </a>
-
-        </div>
-
-
-        <button
-          type="submit"
-          id="loginButton"
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+          required
         >
+
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+
+
+        <a href="#" id="forgotPassword" class="forgot">
+          Forgot password?
+        </a>
+
+
+        <button id="loginButton" type="submit">
           LOGIN
         </button>
 
       </form>
 
 
-      <div class="register-link">
-
-        Don't have a student account?
-
+      <div class="register">
+        Don't have an account?
         <a href="student-register.html">
           Create an Account
         </a>
-
-      </div>
-
-
-      <div class="back-home">
-
-        <a href="index.html">
-          Back to RAYHAR ACADEMY
-        </a>
-
       </div>
 
     </div>
@@ -385,302 +278,137 @@
 
   <script>
 
-    const supabaseClient = window.supabaseClient;
+    /*
+      IMPORTANT:
+      There is NO automatic session check here.
+      The page will NOT redirect while you are typing.
+    */
 
-    const loginForm =
-      document.getElementById("loginForm");
+    const client = window.supabaseClient;
 
-    const loginButton =
-      document.getElementById("loginButton");
-
-    const message =
-      document.getElementById("message");
-
-    const forgotPassword =
-      document.getElementById("forgotPassword");
+    const form = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginButton = document.getElementById("loginButton");
+    const message = document.getElementById("message");
+    const forgotPassword = document.getElementById("forgotPassword");
 
 
     function showMessage(text, type) {
-
       message.textContent = text;
-
-      message.className =
-        "message " + type;
-
+      message.className = "message " + type;
     }
 
 
-    /* =========================
-       LOGIN
-    ========================= */
+    /* LOGIN */
 
-    loginForm.addEventListener(
-      "submit",
-      async function(event) {
+    form.addEventListener("submit", async function(event) {
 
-        event.preventDefault();
+      event.preventDefault();
 
-        const email =
-          document
-            .getElementById("email")
-            .value
-            .trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
-        const password =
-          document
-            .getElementById("password")
-            .value;
+      if (!email || !password) {
+        showMessage(
+          "Please enter your email and password.",
+          "error"
+        );
+        return;
+      }
 
-        if (!email || !password) {
+      loginButton.disabled = true;
+      loginButton.textContent = "LOGGING IN...";
 
-          showMessage(
-            "Please enter your email and password.",
-            "error"
-          );
+      try {
 
-          return;
+        const result = await client.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (result.error) {
+          throw result.error;
         }
 
+        if (!result.data || !result.data.user) {
+          throw new Error("Login was not successful.");
+        }
 
-        loginButton.disabled = true;
+        showMessage(
+          "Login successful. Opening your student portal...",
+          "success"
+        );
 
-        loginButton.textContent =
-          "LOGGING IN...";
+        window.location.href = "student-portal.html";
 
+      } catch (error) {
 
-        try {
+        console.error("Login error:", error);
 
-          /*
-            Sign out any previous session first.
+        showMessage(
+          error.message ||
+          "Unable to log in. Please check your email and password.",
+          "error"
+        );
 
-            This prevents an existing admin/student
-            session in the same browser from interfering
-            with the new login.
-          */
+        loginButton.disabled = false;
+        loginButton.textContent = "LOGIN";
+      }
 
-          await supabaseClient.auth.signOut();
-
-
-          const {
-            data,
-            error
-          } =
-            await supabaseClient.auth.signInWithPassword({
-
-              email: email,
-
-              password: password
-
-            });
+    });
 
 
-          if (error) {
-            throw error;
-          }
+    /* FORGOT PASSWORD */
 
+    forgotPassword.addEventListener("click", async function(event) {
 
-          if (!data || !data.user) {
+      event.preventDefault();
 
-            throw new Error(
-              "Login was unsuccessful."
-            );
+      const email = emailInput.value.trim();
 
-          }
+      if (!email) {
+        showMessage(
+          "Please enter your email address first.",
+          "error"
+        );
+        return;
+      }
 
+      try {
 
-          /*
-            Check the user's profile to determine
-            whether this is an admin or student.
-          */
-
-          const {
-            data: profile,
-            error: profileError
-          } =
-            await supabaseClient
-              .from("profiles")
-              .select("role")
-              .eq("id", data.user.id)
-              .maybeSingle();
-
-
-          if (profileError) {
-
-            console.error(profileError);
-
-            throw new Error(
-              "Your account was found, but we could not load your account information."
-            );
-
-          }
-
-
-          if (
-            profile &&
-            profile.role === "admin"
-          ) {
-
-            showMessage(
-              "Admin login successful. Opening the admin area...",
-              "success"
-            );
-
-            setTimeout(function() {
-
-              window.location.href =
-                "admin-announcements.html";
-
-            }, 700);
-
-            return;
-
-          }
-
-
-          /*
-            All normal users go to the student portal.
-          */
-
-          showMessage(
-            "Login successful. Opening your student portal...",
-            "success"
-          );
-
-
-          setTimeout(function() {
-
-            window.location.href =
-              "student-portal.html";
-
-          }, 700);
-
-
-        } catch (error) {
-
-          console.error(
-            "Login error:",
-            error
-          );
-
-
-          let errorMessage =
-            "Unable to log in. Please check your email and password.";
-
-
-          if (
-            error &&
-            error.message
-          ) {
-
-            if (
-              error.message
-                .toLowerCase()
-                .includes("invalid login credentials")
-            ) {
-
-              errorMessage =
-                "Incorrect email or password. Please check your details and try again.";
-
-            } else {
-
-              errorMessage =
-                error.message;
-
+        const result =
+          await client.auth.resetPasswordForEmail(
+            email,
+            {
+              redirectTo:
+                window.location.origin +
+                "/student-auth.html"
             }
-
-          }
-
-
-          showMessage(
-            errorMessage,
-            "error"
           );
 
-
-          loginButton.disabled = false;
-
-          loginButton.textContent =
-            "LOGIN";
-
+        if (result.error) {
+          throw result.error;
         }
+
+        showMessage(
+          "If this email is registered, a password reset link has been sent.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          "Unable to send the password reset email.",
+          "error"
+        );
 
       }
-    );
 
-
-    /* =========================
-       FORGOT PASSWORD
-    ========================= */
-
-    forgotPassword.addEventListener(
-      "click",
-      async function(event) {
-
-        event.preventDefault();
-
-
-        const email =
-          document
-            .getElementById("email")
-            .value
-            .trim();
-
-
-        if (!email) {
-
-          showMessage(
-            "Enter your email address first, then click Forgot password.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        try {
-
-          const {
-            error
-          } =
-            await supabaseClient
-              .auth
-              .resetPasswordForEmail(
-                email,
-                {
-                  redirectTo:
-                    window.location.origin +
-                    "/student-auth.html"
-                }
-              );
-
-
-          if (error) {
-            throw error;
-          }
-
-
-          showMessage(
-            "If this email is registered, a password reset link has been sent to it.",
-            "success"
-          );
-
-
-        } catch (error) {
-
-          console.error(error);
-
-
-          showMessage(
-            error.message ||
-            "Unable to send the password reset email.",
-            "error"
-          );
-
-        }
-
-      }
-    );
+    });
 
   </script>
 
