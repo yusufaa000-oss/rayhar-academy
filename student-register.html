@@ -238,8 +238,10 @@
         type="text"
         id="fullName"
         placeholder="Enter your full name"
+        autocomplete="name"
         required
       >
+
 
       <div class="section-title">
         Academic Information
@@ -329,6 +331,7 @@
         You can select more than one department.
       </p>
 
+
       <label for="studyLevel">
         Study Level
       </label>
@@ -353,6 +356,7 @@
 
       </select>
 
+
       <div class="section-title">
         Account Information
       </div>
@@ -365,8 +369,10 @@
         type="email"
         id="email"
         placeholder="Enter your email address"
+        autocomplete="email"
         required
       >
+
 
       <label for="password">
         Password
@@ -377,8 +383,10 @@
         id="password"
         placeholder="Create a password"
         minlength="6"
+        autocomplete="new-password"
         required
       >
+
 
       <label for="confirmPassword">
         Confirm Password
@@ -389,8 +397,10 @@
         id="confirmPassword"
         placeholder="Enter your password again"
         minlength="6"
+        autocomplete="new-password"
         required
       >
+
 
       <button
         type="submit"
@@ -401,14 +411,19 @@
 
     </form>
 
+
     <div class="login-link">
+
       Already have an account?
+
       <a href="student-auth.html">
         Login here
       </a>
+
     </div>
 
   </div>
+
 
   <div class="footer">
     RAYHAR ACADEMY — For Knowledge and Leadership.
@@ -416,70 +431,34 @@
 
 </div>
 
+
 <script>
 
 const client = window.supabaseClient;
 
-const form = document.getElementById("registerForm");
-const message = document.getElementById("message");
-const registerButton = document.getElementById("registerButton");
+const form =
+  document.getElementById("registerForm");
+
+const message =
+  document.getElementById("message");
+
+const registerButton =
+  document.getElementById("registerButton");
 
 
 function showMessage(text, type) {
 
   message.textContent = text;
-  message.className = "message " + type;
+
+  message.className =
+    "message " + type;
 
 }
 
 
-/*
-  Generate the next Student ID.
-
-  IMPORTANT:
-  This function is called AFTER the user has
-  successfully created their Supabase account.
-*/
-async function generateStudentId() {
-
-  const {
-    data,
-    error
-  } = await client
-    .from("profiles")
-    .select("student_id")
-    .like("student_id", "RAYHAR-%");
-
-  if (error) {
-    throw error;
-  }
-
-  let highestNumber = 0;
-
-  (data || []).forEach(function(profile) {
-
-    const match =
-      (profile.student_id || "")
-        .match(/^RAYHAR-(\d+)$/);
-
-    if (match) {
-
-      highestNumber =
-        Math.max(
-          highestNumber,
-          parseInt(match[1], 10)
-        );
-
-    }
-
-  });
-
-  return "RAYHAR-" +
-    String(highestNumber + 1)
-      .padStart(6, "0");
-
-}
-
+/* ================================
+   REGISTRATION
+================================ */
 
 form.addEventListener(
   "submit",
@@ -487,16 +466,13 @@ form.addEventListener(
 
     event.preventDefault();
 
+
     const fullName =
       document
         .getElementById("fullName")
         .value
         .trim();
 
-    const studyLevel =
-      document
-        .getElementById("studyLevel")
-        .value;
 
     const email =
       document
@@ -504,15 +480,24 @@ form.addEventListener(
         .value
         .trim();
 
+
     const password =
       document
         .getElementById("password")
         .value;
 
+
     const confirmPassword =
       document
         .getElementById("confirmPassword")
         .value;
+
+
+    const studyLevel =
+      document
+        .getElementById("studyLevel")
+        .value;
+
 
     const selectedDepartments =
       Array.from(
@@ -526,10 +511,56 @@ form.addEventListener(
       });
 
 
-    if (selectedDepartments.length === 0) {
+    /* Validate name */
+
+    if (!fullName) {
+
+      showMessage(
+        "Please enter your full name.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    /* Validate department */
+
+    if (
+      selectedDepartments.length === 0
+    ) {
 
       showMessage(
         "Please select at least one department.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    /* Validate study level */
+
+    if (!studyLevel) {
+
+      showMessage(
+        "Please select your study level.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    /* Validate password */
+
+    if (password.length < 6) {
+
+      showMessage(
+        "Password must contain at least 6 characters.",
         "error"
       );
 
@@ -550,18 +581,6 @@ form.addEventListener(
     }
 
 
-    if (password.length < 6) {
-
-      showMessage(
-        "Password must contain at least 6 characters.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
     registerButton.disabled = true;
 
     registerButton.textContent =
@@ -571,29 +590,50 @@ form.addEventListener(
     try {
 
       /*
-        STEP 1:
-        Create the Supabase authentication account FIRST.
+        IMPORTANT:
+
+        The database already has a trigger that automatically
+        creates the student's profile and enrollments after
+        Supabase creates the Auth account.
+
+        Therefore we only need to create the Auth account
+        and send the information through user metadata.
       */
 
       const {
-        data: authData,
-        error: authError
+        data,
+        error
       } =
         await client.auth.signUp({
 
           email: email,
 
-          password: password
+          password: password,
+
+          options: {
+
+            data: {
+
+              full_name: fullName,
+
+              study_level: studyLevel,
+
+              departments:
+                selectedDepartments
+
+            }
+
+          }
 
         });
 
 
-      if (authError) {
-        throw authError;
+      if (error) {
+        throw error;
       }
 
 
-      if (!authData.user) {
+      if (!data || !data.user) {
 
         throw new Error(
           "The account could not be created."
@@ -603,138 +643,26 @@ form.addEventListener(
 
 
       /*
-        STEP 2:
-        Now the user is authenticated,
-        so we can access profiles.
-      */
-
-      const studentId =
-        await generateStudentId();
-
-
-      /*
-        STEP 3:
-        Create the student profile.
-      */
-
-      const {
-        error: profileError
-      } =
-        await client
-          .from("profiles")
-          .insert({
-
-            id: authData.user.id,
-
-            full_name: fullName,
-
-            email: email,
-
-            student_id: studentId,
-
-            department:
-              selectedDepartments[0],
-
-            study_level: studyLevel,
-
-            status: "active"
-
-          });
-
-
-      if (profileError) {
-        throw profileError;
-      }
-
-
-      /*
-        STEP 4:
-        Find the selected departments.
-      */
-
-      const {
-        data: departmentsData,
-        error: departmentsError
-      } =
-        await client
-          .from("departments")
-          .select("id, name")
-          .in(
-            "name",
-            selectedDepartments
-          );
-
-
-      if (departmentsError) {
-        throw departmentsError;
-      }
-
-
-      /*
-        STEP 5:
-        Create an enrollment for every
-        department selected by the student.
-      */
-
-      const enrollments =
-        (departmentsData || []).map(
-          function(department) {
-
-            return {
-
-              student_id:
-                authData.user.id,
-
-              department_id:
-                department.id,
-
-              study_level:
-                studyLevel,
-
-              status:
-                "active"
-
-            };
-
-          }
-        );
-
-
-      if (enrollments.length > 0) {
-
-        const {
-          error: enrollmentError
-        } =
-          await client
-            .from("enrollments")
-            .insert(enrollments);
-
-
-        if (enrollmentError) {
-          throw enrollmentError;
-        }
-
-      }
-
-
-      /*
-        SUCCESS
+        Supabase may require email confirmation
+        depending on the project's Auth settings.
       */
 
       showMessage(
-        "Account created successfully! Your Student ID is " +
-        studentId +
-        ". Taking you to login...",
+        "Account created successfully! Your information has been saved. You can now log in.",
         "success"
       );
 
 
+      form.reset();
+
+
       setTimeout(function() {
 
-        window.location.href =
-          "student-auth.html";
+        window.location.replace(
+          "student-auth.html"
+        );
 
-      }, 1500);
+      }, 1800);
 
 
     } catch (error) {
@@ -746,7 +674,7 @@ form.addEventListener(
 
 
       let errorMessage =
-        error.message ||
+        error?.message ||
         "Something went wrong while creating your account.";
 
 
