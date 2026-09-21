@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Announcements | RAYHAR ACADEMY</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #080b12;
+      color: white;
+    }
+
+    header {
+      background: #05070c;
+      border-bottom: 1px solid #c9a227;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+      background: white;
+      border-radius: 8px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: #d4af37;
+      font-size: 18px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: #aaa;
+      font-size: 9px;
+      letter-spacing: 1.3px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    button,
+    .link-btn {
+      border: 0;
+      cursor: pointer;
+      background: #d4af37;
+      color: #05070c;
+      padding: 10px 15px;
+      border-radius: 7px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    button:hover,
+    .link-btn:hover {
+      background: #e5c657;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .secondary {
+      background: #222b3b;
+      color: white;
+    }
+
+    .danger {
+      background: #9f2d2d;
+      color: white;
+    }
+
+    main {
+      width: min(950px, 94%);
+      margin: 30px auto;
+    }
+
+    .card {
+      background: #111722;
+      border: 1px solid #252d3d;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    h2,
+    h3 {
+      color: #d4af37;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      color: #ddd;
+      font-weight: bold;
+      margin: 14px 0 7px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid #30394b;
+      background: #080b12;
+      color: white;
+      border-radius: 7px;
+      padding: 12px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #d4af37;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .publish-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 15px 0;
+    }
+
+    .publish-row input {
+      width: auto;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 7px;
+      margin-bottom: 15px;
+    }
+
+    .success {
+      display: block;
+      background: #0d3b2b;
+      color: #8ff0bd;
+    }
+
+    .error {
+      display: block;
+      background: #431d1d;
+      color: #ffaaaa;
+    }
+
+    .announcement {
+      border: 1px solid #293243;
+      background: #080b12;
+      border-left: 4px solid #c9a227;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .announcement:last-child {
+      margin-bottom: 0;
+    }
+
+    .announcement h3 {
+      margin: 0 0 7px;
+      color: white;
+    }
+
+    .announcement p {
+      white-space: pre-wrap;
+      color: #bbb;
+      line-height: 1.6;
+      margin: 8px 0;
+    }
+
+    .meta {
+      color: #777;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-left: 7px;
+    }
+
+    .published {
+      background: #0d3b2b;
+      color: #8ff0bd;
+    }
+
+    .draft {
+      background: #3b3211;
+      color: #f0cf62;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .empty {
+      color: #888;
+    }
+
+    #adminArea {
+      display: none;
+    }
+
+    #checking {
+      text-align: center;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 12px;
+      }
+
+      .brand h1 {
+        font-size: 15px;
+      }
+
+      .brand p {
+        font-size: 7px;
+      }
+
+      .top-actions .link-btn {
+        padding: 8px 9px;
+        font-size: 11px;
+      }
+
+      main {
+        width: 92%;
+      }
+
+      .card {
+        padding: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="brand">
+
+    <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
+
+    <div>
+      <h1>RAYHAR ACADEMY</h1>
+      <p>ADMIN ANNOUNCEMENTS</p>
+    </div>
+
+  </div>
+
+  <div class="top-actions">
+
+    <a
+      class="link-btn secondary"
+      href="student-portal.html"
+    >
+      Portal
+    </a>
+
+    <button id="logoutButton">
+      Logout
+    </button>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <div id="checking" class="card">
+    Checking administrator access...
+  </div>
+
+
+  <div id="adminArea">
+
+    <!-- CREATE ANNOUNCEMENT -->
+
+    <section class="card">
+
+      <h2>Post an Announcement</h2>
+
+      <p style="color:#aaa">
+        Write the announcement below and publish it.
+        Published announcements will appear in student portals.
+      </p>
+
+      <div id="message" class="message"></div>
+
+
+      <form id="announcementForm">
+
+        <label for="title">
+          Title
+        </label>
+
+        <input
+          id="title"
+          maxlength="200"
+          placeholder="Announcement title"
+          required
+        >
+
+
+        <label for="announcementMessage">
+          Message
+        </label>
+
+        <textarea
+          id="announcementMessage"
+          maxlength="5000"
+          placeholder="Write your announcement here..."
+          required
+        ></textarea>
+
+
+        <div class="publish-row">
+
+          <input
+            id="published"
+            type="checkbox"
+            checked
+          >
+
+          <label
+            for="published"
+            style="margin:0"
+          >
+            Publish immediately
+          </label>
+
+        </div>
+
+
+        <button
+          id="saveButton"
+          type="submit"
+        >
+          PUBLISH ANNOUNCEMENT
+        </button>
+
+      </form>
+
+    </section>
+
+
+    <!-- MANAGE ANNOUNCEMENTS -->
+
+    <section class="card">
+
+      <h2>
+        Manage Announcements
+      </h2>
+
+      <div id="announcementList">
+
+        <p class="empty">
+          Loading...
+        </p>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<script>
+
+  const client = window.supabaseClient;
+
+  const checking =
+    document.getElementById("checking");
+
+  const adminArea =
+    document.getElementById("adminArea");
+
+  const list =
+    document.getElementById("announcementList");
+
+  const form =
+    document.getElementById("announcementForm");
+
+  const message =
+    document.getElementById("message");
+
+  const saveButton =
+    document.getElementById("saveButton");
+
+
+  function esc(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className =
+      "message " + type;
+
+  }
+
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "No date";
+    }
+
+    return new Date(value).toLocaleString(
+      "en-US",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      }
+    );
+
+  }
+
+
+  async function requireAdmin() {
+
+    if (!client) {
+
+      checking.textContent =
+        "Supabase configuration could not be loaded.";
+
+      return false;
+
+    }
+
+
+    const {
+      data: { session },
+      error: sessionError
+    } = await client.auth.getSession();
+
+
+    if (
+      sessionError ||
+      !session ||
+      !session.user
+    ) {
+
+      window.location.replace(
+        "student-auth.html"
+      );
+
+      return false;
+
+    }
+
+
+    const {
+      data: profile,
+      error
+    } = await client
+
+      .from("profiles")
+
+      .select("role,full_name")
+
+      .eq("id", session.user.id)
+
+      .maybeSingle();
+
+
+    if (
+      error ||
+      !profile ||
+      profile.role !== "admin"
+    ) {
+
+      checking.innerHTML =
+        "You are not authorized to access this page.";
+
+      return false;
+
+    }
+
+
+    checking.style.display = "none";
+
+    adminArea.style.display = "block";
+
+    return true;
+
+  }
+
+
+  async function loadAnnouncements() {
+
+    const {
+      data,
+      error
+    } = await client
+
+      .from("announcements")
+
+      .select("*")
+
+      .order(
+        "created_at",
+        { ascending: false }
+      );
+
+
+    if (error) {
+
+      list.innerHTML =
+        '<p class="empty">Unable to load announcements.</p>';
+
+      console.error(error);
+
+      return;
+
+    }
+
+
+    if (!data || !data.length) {
+
+      list.innerHTML =
+        '<p class="empty">No announcements yet.</p>';
+
+      return;
+
+    }
+
+
+    list.innerHTML = data.map(item => {
+
+      const status =
+        item.published
+
+          ? '<span class="status published">PUBLISHED</span>'
+
+          : '<span class="status draft">DRAFT</span>';
+
+
+      return `
+
+        <article class="announcement">
+
+          <h3>
+            ${esc(item.title)}
+            ${status}
+          </h3>
+
+          <div class="meta">
+
+            Published:
+            ${esc(
+              formatDate(
+                item.published_at ||
+                item.created_at
+              )
+            )}
+
+          </div>
+
+          <p>
+            ${esc(item.message)}
+          </p>
+
+          <div class="actions">
+
+            <button
+              class="secondary"
+              onclick="togglePublished(
+                '${esc(item.id)}',
+                ${item.published}
+              )"
+            >
+              ${
+                item.published
+                  ? "Unpublish"
+                  : "Publish"
+              }
+            </button>
+
+
+            <button
+              class="danger"
+              onclick="deleteAnnouncement(
+                '${esc(item.id)}'
+              )"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
+
+  }
+
+
+  form.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      saveButton.disabled = true;
+
+      saveButton.textContent =
+        "SAVING...";
+
+
+      const title =
+        document
+          .getElementById("title")
+          .value
+          .trim();
+
+
+      const msg =
+        document
+          .getElementById("announcementMessage")
+          .value
+          .trim();
+
+
+      const published =
+        document
+          .getElementById("published")
+          .checked;
+
+
+      if (!title || !msg) {
+
+        showMessage(
+          "Please enter both a title and a message.",
+          "error"
+        );
+
+        saveButton.disabled = false;
+
+        saveButton.textContent =
+          "PUBLISH ANNOUNCEMENT";
+
+        return;
+
+      }
+
+
+      const now =
+        new Date().toISOString();
+
+
+      const {
+        error
+      } = await client
+
+        .from("announcements")
+
+        .insert({
+
+          title: title,
+
+          message: msg,
+
+          published: published,
+
+          published_at:
+            published
+              ? now
+              : null
+
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        showMessage(
+          "The announcement could not be saved. Please try again.",
+          "error"
+        );
+
+      } else {
+
+        showMessage(
+          published
+            ? "Announcement published successfully."
+            : "Announcement saved as a draft.",
+          "success"
+        );
+
+
+        form.reset();
+
+        document
+          .getElementById("published")
+          .checked = true;
+
+
+        await loadAnnouncements();
+
+      }
+
+
+      saveButton.disabled = false;
+
+      saveButton.textContent =
+        "PUBLISH ANNOUNCEMENT";
+
+    }
+  );
+
+
+  async function togglePublished(
+    id,
+    current
+  ) {
+
+    const next = !current;
+
+
+    const update = {
+
+      published: next,
+
+      published_at:
+        next
+          ? new Date().toISOString()
+          : null
+
+    };
+
+
+    const {
+      error
+    } = await client
+
+      .from("announcements")
+
+      .update(update)
+
+      .eq("id", id);
+
+
+    if (error) {
+
+      console.error(error);
+
+      alert(
+        "Unable to update this announcement."
+      );
+
+      return;
+
+    }
+
+
+    await loadAnnouncements();
+
+  }
+
+
+  async function deleteAnnouncement(id) {
+
+    if (
+      !confirm(
+        "Delete this announcement? This cannot be undone."
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    const {
+      error
+    } = await client
+
+      .from("announcements")
+
+      .delete()
+
+      .eq("id", id);
+
+
+    if (error) {
+
+      console.error(error);
+
+      alert(
+        "Unable to delete this announcement."
+      );
+
+      return;
+
+    }
+
+
+    await loadAnnouncements();
+
+  }
+
+
+  document
+    .getElementById("logoutButton")
+    .addEventListener(
+      "click",
+      async function() {
+
+        await client.auth.signOut({
+          scope: "local"
+        });
+
+        window.location.replace(
+          "student-auth.html"
+        );
+
+      }
+    );
+
+
+  (async function() {
+
+    const allowed =
+      await requireAdmin();
+
+    if (allowed) {
+
+      await loadAnnouncements();
+
+    }
+
+  })();
+
+</script>
+
+</body>
+</html>
