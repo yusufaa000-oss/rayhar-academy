@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Student Login | RAYHAR ACADEMY</title>
+  <title>Login | RAYHAR ACADEMY</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
@@ -37,10 +37,6 @@
     a {
       text-decoration: none;
     }
-
-    /* =========================
-       HEADER
-    ========================= */
 
     .topbar {
       background: var(--navy);
@@ -90,10 +86,6 @@
       font-weight: 700;
     }
 
-    /* =========================
-       LOGIN
-    ========================= */
-
     .page {
       width: min(470px, 94%);
       margin: 60px auto;
@@ -137,11 +129,13 @@
 
     input {
       width: 100%;
-      padding: 13px 14px;
+      padding: 14px;
       border: 1px solid var(--line);
       border-radius: 8px;
       font-size: 15px;
       outline: none;
+      background: white;
+      color: var(--text);
     }
 
     input:focus {
@@ -177,6 +171,7 @@
       border-radius: 8px;
       margin-bottom: 20px;
       font-size: 14px;
+      line-height: 1.5;
     }
 
     .message.error {
@@ -225,10 +220,6 @@
       font-weight: 700;
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
-
     footer {
       text-align: center;
       color: var(--muted);
@@ -237,7 +228,6 @@
     }
 
     @media (max-width: 600px) {
-
       .login-card {
         padding: 25px 19px;
       }
@@ -259,8 +249,6 @@
 
 <body>
 
-  <!-- HEADER -->
-
   <header class="topbar">
 
     <div class="topbar-inner">
@@ -273,22 +261,16 @@
         >
 
         <span class="brand-name">
-
           RAYHAR ACADEMY
 
           <small class="brand-tagline">
             FOR KNOWLEDGE AND LEADERSHIP
           </small>
-
         </span>
 
       </a>
 
-
-      <a
-        href="index.html"
-        class="home-link"
-      >
+      <a href="index.html" class="home-link">
         ← Home
       </a>
 
@@ -297,17 +279,13 @@
   </header>
 
 
-  <!-- LOGIN -->
-
   <main class="page">
 
     <div class="login-card">
 
       <div class="heading">
 
-        <h1>
-          Student Login
-        </h1>
+        <h1>Login</h1>
 
         <p>
           Welcome back to RAYHAR ACADEMY.
@@ -323,8 +301,6 @@
 
 
       <form id="loginForm">
-
-        <!-- EMAIL -->
 
         <div class="form-group">
 
@@ -342,8 +318,6 @@
 
         </div>
 
-
-        <!-- PASSWORD -->
 
         <div class="form-group">
 
@@ -369,8 +343,6 @@
 
         </div>
 
-
-        <!-- LOGIN BUTTON -->
 
         <button
           type="submit"
@@ -428,10 +400,6 @@
       document.getElementById("forgotPassword");
 
 
-    /* =========================
-       MESSAGE
-    ========================= */
-
     function showMessage(text, type) {
 
       message.textContent = text;
@@ -452,7 +420,6 @@
 
         event.preventDefault();
 
-
         const email =
           document
             .getElementById("email")
@@ -463,7 +430,6 @@
           document
             .getElementById("password")
             .value;
-
 
         if (!email || !password) {
 
@@ -484,6 +450,17 @@
 
         try {
 
+          /*
+            Sign out any previous session first.
+
+            This prevents an existing admin/student
+            session in the same browser from interfering
+            with the new login.
+          */
+
+          await supabaseClient.auth.signOut();
+
+
           const {
             data,
             error
@@ -502,6 +479,68 @@
           }
 
 
+          if (!data || !data.user) {
+
+            throw new Error(
+              "Login was unsuccessful."
+            );
+
+          }
+
+
+          /*
+            Check the user's profile to determine
+            whether this is an admin or student.
+          */
+
+          const {
+            data: profile,
+            error: profileError
+          } =
+            await supabaseClient
+              .from("profiles")
+              .select("role")
+              .eq("id", data.user.id)
+              .maybeSingle();
+
+
+          if (profileError) {
+
+            console.error(profileError);
+
+            throw new Error(
+              "Your account was found, but we could not load your account information."
+            );
+
+          }
+
+
+          if (
+            profile &&
+            profile.role === "admin"
+          ) {
+
+            showMessage(
+              "Admin login successful. Opening the admin area...",
+              "success"
+            );
+
+            setTimeout(function() {
+
+              window.location.href =
+                "admin-announcements.html";
+
+            }, 700);
+
+            return;
+
+          }
+
+
+          /*
+            All normal users go to the student portal.
+          */
+
           showMessage(
             "Login successful. Opening your student portal...",
             "success"
@@ -513,16 +552,47 @@
             window.location.href =
               "student-portal.html";
 
-          }, 800);
+          }, 700);
 
 
         } catch (error) {
 
-          console.error(error);
+          console.error(
+            "Login error:",
+            error
+          );
+
+
+          let errorMessage =
+            "Unable to log in. Please check your email and password.";
+
+
+          if (
+            error &&
+            error.message
+          ) {
+
+            if (
+              error.message
+                .toLowerCase()
+                .includes("invalid login credentials")
+            ) {
+
+              errorMessage =
+                "Incorrect email or password. Please check your details and try again.";
+
+            } else {
+
+              errorMessage =
+                error.message;
+
+            }
+
+          }
 
 
           showMessage(
-            "Invalid email or password. Please check your details and try again.",
+            errorMessage,
             "error"
           );
 
@@ -564,6 +634,7 @@
           );
 
           return;
+
         }
 
 
@@ -572,14 +643,16 @@
           const {
             error
           } =
-            await supabaseClient.auth.resetPasswordForEmail(
-              email,
-              {
-                redirectTo:
-                  window.location.origin +
-                  "/student-auth.html"
-              }
-            );
+            await supabaseClient
+              .auth
+              .resetPasswordForEmail(
+                email,
+                {
+                  redirectTo:
+                    window.location.origin +
+                    "/student-auth.html"
+                }
+              );
 
 
           if (error) {
@@ -609,46 +682,7 @@
       }
     );
 
-
-    /* =========================
-       CHECK EXISTING SESSION
-    ========================= */
-
-    async function checkExistingSession() {
-
-      try {
-
-        const {
-          data
-        } =
-          await supabaseClient.auth.getSession();
-
-
-        if (
-          data &&
-          data.session
-        ) {
-
-          window.location.href =
-            "student-portal.html";
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Session check error:",
-          error
-        );
-
-      }
-
-    }
-
-
-    checkExistingSession();
-
   </script>
 
 </body>
-        </html>
+  </html>
