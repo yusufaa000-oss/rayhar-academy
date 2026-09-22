@@ -7,368 +7,244 @@
   <title>Student Login | RAYHAR ACADEMY</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
 
   <style>
-
-    *{
-      box-sizing:border-box;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    body{
-      margin:0;
-      font-family:Arial,sans-serif;
-      background:#f4f6f9;
-      color:#172033;
+    body {
+      font-family: Arial, sans-serif;
+      background: #07111f;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .header{
-      background:#071a3a;
-      padding:15px 20px;
+    .card {
+      width: 100%;
+      max-width: 430px;
+      background: #0d1a2b;
+      border: 1px solid #2a3a50;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
     }
 
-    .header-inner{
-      max-width:1100px;
-      margin:auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+    .logo {
+      width: 85px;
+      height: 85px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 18px;
+      border-radius: 10px;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:white;
-      text-decoration:none;
-      font-weight:bold;
+    h1 {
+      text-align: center;
+      color: #d4af37;
+      margin-bottom: 5px;
+      font-size: 25px;
     }
 
-    .brand img{
-      width:45px;
-      height:45px;
-      object-fit:contain;
-      background:white;
-      border-radius:50%;
+    .subtitle {
+      text-align: center;
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 28px;
     }
 
-    .brand small{
-      display:block;
-      color:#d4af37;
-      font-size:8px;
-      letter-spacing:1px;
-      margin-top:3px;
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #ddd;
+      font-size: 14px;
     }
 
-    .home{
-      color:#f0cf62;
-      text-decoration:none;
-      font-size:14px;
+    .field {
+      margin-bottom: 18px;
     }
 
-    .container{
-      width:94%;
-      max-width:450px;
-      margin:60px auto;
+    input {
+      width: 100%;
+      padding: 14px;
+      background: #081321;
+      border: 1px solid #35475d;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      outline: none;
     }
 
-    .card{
-      background:white;
-      padding:35px;
-      border-radius:15px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    input:focus {
+      border-color: #d4af37;
     }
 
-    h1{
-      text-align:center;
-      color:#071a3a;
-      margin-top:0;
-      margin-bottom:8px;
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #d4af37;
+      color: #07111f;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
     }
 
-    .subtitle{
-      text-align:center;
-      color:#68758a;
-      margin-bottom:30px;
+    button:hover {
+      background: #e3c45e;
     }
 
-    label{
-      display:block;
-      font-weight:bold;
-      margin-bottom:8px;
-      color:#071a3a;
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
     }
 
-    input{
-      display:block;
-      width:100%;
-      height:48px;
-      padding:12px;
-      border:1px solid #d8dee8;
-      border-radius:8px;
-      font-size:16px;
-      color:#172033;
-      background:white;
-      outline:none;
-      margin-bottom:20px;
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
     }
 
-    input:focus{
-      border-color:#d4af37;
-      box-shadow:0 0 0 3px rgba(212,175,55,0.12);
+    .error {
+      display: block;
+      background: #391619;
+      border: 1px solid #a94442;
+      color: #ffc5c5;
     }
 
-    button{
-      display:block;
-      width:100%;
-      height:50px;
-      border:none;
-      border-radius:8px;
-      background:#d4af37;
-      color:#071a3a;
-      font-size:16px;
-      font-weight:bold;
-      cursor:pointer;
+    .success {
+      display: block;
+      background: #12351f;
+      border: 1px solid #2e8b57;
+      color: #b8f5ca;
     }
 
-    button:disabled{
-      opacity:0.6;
+    .register {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 14px;
+      color: #aaa;
     }
 
-    .forgot{
-      display:block;
-      text-align:right;
-      margin-top:-10px;
-      margin-bottom:22px;
-      color:#967414;
-      text-decoration:none;
-      font-size:13px;
-      font-weight:bold;
+    .register a {
+      color: #d4af37;
+      text-decoration: none;
+      font-weight: bold;
     }
 
-    .message{
-      display:none;
-      padding:12px;
-      border-radius:8px;
-      margin-bottom:20px;
-      font-size:14px;
-      line-height:1.5;
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 14px;
     }
 
-    .error{
-      display:block;
-      background:#fff1f0;
-      color:#b42318;
+    .back:hover {
+      color: #d4af37;
     }
-
-    .success{
-      display:block;
-      background:#edfdf5;
-      color:#087443;
-    }
-
-    .register{
-      text-align:center;
-      margin-top:25px;
-      color:#68758a;
-      font-size:14px;
-    }
-
-    .register a{
-      color:#967414;
-      font-weight:bold;
-      text-decoration:none;
-    }
-
-    footer{
-      text-align:center;
-      color:#68758a;
-      font-size:12px;
-      padding:20px;
-    }
-
   </style>
 </head>
 
-
 <body>
 
+<div class="card">
 
-<header class="header">
+  <img
+    src="logo.jpg"
+    class="logo"
+    alt="RAYHAR ACADEMY"
+  >
 
-  <div class="header-inner">
+  <h1>RAYHAR ACADEMY</h1>
 
-    <a href="index.html" class="brand">
+  <p class="subtitle">
+    Student Login
+  </p>
 
-      <img
-        src="logo.jpg"
-        alt="RAYHAR ACADEMY"
-      >
+  <form id="loginForm">
 
-      <span>
-
-        RAYHAR ACADEMY
-
-        <small>
-          FOR KNOWLEDGE AND LEADERSHIP
-        </small>
-
-      </span>
-
-    </a>
-
-
-    <a
-      href="index.html"
-      class="home"
-    >
-      ← Home
-    </a>
-
-  </div>
-
-</header>
-
-
-<main class="container">
-
-  <div class="card">
-
-    <h1>
-      Student Login
-    </h1>
-
-    <p class="subtitle">
-      Login to access your RAYHAR ACADEMY portal.
-    </p>
-
-
-    <div
-      id="message"
-      class="message"
-    ></div>
-
-
-    <form id="loginForm">
-
-
+    <div class="field">
       <label for="email">
         Email Address
       </label>
-
 
       <input
         id="email"
         type="email"
         placeholder="Enter your email"
-        autocomplete="email"
         required
       >
+    </div>
 
-
+    <div class="field">
       <label for="password">
         Password
       </label>
-
 
       <input
         id="password"
         type="password"
         placeholder="Enter your password"
-        autocomplete="current-password"
         required
       >
-
-
-      <a
-        href="#"
-        id="forgotPassword"
-        class="forgot"
-      >
-        Forgot password?
-      </a>
-
-
-      <button
-        id="loginButton"
-        type="submit"
-      >
-        LOGIN
-      </button>
-
-
-    </form>
-
-
-    <div class="register">
-
-      Don't have an account?
-
-      <a href="student-register.html">
-        Create an Account
-      </a>
-
     </div>
 
+    <button
+      id="loginButton"
+      type="submit"
+    >
+      Login
+    </button>
+
+  </form>
+
+  <div id="message" class="message"></div>
+
+  <div class="register">
+    Don't have an account?
+    <a href="student-register.html">
+      Register here
+    </a>
   </div>
 
-</main>
+  <a
+    href="index.html"
+    class="back"
+  >
+    ← Back to RAYHAR ACADEMY
+  </a>
 
+</div>
 
-<footer>
-
-  © 2026 RAYHAR ACADEMY —
-  For Knowledge and Leadership.
-
-</footer>
-
+<script src="config.js"></script>
 
 <script>
 
-const client =
-  window.supabaseClient;
+const client = window.supabaseClient;
 
-
-const form =
-  document.getElementById(
-    "loginForm"
-  );
-
-
-const emailInput =
-  document.getElementById(
-    "email"
-  );
-
-
-const passwordInput =
-  document.getElementById(
-    "password"
-  );
-
+const loginForm =
+  document.getElementById("loginForm");
 
 const loginButton =
-  document.getElementById(
-    "loginButton"
-  );
-
+  document.getElementById("loginButton");
 
 const message =
-  document.getElementById(
-    "message"
-  );
+  document.getElementById("message");
 
-
-const forgotPassword =
-  document.getElementById(
-    "forgotPassword"
-  );
-
-
-function showMessage(
-  text,
-  type
-){
+function showMessage(text, type) {
 
   message.textContent = text;
 
@@ -377,133 +253,139 @@ function showMessage(
 
 }
 
+async function redirectUser(user) {
 
-/*
-  LOGIN
-*/
+  /*
+    First check the student's profile.
+  */
 
-form.addEventListener(
+  const {
+    data: profile,
+    error: profileError
+  } = await client
+    .from("profiles")
+    .select("id, role, student_id")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError || !profile) {
+
+    throw new Error(
+      "Your student profile could not be found."
+    );
+  }
+
+  /*
+    ADMINISTRATOR
+  */
+
+  if (profile.role === "admin") {
+
+    window.location.href =
+      "admin-portal.html";
+
+    return;
+  }
+
+  /*
+    STUDENT
+    Check whether biodata has already
+    been completed.
+  */
+
+  const {
+    data: biodata,
+    error: biodataError
+  } = await client
+    .from("student_biodata")
+    .select("id")
+    .eq("student_id", user.id)
+    .maybeSingle();
+
+  if (biodataError) {
+
+    console.error(biodataError);
+
+    throw new Error(
+      "We could not check your application information."
+    );
+  }
+
+  /*
+    NO BIODATA
+    Send student to biodata page.
+  */
+
+  if (!biodata) {
+
+    window.location.href =
+      "student-biodata.html";
+
+    return;
+  }
+
+  /*
+    BIODATA EXISTS
+    Send student to portal.
+  */
+
+  window.location.href =
+    "student-portal.html";
+}
+
+loginForm.addEventListener(
   "submit",
-  async function(event){
+  async function(event) {
 
     event.preventDefault();
 
+    loginButton.disabled = true;
+    loginButton.textContent = "Logging in...";
+
+    message.style.display = "none";
 
     const email =
-      emailInput.value.trim();
-
+      document
+        .getElementById("email")
+        .value
+        .trim();
 
     const password =
-      passwordInput.value;
+      document
+        .getElementById("password")
+        .value;
 
-
-    if(!email || !password){
-
-      showMessage(
-        "Please enter your email and password.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    loginButton.disabled =
-      true;
-
-
-    loginButton.textContent =
-      "LOGGING IN...";
-
-
-    try{
-
-      const result =
-        await client.auth.signInWithPassword({
-
-          email:email,
-
-          password:password
-
-        });
-
-
-      if(result.error){
-
-        throw result.error;
-
-      }
-
-
-      if(
-        !result.data ||
-        !result.data.user
-      ){
-
-        throw new Error(
-          "Login was not successful."
-        );
-
-      }
-
-
-      const user =
-        result.data.user;
-
-
-      /*
-        GET USER ROLE
-      */
+    try {
 
       const {
-        data:profile,
-        error:profileError
-      } = await client
-        .from("profiles")
-        .select("role")
-        .eq("id",user.id)
-        .maybeSingle();
+        data,
+        error
+      } = await client.auth.signInWithPassword({
+        email,
+        password
+      });
 
-
-      if(profileError){
-
-        throw profileError;
-
+      if (error) {
+        throw error;
       }
 
+      if (!data.user) {
+
+        throw new Error(
+          "Login was unsuccessful."
+        );
+      }
 
       showMessage(
-        "Login successful. Opening your portal...",
+        "Login successful. Opening your account...",
         "success"
       );
 
+      await redirectUser(data.user);
 
-      /*
-        ADMIN → ADMIN PORTAL
-        STUDENT → STUDENT PORTAL
-      */
+    } catch (error) {
 
-      if(profile?.role === "admin"){
-
-        window.location.href =
-          "admin-portal.html";
-
-      }else{
-
-        window.location.href =
-          "student-portal.html";
-
-      }
-
-
-    }catch(error){
-
-      console.error(
-        "Login error:",
-        error
-      );
-
+      console.error(error);
 
       showMessage(
         error.message ||
@@ -511,91 +393,14 @@ form.addEventListener(
         "error"
       );
 
-
-      loginButton.disabled =
-        false;
-
-
-      loginButton.textContent =
-        "LOGIN";
-
-    }
-
-  }
-);
-
-
-/*
-  FORGOT PASSWORD
-*/
-
-forgotPassword.addEventListener(
-  "click",
-  async function(event){
-
-    event.preventDefault();
-
-
-    const email =
-      emailInput.value.trim();
-
-
-    if(!email){
-
-      showMessage(
-        "Please enter your email address first.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    try{
-
-      const result =
-        await client.auth.resetPasswordForEmail(
-          email,
-          {
-            redirectTo:
-              window.location.origin +
-              "/student-auth.html"
-          }
-        );
-
-
-      if(result.error){
-
-        throw result.error;
-
-      }
-
-
-      showMessage(
-        "If this email is registered, a password reset link has been sent.",
-        "success"
-      );
-
-
-    }catch(error){
-
-      console.error(error);
-
-
-      showMessage(
-        error.message ||
-        "Unable to send the password reset email.",
-        "error"
-      );
-
+      loginButton.disabled = false;
+      loginButton.textContent = "Login";
     }
 
   }
 );
 
 </script>
-
 
 </body>
   </html>
