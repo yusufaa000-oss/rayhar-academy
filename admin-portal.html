@@ -3,198 +3,205 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RAYHAR ACADEMY | Admin Portal</title>
+
+  <title>Admin Portal | RAYHAR ACADEMY</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 
   <style>
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      font-family:Arial,sans-serif;
-      background:#080b12;
-      color:#fff;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    header{
-      background:#05070c;
-      border-bottom:1px solid #c9a227;
-      padding:14px 20px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:15px;
-      position:sticky;
-      top:0;
-      z-index:10;
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f6f8;
+      color: #172033;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
+    header {
+      background: #07111f;
+      color: white;
+      padding: 18px 20px;
+      border-bottom: 3px solid #d4af37;
     }
 
-    .brand img{
-      width:48px;
-      height:48px;
-      object-fit:contain;
-      border-radius:8px;
-      background:#fff;
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
     }
 
-    .brand h1{
-      margin:0;
-      color:#d4af37;
-      font-size:19px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .brand p{
-      margin:4px 0 0;
-      color:#aaa;
-      font-size:9px;
-      letter-spacing:1.4px;
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: white;
     }
 
-    button,.btn{
-      border:0;
-      cursor:pointer;
-      background:#d4af37;
-      color:#05070c;
-      padding:10px 15px;
-      border-radius:7px;
-      font-weight:bold;
-      text-decoration:none;
-      display:inline-block;
+    .brand h1 {
+      font-size: 20px;
     }
 
-    button:hover,.btn:hover{
-      background:#e5c657;
+    .brand p {
+      color: #d4af37;
+      font-size: 12px;
+      margin-top: 3px;
     }
 
-    main{
-      width:min(900px,94%);
-      margin:35px auto;
+    .logout {
+      background: transparent;
+      color: white;
+      border: 1px solid #d4af37;
+      padding: 10px 15px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
     }
 
-    .welcome{
-      margin-bottom:25px;
+    .logout:hover {
+      background: #d4af37;
+      color: #07111f;
     }
 
-    .welcome h2{
-      margin:0 0 8px;
-      color:#d4af37;
+    main {
+      max-width: 1100px;
+      margin: 35px auto;
+      padding: 0 18px 50px;
     }
 
-    .welcome p{
-      margin:0;
-      color:#aaa;
-      line-height:1.6;
+    .welcome {
+      background: linear-gradient(135deg, #07111f, #10243b);
+      color: white;
+      padding: 30px;
+      border-radius: 14px;
+      margin-bottom: 25px;
     }
 
-    .section{
-      background:#111722;
-      border:1px solid #252d3d;
-      border-radius:12px;
-      padding:22px;
-      margin-bottom:20px;
+    .welcome h2 {
+      font-size: 28px;
+      margin-bottom: 8px;
     }
 
-    .section h3{
-      margin:0 0 18px;
-      color:#d4af37;
+    .welcome p {
+      color: #dce4ee;
+      line-height: 1.6;
     }
 
-    .admin-card{
-      background:#080b12;
-      border:1px solid #332c18;
-      border-radius:10px;
-      padding:20px;
+    .admin-badge {
+      display: inline-block;
+      margin-top: 15px;
+      background: #d4af37;
+      color: #07111f;
+      padding: 8px 13px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 13px;
     }
 
-    .admin-card h4{
-      margin:0 0 10px;
-      color:#d4af37;
-      font-size:18px;
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
     }
 
-    .admin-card p{
-      color:#aaa;
-      line-height:1.6;
-      margin:0 0 18px;
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 13px;
+      padding: 24px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.06);
     }
 
-    .item{
-      background:#080b12;
-      border-left:3px solid #c9a227;
-      padding:16px;
-      border-radius:7px;
-      margin-bottom:12px;
+    .card h3 {
+      color: #07111f;
+      margin-bottom: 10px;
+      font-size: 20px;
     }
 
-    .item:last-child{
-      margin-bottom:0;
+    .card p {
+      color: #667085;
+      line-height: 1.6;
+      margin-bottom: 18px;
     }
 
-    .item strong{
-      color:#fff;
-      font-size:16px;
+    .card button {
+      width: 100%;
+      border: none;
+      background: #07111f;
+      color: white;
+      padding: 13px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
     }
 
-    .item p{
-      color:#aaa;
-      margin:8px 0 0;
-      line-height:1.6;
+    .card button:hover {
+      background: #d4af37;
+      color: #07111f;
     }
 
-    .muted,.loading{
-      color:#888;
+    .applications-card {
+      border-top: 4px solid #d4af37;
     }
 
-    .error{
-      color:#ff8a8a;
-      line-height:1.5;
+    .announcements-card {
+      border-top: 4px solid #07111f;
     }
 
-    footer{
-      text-align:center;
-      color:#666;
-      padding:35px 15px;
-      font-size:13px;
+    .count {
+      display: inline-block;
+      background: #f5edcf;
+      color: #594600;
+      padding: 5px 9px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 15px;
     }
 
-    @media(max-width:650px){
-      header{
-        padding:11px 12px;
+    .error {
+      display: none;
+      background: #fff0f0;
+      border: 1px solid #e5a5a5;
+      color: #9b2226;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+      padding: 25px;
+    }
+
+    @media (max-width: 700px) {
+      .cards {
+        grid-template-columns: 1fr;
       }
 
-      .brand img{
-        width:40px;
-        height:40px;
+      .header-inner {
+        align-items: flex-start;
       }
 
-      .brand h1{
-        font-size:15px;
-      }
-
-      .brand p{
-        font-size:7px;
-      }
-
-      button{
-        padding:8px 10px;
-        font-size:11px;
-      }
-
-      main{
-        width:92%;
-        margin-top:22px;
-      }
-
-      .section{
-        padding:17px;
+      .welcome h2 {
+        font-size: 23px;
       }
     }
   </style>
@@ -203,74 +210,88 @@
 <body>
 
 <header>
+  <div class="header-inner">
 
-  <div class="brand">
+    <div class="brand">
+      <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
 
-    <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
-
-    <div>
-      <h1>RAYHAR ACADEMY</h1>
-      <p>FOR KNOWLEDGE AND LEADERSHIP</p>
+      <div>
+        <h1>RAYHAR ACADEMY</h1>
+        <p>For Knowledge and Leadership</p>
+      </div>
     </div>
 
+    <button class="logout" id="logoutBtn">
+      Logout
+    </button>
+
   </div>
-
-  <button id="logoutButton" onclick="logout()">
-    Logout
-  </button>
-
 </header>
 
 
 <main>
 
-  <div class="welcome">
+  <div id="errorBox" class="error"></div>
 
-    <h2>Welcome, Administrator 👋</h2>
+  <section class="welcome">
+
+    <h2>Administrator Portal</h2>
 
     <p>
-      This is your RAYHAR ACADEMY administration portal.
-      From here, you can manage announcements for students.
+      Welcome to the RAYHAR ACADEMY administration dashboard.
+      From here you can manage student applications, review
+      submitted biodata, issue admission letters, and manage
+      academy announcements.
     </p>
 
-  </div>
-
-
-  <section class="section">
-
-    <h3>Administrator</h3>
-
-    <div class="admin-card">
-
-      <h4>📢 Announcements</h4>
-
-      <p>
-        Publish new announcements, edit existing announcements,
-        publish or unpublish announcements, and remove announcements
-        that are no longer needed.
-      </p>
-
-      <a
-        class="btn"
-        href="admin-announcements.html"
-      >
-        Manage Announcements
-      </a>
-
-    </div>
+    <span class="admin-badge">
+      ADMINISTRATOR
+    </span>
 
   </section>
 
 
-  <section class="section">
+  <section class="cards">
 
-    <h3>Published Announcements</h3>
+    <!-- STUDENT APPLICATIONS -->
 
-    <div id="announcements">
+    <div class="card applications-card">
 
-      <p class="loading">
-        Loading announcements...
+      <h3>Student Applications</h3>
+
+      <p>
+        View students who have completed their biodata.
+        Review their personal information, photographs,
+        application documents, and issue admission letters.
       </p>
+
+      <div id="applicationCount" class="count">
+        Checking applications...
+      </div>
+
+      <button
+        onclick="window.location.href='admin-students.html'">
+        Open Student Applications
+      </button>
+
+    </div>
+
+
+    <!-- ANNOUNCEMENTS -->
+
+    <div class="card announcements-card">
+
+      <h3>Announcements</h3>
+
+      <p>
+        Create, publish, update, and remove announcements
+        that will appear on the student portal.
+      </p>
+
+      <button
+        onclick="window.location.href='admin-announcements.html'">
+        Manage Announcements
+      </button>
 
     </div>
 
@@ -280,187 +301,168 @@
 
 
 <footer>
-  © 2026 RAYHAR ACADEMY — For Knowledge and Leadership.
+  © <span id="year"></span> RAYHAR ACADEMY — For Knowledge and Leadership
 </footer>
 
 
 <script>
 
-const client = window.supabaseClient;
+  const client = window.supabaseClient;
+
+  const errorBox =
+    document.getElementById("errorBox");
 
 
-function esc(value){
-
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
 
 
-async function logout(){
+  function showError(message) {
 
-  const button =
-    document.getElementById("logoutButton");
+    errorBox.textContent = message;
 
-  button.disabled = true;
-  button.textContent = "Logging out...";
-
-  try{
-
-    await client.auth.signOut({
-      scope:"local"
-    });
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-  window.location.replace("student-auth.html");
-
-}
-
-
-async function loadPortal(){
-
-  if(!client){
-
-    document.querySelector("main").innerHTML =
-      '<section class="section">' +
-      '<p class="error">' +
-      'Supabase configuration could not be loaded.' +
-      '</p>' +
-      '</section>';
-
-    return;
-
+    errorBox.style.display = "block";
   }
 
 
-  try{
+  async function checkAdmin() {
 
-    const {
-      data:{session},
-      error:sessionError
-    } = await client.auth.getSession();
+    if (!client) {
 
-
-    if(sessionError) throw sessionError;
-
-
-    if(!session?.user){
-
-      window.location.replace("student-auth.html");
-
-      return;
-
-    }
-
-
-    const user = session.user;
-
-
-    const {
-      data:profile,
-      error:profileError
-    } = await client
-      .from("profiles")
-      .select("role")
-      .eq("id",user.id)
-      .maybeSingle();
-
-
-    if(profileError) throw profileError;
-
-
-    if(profile?.role !== "admin"){
-
-      window.location.replace("student-portal.html");
-
-      return;
-
-    }
-
-
-    const {
-      data:announcements,
-      error:announcementError
-    } = await client
-      .from("announcements")
-      .select("*")
-      .eq("published",true)
-      .order(
-        "published_at",
-        {ascending:false}
+      showError(
+        "Supabase configuration could not be loaded."
       );
 
-
-    if(announcementError) throw announcementError;
-
-
-    const container =
-      document.getElementById("announcements");
-
-
-    const list = announcements || [];
-
-
-    if(!list.length){
-
-      container.innerHTML =
-        '<p class="muted">' +
-        'No published announcements yet.' +
-        '</p>';
-
       return;
-
     }
 
 
-    container.innerHTML =
-      list.map(item => `
-
-        <div class="item">
-
-          <strong>
-            ${esc(item.title || "Announcement")}
-          </strong>
-
-          <p>
-            ${esc(item.message || "No message available.")}
-          </p>
-
-        </div>
-
-      `).join("");
+    const {
+      data: { user },
+      error: userError
+    } = await client.auth.getUser();
 
 
-  }catch(error){
+    if (userError || !user) {
 
-    console.error("Admin portal error:",error);
+      window.location.href =
+        "admin-login.html";
 
-    document.querySelector("main").innerHTML =
-      '<section class="section">' +
-      '<p class="error">' +
-      'We could not load the administrator portal.' +
-      '<br><br>' +
-      'Please refresh the page and try again.' +
-      '</p>' +
-      '</section>';
+      return;
+    }
 
+
+    const {
+      data: profile,
+      error: profileError
+    } = await client
+      .from("profiles")
+      .select("role, full_name")
+      .eq("id", user.id)
+      .single();
+
+
+    if (profileError) {
+
+      showError(
+        "Unable to verify administrator access."
+      );
+
+      return;
+    }
+
+
+    if (profile.role !== "admin") {
+
+      await client.auth.signOut();
+
+      window.location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+
+    await loadApplicationCount();
   }
 
-}
+
+  async function loadApplicationCount() {
+
+    const countElement =
+      document.getElementById("applicationCount");
 
 
-loadPortal();
+    const {
+      data,
+      error
+    } = await client
+      .from("student_biodata")
+      .select("id, admission_status");
+
+
+    if (error) {
+
+      countElement.textContent =
+        "Applications available";
+
+      return;
+    }
+
+
+    const total =
+      data ? data.length : 0;
+
+
+    const pending =
+      data
+        ? data.filter(
+            item =>
+              item.admission_status !== "admitted"
+          ).length
+        : 0;
+
+
+    if (total === 0) {
+
+      countElement.textContent =
+        "No applications yet";
+
+      return;
+    }
+
+
+    if (pending > 0) {
+
+      countElement.textContent =
+        `${pending} application${pending === 1 ? "" : "s"} awaiting review`;
+
+      return;
+    }
+
+
+    countElement.textContent =
+      `${total} application${total === 1 ? "" : "s"} received`;
+  }
+
+
+  document
+    .getElementById("logoutBtn")
+    .addEventListener(
+      "click",
+      async () => {
+
+        await client.auth.signOut();
+
+        window.location.href =
+          "admin-login.html";
+      }
+    );
+
+
+  checkAdmin();
 
 </script>
 
 </body>
-  </html>
+</html>
