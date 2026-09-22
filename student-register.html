@@ -1,769 +1,1256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Student Registration | RAYHAR ACADEMY</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
+<title>Student Registration | Rayhar Academy</title>
 
-  <style>
-    :root {
-      --navy: #071a3a;
-      --navy-dark: #041127;
-      --gold: #d4af37;
-      --gold-light: #f0cf62;
-      --white: #ffffff;
-      --text: #172033;
-      --muted: #68758a;
-      --line: #dfe5ee;
-      --danger: #b42318;
-      --success: #087443;
-    }
+<link rel="icon" href="logo.jpg">
 
-    * {
-      box-sizing: border-box;
-    }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f7fb;
-      color: var(--text);
-    }
+<style>
 
-    a {
-      text-decoration: none;
-    }
+:root{
+  --navy:#07111f;
+  --navy2:#0d1b2e;
+  --gold:#d4af37;
+  --gold-light:#f0cf67;
+  --white:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --bg:#f5f7fb;
+  --border:#dfe4ea;
+  --danger:#c62828;
+  --success:#16834a;
+}
 
-    .topbar {
-      background: var(--navy);
-      padding: 15px 20px;
-    }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    .topbar-inner {
-      width: min(1100px, 94%);
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: white;
-      font-weight: 800;
-    }
+a{
+  text-decoration:none;
+}
 
-    .brand img {
-      width: 45px;
-      height: 45px;
-      object-fit: contain;
-      background: white;
-      border-radius: 50%;
-    }
+.header{
+  background:var(--navy);
+  color:white;
+}
 
-    .brand-name {
-      font-size: 16px;
-    }
+.nav{
+  width:min(1100px,calc(100% - 30px));
+  min-height:74px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
 
-    .brand-tagline {
-      display: block;
-      color: var(--gold-light);
-      font-size: 8px;
-      letter-spacing: 1px;
-      margin-top: 4px;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:white;
+}
 
-    .home-link {
-      color: var(--gold-light);
-      font-size: 14px;
-      font-weight: 700;
-    }
+.brand img{
+  width:46px;
+  height:46px;
+  object-fit:cover;
+  border-radius:50%;
+  border:2px solid var(--gold);
+}
 
-    .page {
-      width: min(650px, 94%);
-      margin: 45px auto;
-    }
+.brand strong{
+  display:block;
+  color:var(--gold-light);
+  font-size:17px;
+  letter-spacing:.5px;
+}
 
-    .register-card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 35px;
-      box-shadow: 0 12px 35px rgba(7, 26, 58, 0.10);
-      border: 1px solid #e7ebf2;
-    }
+.brand span{
+  display:block;
+  color:#cbd5e1;
+  font-size:10px;
+  margin-top:2px;
+}
 
-    .heading {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+.home{
+  color:white;
+  font-size:14px;
+}
 
-    .heading h1 {
-      color: var(--navy);
-      margin: 0 0 8px;
-      font-size: 32px;
-    }
+.home:hover{
+  color:var(--gold-light);
+}
 
-    .heading p {
-      color: var(--muted);
-      margin: 0;
-    }
+.page{
+  width:min(850px,calc(100% - 28px));
+  margin:35px auto 60px;
+}
 
-    .notice {
-      background: #fff9e6;
-      border-left: 4px solid var(--gold);
-      padding: 14px 16px;
-      border-radius: 7px;
-      margin-bottom: 25px;
-      color: #5f4a08;
-      font-size: 14px;
-    }
+.intro{
+  text-align:center;
+  margin-bottom:25px;
+}
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+.intro small{
+  color:#9a7a12;
+  text-transform:uppercase;
+  font-weight:800;
+  letter-spacing:1.5px;
+}
 
-    label {
-      display: block;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
+.intro h1{
+  color:var(--navy);
+  font-size:clamp(28px,5vw,40px);
+  margin-top:7px;
+}
 
-    input,
-    select {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      font-size: 15px;
-      outline: none;
-      background: white;
-      color: var(--text);
-    }
+.intro p{
+  max-width:650px;
+  margin:9px auto 0;
+  color:var(--muted);
+  line-height:1.7;
+}
 
-    input:focus,
-    select:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
-    }
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:30px;
+  box-shadow:0 12px 35px rgba(7,17,31,.08);
+}
 
-    .help {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 6px;
-    }
+.steps{
+  display:flex;
+  align-items:center;
+  margin-bottom:28px;
+}
 
-    .departments {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+.step{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:700;
+  color:#98a2b3;
+}
 
-    .department-option {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 12px;
-      cursor: pointer;
-      background: #fff;
-    }
+.step-number{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eef1f5;
+  color:#667085;
+}
 
-    .department-option:hover {
-      border-color: var(--gold);
-      background: #fffdf5;
-    }
+.step.active{
+  color:var(--navy);
+}
 
-    .department-option input {
-      width: auto;
-      margin: 0;
-      accent-color: var(--gold);
-    }
+.step.active .step-number{
+  background:var(--navy);
+  color:var(--gold-light);
+}
 
-    .department-option span {
-      font-size: 13px;
-      font-weight: 600;
-    }
+.step-line{
+  flex:1;
+  height:1px;
+  background:var(--border);
+  margin:0 10px;
+}
 
-    button {
-      width: 100%;
-      border: 0;
-      border-radius: 8px;
-      padding: 14px;
-      background: var(--gold);
-      color: var(--navy);
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 8px;
-    }
+.section{
+  margin-bottom:25px;
+}
 
-    button:hover {
-      background: var(--gold-light);
-    }
+.section h2{
+  font-size:18px;
+  color:var(--navy);
+  margin-bottom:5px;
+}
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+.section-description{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:17px;
+}
 
-    .message {
-      display: none;
-      padding: 13px 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 14px;
-    }
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:17px;
+}
 
-    .message.error {
-      display: block;
-      background: #fff1f0;
-      color: var(--danger);
-      border: 1px solid #f5c2c0;
-    }
+.field{
+  display:flex;
+  flex-direction:column;
+}
 
-    .message.success {
-      display: block;
-      background: #edfdf5;
-      color: var(--success);
-      border: 1px solid #b7e5ce;
-    }
+.field.full{
+  grid-column:1/-1;
+}
 
-    .login-link {
-      text-align: center;
-      margin-top: 22px;
-      color: var(--muted);
-      font-size: 14px;
-    }
+label{
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px;
+  color:#344054;
+}
 
-    .login-link a {
-      color: #9a7711;
-      font-weight: 800;
-    }
+.required{
+  color:var(--danger);
+}
 
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 20px;
-    }
+input,
+select{
+  width:100%;
+  height:46px;
+  padding:0 13px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:white;
+  color:var(--text);
+  font-size:14px;
+  outline:none;
+}
 
-    @media (max-width: 600px) {
-      .register-card {
-        padding: 24px 18px;
-      }
+input:focus,
+select:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(212,175,55,.12);
+}
 
-      .heading h1 {
-        font-size: 27px;
-      }
+.help{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
 
-      .departments {
-        grid-template-columns: 1fr;
-      }
+.departments{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
 
-      .home-link {
-        font-size: 12px;
-      }
+.department-option{
+  position:relative;
+}
 
-      .brand-name {
-        font-size: 14px;
-      }
-    }
-  </style>
+.department-option input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.department-option label{
+  display:flex;
+  align-items:center;
+  min-height:52px;
+  margin:0;
+  padding:11px 13px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:13px;
+  transition:.2s;
+}
+
+.department-option label:hover{
+  border-color:var(--gold);
+}
+
+.department-option input:checked + label{
+  background:#fffaf0;
+  border-color:var(--gold);
+  color:var(--navy);
+  box-shadow:0 0 0 1px var(--gold);
+}
+
+.department-option input:checked + label:before{
+  content:"✓";
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--navy);
+  color:var(--gold-light);
+  margin-right:9px;
+  flex-shrink:0;
+}
+
+.notice{
+  padding:15px;
+  border-radius:10px;
+  background:#f8fafc;
+  border:1px solid var(--border);
+  color:#475467;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.notice strong{
+  color:var(--navy);
+}
+
+.password-wrap{
+  position:relative;
+}
+
+.password-wrap input{
+  padding-right:80px;
+}
+
+.toggle-password{
+  position:absolute;
+  right:9px;
+  top:8px;
+  height:30px;
+  border:0;
+  background:transparent;
+  color:#667085;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.actions{
+  border-top:1px solid var(--border);
+  padding-top:22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.login-link{
+  color:#667085;
+  font-size:13px;
+}
+
+.login-link a{
+  color:#8a6d0a;
+  font-weight:700;
+}
+
+.submit{
+  min-width:190px;
+  height:48px;
+  border:0;
+  border-radius:9px;
+  background:var(--navy);
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.submit:hover{
+  background:#12243c;
+}
+
+.submit:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.message{
+  display:none;
+  padding:13px 15px;
+  border-radius:9px;
+  margin-bottom:20px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.message.error{
+  background:#fff1f2;
+  color:var(--danger);
+  border:1px solid #fecdd3;
+}
+
+.message.success{
+  background:#ecfdf3;
+  color:var(--success);
+  border:1px solid #abefc6;
+}
+
+.footer{
+  text-align:center;
+  background:var(--navy);
+  color:#cbd5e1;
+  padding:25px 15px;
+  font-size:12px;
+}
+
+.footer strong{
+  color:var(--gold-light);
+}
+
+@media(max-width:650px){
+
+  .nav{
+    min-height:68px;
+  }
+
+  .brand img{
+    width:40px;
+    height:40px;
+  }
+
+  .brand strong{
+    font-size:14px;
+  }
+
+  .home{
+    font-size:12px;
+  }
+
+  .page{
+    margin-top:22px;
+  }
+
+  .card{
+    padding:20px 16px;
+    border-radius:13px;
+  }
+
+  .form-grid,
+  .departments{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .steps{
+    align-items:flex-start;
+  }
+
+  .step{
+    font-size:0;
+  }
+
+  .step-number{
+    font-size:12px;
+  }
+
+  .step-line{
+    margin-top:15px;
+  }
+
+  .actions{
+    flex-direction:column-reverse;
+    align-items:stretch;
+  }
+
+  .submit{
+    width:100%;
+  }
+
+  .login-link{
+    text-align:center;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
+<header class="header">
+
+  <nav class="nav">
 
     <a href="index.html" class="brand">
-      <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
 
-      <span class="brand-name">
-        RAYHAR ACADEMY
-        <small class="brand-tagline">
-          FOR KNOWLEDGE AND LEADERSHIP
-        </small>
-      </span>
+      <img src="logo.jpg" alt="Rayhar Academy">
+
+      <div>
+        <strong>RAYHAR ACADEMY</strong>
+        <span>For Knowledge and Leadership</span>
+      </div>
+
     </a>
 
-    <a href="index.html" class="home-link">
-      ← Home
+    <a href="index.html" class="home">
+      ← Back to Home
     </a>
 
-  </div>
+  </nav>
+
 </header>
 
 
 <main class="page">
 
-  <div class="register-card">
+  <div class="intro">
 
-    <div class="heading">
-      <h1>Student Registration</h1>
+    <small>Admissions</small>
 
-      <p>
-        Create your RAYHAR ACADEMY student account.
-      </p>
+    <h1>Create Your Student Account</h1>
+
+    <p>
+      Begin your Rayhar Academy admission journey by creating
+      your student account. After registration, you will be
+      asked to complete your biodata and submit your application.
+    </p>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="steps">
+
+      <div class="step active">
+
+        <div class="step-number">
+          1
+        </div>
+
+        <span>
+          Account
+        </span>
+
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+
+        <div class="step-number">
+          2
+        </div>
+
+        <span>
+          Biodata
+        </span>
+
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+
+        <div class="step-number">
+          3
+        </div>
+
+        <span>
+          Review
+        </span>
+
+      </div>
+
     </div>
 
 
-    <div class="notice">
-      <strong>Admission is open.</strong>
-      <br>
-      There is no admission fee. Select the department
-      or departments you want to study.
-    </div>
-
-
-    <div id="message" class="message"></div>
+    <div
+      id="message"
+      class="message"
+    ></div>
 
 
     <form id="registrationForm">
 
-      <div class="form-group">
-        <label for="fullName">Full Name</label>
+      <section class="section">
 
-        <input
-          type="text"
-          id="fullName"
-          placeholder="Enter your full name"
-          required
-        >
-      </div>
+        <h2>Personal Information</h2>
+
+        <p class="section-description">
+          Enter your name and the email address you will use
+          to access your student account.
+        </p>
 
 
-      <div class="form-group">
-        <label for="email">Email Address</label>
+        <div class="form-grid">
 
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email address"
-          autocomplete="email"
-          required
-        >
-      </div>
+          <div class="field full">
+
+            <label for="fullName">
+              Full Name
+              <span class="required">*</span>
+            </label>
+
+            <input
+              type="text"
+              id="fullName"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              required
+            >
+
+          </div>
 
 
-      <div class="form-group">
-        <label for="password">Password</label>
+          <div class="field full">
 
-        <input
-          type="password"
-          id="password"
-          placeholder="Create a password"
-          minlength="6"
-          autocomplete="new-password"
-          required
-        >
+            <label for="email">
+              Email Address
+              <span class="required">*</span>
+            </label>
 
-        <div class="help">
-          Password must contain at least 6 characters.
+            <input
+              type="email"
+              id="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            >
+
+            <span class="help">
+              Use an email address you can access.
+            </span>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="password">
+              Password
+              <span class="required">*</span>
+            </label>
+
+            <div class="password-wrap">
+
+              <input
+                type="password"
+                id="password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+                minlength="6"
+                required
+              >
+
+              <button
+                type="button"
+                class="toggle-password"
+                onclick="togglePassword('password',this)"
+              >
+                SHOW
+              </button>
+
+            </div>
+
+            <span class="help">
+              Minimum 6 characters.
+            </span>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="confirmPassword">
+              Confirm Password
+              <span class="required">*</span>
+            </label>
+
+            <div class="password-wrap">
+
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Repeat your password"
+                autocomplete="new-password"
+                minlength="6"
+                required
+              >
+
+              <button
+                type="button"
+                class="toggle-password"
+                onclick="togglePassword('confirmPassword',this)"
+              >
+                SHOW
+              </button>
+
+            </div>
+
+          </div>
+
         </div>
-      </div>
+
+      </section>
 
 
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
+      <section class="section">
 
-        <input
-          type="password"
-          id="confirmPassword"
-          placeholder="Enter your password again"
-          minlength="6"
-          autocomplete="new-password"
-          required
-        >
-      </div>
+        <h2>Study Information</h2>
+
+        <p class="section-description">
+          Select your preferred study level and the department
+          or departments you want to study.
+        </p>
 
 
-      <div class="form-group">
-        <label for="studyLevel">Study Level</label>
+        <div class="field">
 
-        <select id="studyLevel" required>
+          <label for="studyLevel">
+            Study Level
+            <span class="required">*</span>
+          </label>
 
-          <option value="">
-            Select your study level
-          </option>
+          <select id="studyLevel" required>
 
-          <option value="Beginner">
-            Beginner
-          </option>
+            <option value="">
+              Select study level
+            </option>
 
-          <option value="Intermediate">
-            Intermediate
-          </option>
+            <option value="Beginner">
+              Beginner
+            </option>
 
-          <option value="Advanced">
-            Advanced
-          </option>
+            <option value="Intermediate">
+              Intermediate
+            </option>
 
-        </select>
-      </div>
+            <option value="Advanced">
+              Advanced
+            </option>
 
+            <option value="Certificate">
+              Certificate
+            </option>
 
-      <div class="form-group">
+            <option value="Diploma">
+              Diploma
+            </option>
+
+          </select>
+
+        </div>
+
+        <br>
+
 
         <label>
           Select Department(s)
+          <span class="required">*</span>
         </label>
-
-        <div class="help" style="margin-bottom:10px;">
-          You may select more than one department.
-        </div>
-
 
         <div class="departments">
 
-          <label class="department-option">
+          <div class="department-option">
+
             <input
               type="checkbox"
+              id="arabic"
               name="departments"
               value="Arabic Department"
             >
-            <span>Arabic Department</span>
-          </label>
+
+            <label for="arabic">
+              Arabic Department
+            </label>
+
+          </div>
 
 
-          <label class="department-option">
+          <div class="department-option">
+
             <input
               type="checkbox"
+              id="computer"
               name="departments"
               value="Computer Science Department"
             >
-            <span>Computer Science Department</span>
-          </label>
+
+            <label for="computer">
+              Computer Science Department
+            </label>
+
+          </div>
 
 
-          <label class="department-option">
+          <div class="department-option">
+
             <input
               type="checkbox"
+              id="english"
               name="departments"
               value="English Department"
             >
-            <span>English Department</span>
-          </label>
+
+            <label for="english">
+              English Department
+            </label>
+
+          </div>
 
 
-          <label class="department-option">
+          <div class="department-option">
+
             <input
               type="checkbox"
+              id="fineart"
               name="departments"
               value="Fine Art Department"
             >
-            <span>Fine Art Department</span>
-          </label>
+
+            <label for="fineart">
+              Fine Art Department
+            </label>
+
+          </div>
 
 
-          <label class="department-option">
+          <div class="department-option">
+
             <input
               type="checkbox"
+              id="mathematics"
               name="departments"
               value="Mathematics Department"
             >
-            <span>Mathematics Department</span>
-          </label>
+
+            <label for="mathematics">
+              Mathematics Department
+            </label>
+
+          </div>
 
 
-          <label class="department-option">
+          <div class="department-option">
+
             <input
               type="checkbox"
+              id="medical"
               name="departments"
               value="Medical Science Department"
             >
-            <span>Medical Science Department</span>
-          </label>
+
+            <label for="medical">
+              Medical Science Department
+            </label>
+
+          </div>
 
 
-          <label class="department-option">
+          <div class="department-option">
+
             <input
               type="checkbox"
+              id="quran"
               name="departments"
               value="Quran & Islamic Studies Department"
             >
-            <span>Quran & Islamic Studies Department</span>
-          </label>
+
+            <label for="quran">
+              Quran &amp; Islamic Studies Department
+            </label>
+
+          </div>
 
 
-          <label class="department-option">
+          <div class="department-option">
+
             <input
               type="checkbox"
+              id="science"
               name="departments"
               value="Science Department"
             >
-            <span>Science Department</span>
-          </label>
+
+            <label for="science">
+              Science Department
+            </label>
+
+          </div>
 
         </div>
 
+      </section>
+
+
+      <section class="section">
+
+        <div class="notice">
+
+          <strong>What happens next?</strong>
+
+          <br>
+
+          After creating your account, you will continue to
+          the <strong>biodata form</strong>. You will provide
+          your personal and residential information, upload
+          your photograph, and submit your application.
+
+          <br><br>
+
+          Your application will then be available for review
+          by the Rayhar Academy administration.
+
+        </div>
+
+      </section>
+
+
+      <div class="actions">
+
+        <div class="login-link">
+
+          Already have an account?
+
+          <a href="student-auth.html">
+            Student Login
+          </a>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="submit"
+          id="submitBtn"
+        >
+          Create Student Account
+        </button>
+
       </div>
 
-
-      <button
-        type="submit"
-        id="registerButton"
-      >
-        CREATE STUDENT ACCOUNT
-      </button>
-
     </form>
-
-
-    <div class="login-link">
-
-      Already have an account?
-
-      <a href="student-auth.html">
-        Student Login
-      </a>
-
-    </div>
 
   </div>
 
 </main>
 
 
-<footer>
-  © 2026 RAYHAR ACADEMY — For Knowledge and Leadership.
+<footer class="footer">
+
+  <strong>RAYHAR ACADEMY</strong>
+
+  <div>
+    For Knowledge and Leadership
+  </div>
+
 </footer>
 
 
 <script>
 
-  const client = window.supabaseClient;
-
-  const form = document.getElementById("registrationForm");
-  const message = document.getElementById("message");
-  const registerButton = document.getElementById("registerButton");
+const client = window.supabaseClient;
 
 
-  function showMessage(text, type) {
+function showMessage(text,type){
 
-    message.textContent = text;
-    message.className = "message " + type;
+  const box =
+    document.getElementById("message");
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+  box.textContent = text;
+
+  box.className =
+    "message " + type;
+
+  box.style.display = "block";
+
+  box.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+}
+
+
+function togglePassword(id,button){
+
+  const input =
+    document.getElementById(id);
+
+  if(input.type === "password"){
+
+    input.type = "text";
+
+    button.textContent = "HIDE";
+
+  }else{
+
+    input.type = "password";
+
+    button.textContent = "SHOW";
 
   }
 
+}
 
-  form.addEventListener("submit", async function(event) {
+
+document
+  .getElementById("registrationForm")
+  .addEventListener("submit",async(event)=>{
 
     event.preventDefault();
 
 
+    const submitBtn =
+      document.getElementById("submitBtn");
+
+
     const fullName =
-      document.getElementById("fullName").value.trim();
+      document
+        .getElementById("fullName")
+        .value
+        .trim();
+
 
     const email =
-      document.getElementById("email").value.trim();
+      document
+        .getElementById("email")
+        .value
+        .trim()
+        .toLowerCase();
+
 
     const password =
-      document.getElementById("password").value;
+      document
+        .getElementById("password")
+        .value;
+
 
     const confirmPassword =
-      document.getElementById("confirmPassword").value;
+      document
+        .getElementById("confirmPassword")
+        .value;
+
 
     const studyLevel =
-      document.getElementById("studyLevel").value;
+      document
+        .getElementById("studyLevel")
+        .value;
 
 
-    const selectedDepartments =
+    const departments =
       Array.from(
         document.querySelectorAll(
           'input[name="departments"]:checked'
         )
       ).map(
-        checkbox => checkbox.value
+        input => input.value
       );
 
 
-    /* VALIDATION */
+    if(!fullName){
 
-    if (!fullName) {
       showMessage(
         "Please enter your full name.",
         "error"
       );
+
       return;
+
     }
 
 
-    if (!email) {
+    if(!email){
+
       showMessage(
         "Please enter your email address.",
         "error"
       );
+
       return;
+
     }
 
 
-    if (password.length < 6) {
+    if(password.length < 6){
+
       showMessage(
         "Your password must contain at least 6 characters.",
         "error"
       );
+
       return;
+
     }
 
 
-    if (password !== confirmPassword) {
+    if(password !== confirmPassword){
+
       showMessage(
         "The passwords do not match.",
         "error"
       );
+
       return;
+
     }
 
 
-    if (!studyLevel) {
+    if(!studyLevel){
+
       showMessage(
         "Please select your study level.",
         "error"
       );
+
       return;
+
     }
 
 
-    if (selectedDepartments.length === 0) {
+    if(departments.length === 0){
+
       showMessage(
         "Please select at least one department.",
         "error"
       );
+
       return;
+
     }
 
 
-    /* CHECK SUPABASE */
+    submitBtn.disabled = true;
 
-    if (!client) {
-
-      showMessage(
-        "The registration system could not connect to Supabase. Please refresh the page and try again.",
-        "error"
-      );
-
-      return;
-    }
+    submitBtn.textContent =
+      "Creating Account...";
 
 
-    /* CREATE ACCOUNT */
+    try{
 
-    registerButton.disabled = true;
-    registerButton.textContent = "CREATING ACCOUNT...";
+      if(!client){
 
+        throw new Error(
+          "Supabase could not be initialized."
+        );
 
-    try {
+      }
+
 
       const {
         data,
         error
       } = await client.auth.signUp({
 
-        email: email,
+        email:email,
 
-        password: password,
+        password:password,
 
-        options: {
-
-          data: {
-
-            full_name: fullName,
-
-            study_level: studyLevel,
-
-            departments: selectedDepartments
-
+        options:{
+          data:{
+            full_name:fullName,
+            study_level:studyLevel,
+            departments:departments
           }
-
         }
 
       });
 
 
-      if (error) {
+      if(error){
         throw error;
       }
 
 
-      if (!data || !data.user) {
+      if(!data.user){
 
         throw new Error(
-          "Registration did not create an account. Please try again."
+          "Your account could not be created. Please try again."
         );
 
       }
 
 
+      /*
+       * Depending on the Supabase email-confirmation
+       * setting, a session may or may not be created
+       * immediately.
+       */
+
+      if(data.session){
+
+        showMessage(
+          "Your account has been created. Taking you to your biodata form...",
+          "success"
+        );
+
+
+        setTimeout(()=>{
+
+          window.location.href =
+            "student-biodata.html";
+
+        },800);
+
+
+        return;
+
+      }
+
+
+      /*
+       * If email confirmation is enabled, the student
+       * must confirm the email before continuing.
+       */
+
       showMessage(
-        "Registration successful! Your student account has been created. You can now log in.",
+        "Your account has been created. Please check your email to confirm your account, then log in to continue your application.",
         "success"
       );
 
 
-      form.reset();
+      submitBtn.disabled = false;
+
+      submitBtn.textContent =
+        "Create Student Account";
 
 
-      setTimeout(function() {
+    }catch(error){
 
-        window.location.href =
-          "student-auth.html";
-
-      }, 2500);
+      console.error(error);
 
 
-    } catch (error) {
-
-      console.error(
-        "Registration error:",
-        error
-      );
-
-
-      let errorMessage =
+      let message =
         error.message ||
         "Registration failed. Please try again.";
 
 
-      if (
-        errorMessage
-          .toLowerCase()
-          .includes("already registered")
-      ) {
+      if(
+        message.toLowerCase().includes(
+          "user already registered"
+        )
+      ){
 
-        errorMessage =
-          "This email is already registered. Please use Student Login instead.";
+        message =
+          "An account with this email already exists. Please use Student Login instead.";
 
       }
 
 
       showMessage(
-        errorMessage,
+        message,
         "error"
       );
 
 
-    } finally {
+      submitBtn.disabled = false;
 
-      registerButton.disabled = false;
-
-      registerButton.textContent =
-        "CREATE STUDENT ACCOUNT";
+      submitBtn.textContent =
+        "Create Student Account";
 
     }
 
