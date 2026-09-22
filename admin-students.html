@@ -1,3680 +1,2172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Student Applications | RAYHAR ACADEMY</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-  <script src="config.js"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-      background: #f4f5f7;
-      color: #172033;
-      min-height: 100vh;
-    }
-
-    header {
-      background: #0b1628;
-      color: white;
-      padding: 18px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      box-shadow: 0 3px 15px rgba(0,0,0,.15);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-    }
-
-    .brand img {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-      border-radius: 8px;
-      background: white;
-    }
-
-    .brand-text h1 {
-      font-size: 21px;
-      letter-spacing: .5px;
-    }
-
-    .brand-text p {
-      margin-top: 3px;
-      color: #d3ad55;
-      font-size: 12px;
-    }
-
-    .logout-btn {
-      border: 1px solid #d3ad55;
-      background: transparent;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 7px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .logout-btn:hover {
-      background: #d3ad55;
-      color: #0b1628;
-    }
-
-    main {
-      max-width: 1250px;
-      margin: 35px auto;
-      padding: 0 20px 50px;
-    }
-
-    .page-heading {
-      margin-bottom: 25px;
-    }
-
-    .page-heading h2 {
-      color: #0b1628;
-      font-size: 28px;
-      margin-bottom: 7px;
-    }
-
-    .page-heading p {
-      color: #697386;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 25px;
-    }
-
-    .stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid #e2e5ea;
-      box-shadow: 0 4px 15px rgba(0,0,0,.04);
-    }
-
-    .stat-label {
-      color: #737b8c;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .stat-number {
-      color: #0b1628;
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    .table-card {
-      background: white;
-      border-radius: 14px;
-      border: 1px solid #e2e5ea;
-      box-shadow: 0 5px 20px rgba(0,0,0,.05);
-      overflow: hidden;
-    }
-
-    .table-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid #e8eaf0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .table-header h3 {
-      color: #0b1628;
-      font-size: 18px;
-    }
-
-    .search-box {
-      border: 1px solid #d8dce4;
-      border-radius: 7px;
-      padding: 10px 13px;
-      width: 270px;
-      outline: none;
-    }
-
-    .search-box:focus {
-      border-color: #c9a34d;
-    }
-
-    .loading-box,
-    .empty-box,
-    .error-box {
-      padding: 50px 20px;
-      text-align: center;
-      color: #6d7482;
-    }
-
-    .error-box {
-      color: #b42318;
-    }
-
-    .table-wrapper {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 900px;
-    }
-
-    th {
-      background: #f8f9fb;
-      color: #596274;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      text-align: left;
-      padding: 14px 16px;
-      border-bottom: 1px solid #e5e8ee;
-    }
-
-    td {
-      padding: 16px;
-      border-bottom: 1px solid #edf0f4;
-      vertical-align: middle;
-      font-size: 14px;
-    }
-
-    tr:hover td {
-      background: #fcfcfd;
-    }
-
-    .student-name {
-      font-weight: 700;
-      color: #172033;
-    }
-
-    .student-email {
-      color: #727b8b;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .student-id {
-      color: #9b7725;
-      font-weight: 700;
-      font-size: 12px;
-    }
-
-    .status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: capitalize;
-    }
-
-    .status-submitted {
-      background: #fff4d6;
-      color: #80610b;
-    }
-
-    .status-admitted {
-      background: #e5f7ed;
-      color: #18794e;
-    }
-
-    .status-active {
-      background: #e7f0ff;
-      color: #2457a6;
-    }
-
-    .status-default {
-      background: #edf0f4;
-      color: #5e6777;
-    }
-
-    .action-btn {
-      border: 0;
-      border-radius: 7px;
-      padding: 9px 12px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 700;
-      margin: 2px;
-    }
-
-    .view-btn {
-      background: #0b1628;
-      color: white;
-    }
-
-    .view-btn:hover {
-      background: #162943;
-    }
-
-    .admit-btn {
-      background: #d3ad55;
-      color: #101a2b;
-    }
-
-    .admit-btn:hover {
-      background: #e2bd68;
-    }
-
-    .download-btn {
-      background: #eef2f7;
-      color: #253044;
-    }
-
-    .download-btn:hover {
-      background: #e2e7ef;
-    }
-
-    /* Modal */
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(5, 12, 24, .72);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 9999;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      width: min(1000px, 100%);
-      max-height: 92vh;
-      overflow-y: auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.3);
-    }
-
-    .modal-header {
-      background: #0b1628;
-      color: white;
-      padding: 20px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      position: sticky;
-      top: 0;
-      z-index: 5;
-    }
-
-    .modal-header h3 {
-      font-size: 20px;
-    }
-
-    .modal-header p {
-      color: #d3ad55;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .close-btn {
-      border: 0;
-      background: rgba(255,255,255,.12);
-      color: white;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .modal-body {
-      padding: 24px;
-    }
-
-    .modal-section {
-      margin-bottom: 25px;
-    }
-
-    .modal-section-title {
-      font-size: 15px;
-      color: #0b1628;
-      font-weight: 800;
-      border-left: 4px solid #d3ad55;
-      padding-left: 10px;
-      margin-bottom: 15px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .info-card {
-      background: #f8f9fb;
-      border: 1px solid #e5e8ed;
-      border-radius: 8px;
-      padding: 13px;
-    }
-
-    .info-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      color: #7b8493;
-      margin-bottom: 5px;
-      font-weight: 700;
-    }
-
-    .info-value {
-      color: #1d2636;
-      font-size: 14px;
-      word-break: break-word;
-    }
-
-    .muted {
-      color: #9299a6;
-    }
-
-    .photo-card {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .biodata-photo {
-      width: 125px;
-      height: 145px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid #d3ad55;
-      background: #f1f2f4;
-    }
-
-    .modal-footer {
-      padding: 18px 24px;
-      border-top: 1px solid #e7e9ee;
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      position: sticky;
-      bottom: 0;
-      background: white;
-    }
-
-    .primary-btn,
-    .secondary-btn {
-      padding: 11px 18px;
-      border-radius: 7px;
-      border: 0;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .primary-btn {
-      background: #d3ad55;
-      color: #0b1628;
-    }
-
-    .secondary-btn {
-      background: #edf0f4;
-      color: #283246;
-    }
-
-    .loading-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(5,12,24,.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-    }
-
-    .loading-box-inner {
-      background: white;
-      padding: 25px 35px;
-      border-radius: 12px;
-      text-align: center;
-      min-width: 220px;
-    }
-
-    .spinner {
-      width: 35px;
-      height: 35px;
-      border: 4px solid #e7e9ed;
-      border-top-color: #d3ad55;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-      margin: 0 auto 14px;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .small-btn {
-      border: 0;
-      border-radius: 6px;
-      padding: 8px 10px;
-      background: #0b1628;
-      color: white;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .small-btn:hover {
-      background: #172b47;
-    }
-
-    @media (max-width: 700px) {
-
-      header {
-        padding: 15px;
-      }
-
-      .brand-text h1 {
-        font-size: 17px;
-      }
-
-      .brand img {
-        width: 43px;
-        height: 43px;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .search-box {
-        width: 100%;
-      }
-
-      .table-header {
-        align-items: stretch;
-      }
-
-      .modal-body {
-        padding: 17px;
-      }
-
-      .modal-footer {
-        flex-direction: column;
-      }
-
-      .primary-btn,
-      .secondary-btn {
-        width: 100%;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Applications | RAYHAR ACADEMY</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="config.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f5f7;
+  color:#172033;
+  min-height:100vh
+}
+
+header{
+  background:#0b1628;
+  color:#fff;
+  padding:16px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  box-shadow:0 3px 15px rgba(0,0,0,.15)
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px
+}
+
+.brand img{
+  width:50px;
+  height:50px;
+  object-fit:contain;
+  border-radius:8px;
+  background:#fff
+}
+
+.brand h1{font-size:20px}
+.brand p{
+  color:#d3ad55;
+  font-size:12px;
+  margin-top:3px
+}
+
+.logout{
+  border:1px solid #d3ad55;
+  background:transparent;
+  color:#fff;
+  padding:9px 17px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:700
+}
+
+.logout:hover{
+  background:#d3ad55;
+  color:#0b1628
+}
+
+main{
+  max-width:1300px;
+  margin:30px auto;
+  padding:0 20px 50px
+}
+
+.heading{
+  margin-bottom:22px
+}
+
+.heading h2{
+  font-size:28px;
+  color:#0b1628;
+  margin-bottom:6px
+}
+
+.heading p{color:#697386}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:22px
+}
+
+.stat{
+  background:#fff;
+  border:1px solid #e1e5eb;
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 4px 15px rgba(0,0,0,.04)
+}
+
+.stat small{
+  color:#727b8c;
+  font-size:12px
+}
+
+.stat strong{
+  display:block;
+  font-size:28px;
+  margin-top:7px;
+  color:#0b1628
+}
+
+.card{
+  background:#fff;
+  border:1px solid #e1e5eb;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 5px 20px rgba(0,0,0,.05)
+}
+
+.toolbar{
+  padding:17px 20px;
+  border-bottom:1px solid #e7e9ee;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center
+}
+
+.search{
+  flex:1;
+  min-width:230px;
+  padding:11px 13px;
+  border:1px solid #d5dae2;
+  border-radius:7px;
+  outline:none
+}
+
+.search:focus{border-color:#c9a34d}
+
+.filter{
+  padding:11px 13px;
+  border:1px solid #d5dae2;
+  border-radius:7px;
+  background:#fff;
+  outline:none
+}
+
+.table-wrap{overflow-x:auto}
+
+table{
+  width:100%;
+  min-width:1050px;
+  border-collapse:collapse
+}
+
+th{
+  padding:13px 15px;
+  background:#f8f9fb;
+  color:#596274;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+  text-align:left
+}
+
+td{
+  padding:15px;
+  border-top:1px solid #edf0f4;
+  font-size:13px;
+  vertical-align:middle
+}
+
+.student-name{
+  font-weight:700;
+  color:#172033
+}
+
+.email{
+  color:#7b8493;
+  font-size:11px;
+  margin-top:3px
+}
+
+.sid{
+  color:#9b7725;
+  font-weight:700;
+  font-size:12px
+}
+
+.status{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase
+}
+
+.pending{
+  background:#fff3cf;
+  color:#80610b
+}
+
+.admitted{
+  background:#e5f7ed;
+  color:#18794e
+}
+
+.btn{
+  border:0;
+  border-radius:6px;
+  padding:8px 10px;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:700;
+  margin:2px
+}
+
+.view{background:#0b1628;color:#fff}
+.gold{background:#d3ad55;color:#0b1628}
+.download{background:#edf0f4;color:#283246}
+.btn:hover{opacity:.85}
+
+.empty{
+  padding:50px 20px;
+  text-align:center;
+  color:#737b8c
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(5,12,24,.72);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:9999
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+  width:min(1000px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:15px
+}
+
+.modal-head{
+  background:#0b1628;
+  color:#fff;
+  padding:19px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:2
+}
+
+.modal-head h3{font-size:19px}
+.modal-head p{
+  color:#d3ad55;
+  font-size:11px;
+  margin-top:3px
+}
+
+.close{
+  border:0;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  font-size:20px;
+  cursor:pointer
+}
+
+.modal-body{padding:22px}
+
+.section{
+  margin-bottom:24px
+}
+
+.section h4{
+  color:#0b1628;
+  border-left:4px solid #d3ad55;
+  padding-left:9px;
+  margin-bottom:13px;
+  font-size:14px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px
+}
+
+.info{
+  background:#f8f9fb;
+  border:1px solid #e4e7ec;
+  border-radius:7px;
+  padding:11px
+}
+
+.info small{
+  display:block;
+  color:#7b8493;
+  font-size:10px;
+  text-transform:uppercase;
+  font-weight:700;
+  margin-bottom:5px
+}
+
+.info span{
+  font-size:13px;
+  word-break:break-word
+}
+
+.photo{
+  width:125px;
+  height:145px;
+  object-fit:cover;
+  border:2px solid #d3ad55;
+  border-radius:8px;
+  background:#eee
+}
+
+.photo-area{
+  display:flex;
+  align-items:center;
+  gap:18px
+}
+
+.modal-foot{
+  padding:16px 22px;
+  border-top:1px solid #e7e9ee;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  position:sticky;
+  bottom:0;
+  background:#fff
+}
+
+.big-btn{
+  border:0;
+  border-radius:7px;
+  padding:11px 17px;
+  cursor:pointer;
+  font-weight:700
+}
+
+.big-gold{background:#d3ad55;color:#0b1628}
+.big-gray{background:#edf0f4;color:#283246}
+
+.loading{
+  position:fixed;
+  inset:0;
+  background:rgba(5,12,24,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10000
+}
+
+.loading.show{display:flex}
+
+.loader-box{
+  background:#fff;
+  padding:28px 35px;
+  border-radius:12px;
+  text-align:center
+}
+
+.spinner{
+  width:35px;
+  height:35px;
+  border:4px solid #e7e9ed;
+  border-top-color:#d3ad55;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:auto auto 13px
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+@media(max-width:800px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:600px){
+  header{padding:14px}
+  .brand h1{font-size:16px}
+  .brand img{width:42px;height:42px}
+  main{padding:0 12px 40px}
+  .stats{grid-template-columns:1fr 1fr}
+  .grid{grid-template-columns:1fr}
+  .photo-area{align-items:flex-start}
+  .modal-body{padding:15px}
+  .modal-foot{flex-direction:column}
+  .big-btn{width:100%}
+}
+</style>
 </head>
 
 <body>
 
 <header>
-
   <div class="brand">
-
-    <img
-      src="logo.jpg"
-      alt="RAYHAR ACADEMY"
-    >
-
-    <div class="brand-text">
-
-      <h1>
-        RAYHAR ACADEMY
-      </h1>
-
-      <p>
-        For Knowledge and Leadership
-      </p>
-
+    <img src="logo.jpg" alt="RAYHAR ACADEMY">
+    <div>
+      <h1>RAYHAR ACADEMY</h1>
+      <p>For Knowledge and Leadership</p>
     </div>
-
   </div>
 
-  <button
-    class="logout-btn"
-    onclick="logout()"
-  >
-    Logout
-  </button>
-
+  <button class="logout" onclick="logout()">Logout</button>
 </header>
-
 
 <main>
 
-  <div class="page-heading">
-
-    <h2>
-      Student Applications
-    </h2>
-
-    <p>
-      Review submitted student biodata and manage
-      admissions. Admission letters are generated
-      automatically by the system.
-    </p>
-
+  <div class="heading">
+    <h2>Student Applications</h2>
+    <p>Review applications, view biodata and manage admission decisions.</p>
   </div>
-
 
   <div class="stats">
-
-    <div class="stat-card">
-
-      <div class="stat-label">
-        Total Applications
-      </div>
-
-      <div
-        class="stat-number"
-        id="totalApplications"
-      >
-        0
-      </div>
-
+    <div class="stat">
+      <small>Total Applications</small>
+      <strong id="total">0</strong>
     </div>
 
-
-    <div class="stat-card">
-
-      <div class="stat-label">
-        Pending Review
-      </div>
-
-      <div
-        class="stat-number"
-        id="pendingApplications"
-      >
-        0
-      </div>
-
+    <div class="stat">
+      <small>Pending</small>
+      <strong id="pending">0</strong>
     </div>
 
-
-    <div class="stat-card">
-
-      <div class="stat-label">
-        Admitted Students
-      </div>
-
-      <div
-        class="stat-number"
-        id="admittedApplications"
-      >
-        0
-      </div>
-
+    <div class="stat">
+      <small>Admitted</small>
+      <strong id="admitted">0</strong>
     </div>
 
+    <div class="stat">
+      <small>Showing</small>
+      <strong id="showing">0</strong>
+    </div>
   </div>
 
+  <div class="card">
 
-  <div class="table-card">
-
-    <div class="table-header">
-
-      <h3>
-        Submitted Applications
-      </h3>
+    <div class="toolbar">
 
       <input
+        id="search"
+        class="search"
         type="search"
-        id="searchBox"
-        class="search-box"
-        placeholder="Search student..."
-        oninput="filterApplications()"
+        placeholder="Search name, email or Student ID..."
+        oninput="render()"
       >
 
-    </div>
-
-
-    <div id="loadingBox">
-
-      <div class="loading-box">
-        Loading student applications...
-      </div>
+      <select id="statusFilter" class="filter" onchange="render()">
+        <option value="all">All Applications</option>
+        <option value="submitted">Pending</option>
+        <option value="admitted">Admitted</option>
+      </select>
 
     </div>
 
-
-    <div
-      id="errorBox"
-      class="error-box"
-      style="display:none;"
-    ></div>
-
-
-    <div
-      id="emptyBox"
-      class="empty-box"
-      style="display:none;"
-    >
-      No student applications have been submitted yet.
+    <div id="empty" class="empty" style="display:none">
+      No applications found.
     </div>
 
-
-    <div
-      id="tableContainer"
-      class="table-wrapper"
-      style="display:none;"
-    >
-
-      <table>
-
+    <div class="table-wrap">
+      <table id="table">
         <thead>
-
           <tr>
-
-            <th>
-              Student
-            </th>
-
-            <th>
-              Student ID
-            </th>
-
-            <th>
-              Department / Programme
-            </th>
-
-            <th>
-              Study Level
-            </th>
-
-            <th>
-              Status
-            </th>
-
-            <th>
-              Submitted
-            </th>
-
-            <th>
-              Actions
-            </th>
-
+            <th>Student</th>
+            <th>Student ID</th>
+            <th>Programme</th>
+            <th>Level</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th>Actions</th>
           </tr>
-
         </thead>
 
-        <tbody id="applicationsTableBody"></tbody>
-
+        <tbody id="tbody"></tbody>
       </table>
-
     </div>
 
   </div>
 
 </main>
 
+<!-- BIODATA MODAL -->
 
-<!-- ================================
-     BIODATA MODAL
-================================ -->
+<div id="modal" class="modal">
 
-<div
-  class="modal"
-  id="biodataModal"
->
+  <div class="modal-box">
 
-  <div class="modal-content">
-
-    <div class="modal-header">
-
+    <div class="modal-head">
       <div>
-
-        <h3>
-          Student Biodata
-        </h3>
-
-        <p id="modalStudentId">
-          RAYHAR ACADEMY
-        </p>
-
+        <h3>Student Biodata</h3>
+        <p id="modalId">RAYHAR ACADEMY</p>
       </div>
 
-      <button
-        class="close-btn"
-        onclick="closeModal()"
-      >
-        ×
-      </button>
-
+      <button class="close" onclick="closeModal()">×</button>
     </div>
 
+    <div id="modalBody" class="modal-body"></div>
 
-    <div
-      class="modal-body"
-      id="modalBody"
-    ></div>
-
-
-    <div class="modal-footer">
+    <div class="modal-foot">
 
       <button
-        class="secondary-btn"
+        id="applicationBtn"
+        class="big-btn big-gray"
+        onclick="downloadApplication()"
+      >
+        Download Application
+      </button>
+
+      <button
+        id="admissionBtn"
+        class="big-btn big-gold"
+        onclick="issueAdmission()"
+      >
+        Issue Admission Letter
+      </button>
+
+      <button
+        class="big-btn big-gray"
         onclick="closeModal()"
       >
         Close
       </button>
 
-      <button
-        class="primary-btn"
-        id="modalAdmissionBtn"
-      >
-        Issue Admission Letter
-      </button>
-
     </div>
 
   </div>
 
 </div>
 
+<!-- LOADING -->
 
-<!-- ================================
-     LOADING OVERLAY
-================================ -->
-
-<div
-  class="loading-overlay"
-  id="loadingOverlay"
->
-
-  <div class="loading-box-inner">
-
+<div id="loading" class="loading">
+  <div class="loader-box">
     <div class="spinner"></div>
-
-    <div id="loadingMessage">
-      Please wait...
-    </div>
-
+    <div id="loadingText">Please wait...</div>
   </div>
-
 </div>
-
 
 <script>
 
-  /* =================================
-     SUPABASE
-  ================================= */
-
-  const client =
-    window.supabaseClient ||
-    window.supabase.createClient(
-      window.SUPABASE_URL,
-      window.SUPABASE_PUBLISHABLE_KEY
-    );
-
-
-  let currentUser = null;
-
-  let studentApplications = [];
-
-  let filteredApplications = [];
-
-  let currentApplication = null;
-
-
-  /* =================================
-     INITIALIZE
-  ================================= */
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    initialize
+const client =
+  window.supabaseClient ||
+  window.supabase.createClient(
+    window.SUPABASE_URL,
+    window.SUPABASE_PUBLISHABLE_KEY
   );
 
+let applications = [];
+let currentApplication = null;
 
-  async function initialize() {
 
-    try {
+/* =========================
+   INITIALIZE
+========================= */
 
-      const {
-        data,
-        error
-      } =
-        await client.auth.getSession();
+document.addEventListener("DOMContentLoaded", init);
 
-      if (error) {
-        throw error;
-      }
+async function init(){
 
-      if (!data.session) {
+  try{
 
-        window.location.href =
-          "admin-login.html";
+    const {data,error} =
+      await client.auth.getSession();
 
-        return;
+    if(error) throw error;
 
-      }
-
-      currentUser =
-        data.session.user;
-
-
-      /*
-       * Confirm administrator role.
-       */
-      const {
-        data: profile,
-        error: profileError
-      } =
-        await client
-          .from("profiles")
-          .select(
-            "id, full_name, email, role"
-          )
-          .eq(
-            "id",
-            currentUser.id
-          )
-          .maybeSingle();
-
-
-      if (profileError) {
-        throw profileError;
-      }
-
-
-      if (
-        !profile ||
-        profile.role !== "admin"
-      ) {
-
-        await client.auth.signOut();
-
-        window.location.href =
-          "admin-login.html";
-
-        return;
-
-      }
-
-
-      await loadApplications();
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Initialization error:",
-        error
-      );
-
-      showError(
-        "Unable to load the admin page.\n\n" +
-        (
-          error.message ||
-          "Please log in again."
-        )
-      );
-
-    }
-
-  }
-
-
-  /* =================================
-     LOAD APPLICATIONS
-  ================================= */
-
-  async function loadApplications() {
-
-    try {
-
-      showLoadingBox();
-
-      /*
-       * Load all required information
-       * directly from Supabase.
-       *
-       * No RPC is required.
-       */
-
-      const [
-        profilesResult,
-        biodataResult,
-        enrollmentsResult,
-        departmentsResult,
-        admissionsResult
-      ] =
-        await Promise.all([
-
-          client
-            .from("profiles")
-            .select("*")
-            .eq("role", "student")
-            .order(
-              "created_at",
-              {
-                ascending: false
-              }
-            ),
-
-          client
-            .from("student_biodata")
-            .select("*"),
-
-          client
-            .from("enrollments")
-            .select("*")
-            .eq(
-              "status",
-              "active"
-            ),
-
-          client
-            .from("departments")
-            .select("*"),
-
-          client
-            .from("admission_letters")
-            .select("*")
-
-        ]);
-
-
-      if (profilesResult.error) {
-        throw profilesResult.error;
-      }
-
-      if (biodataResult.error) {
-        throw biodataResult.error;
-      }
-
-      if (enrollmentsResult.error) {
-        throw enrollmentsResult.error;
-      }
-
-      if (departmentsResult.error) {
-        throw departmentsResult.error;
-      }
-
-      if (admissionsResult.error) {
-        throw admissionsResult.error;
-      }
-
-
-      const profiles =
-        profilesResult.data || [];
-
-      const biodataRows =
-        biodataResult.data || [];
-
-      const enrollmentRows =
-        enrollmentsResult.data || [];
-
-      const departments =
-        departmentsResult.data || [];
-
-      const admissions =
-        admissionsResult.data || [];
-
-
-      /*
-       * Build the application objects.
-       */
-      studentApplications =
-        profiles
-          .map(
-            profile => {
-
-              const biodata =
-                biodataRows.find(
-                  row =>
-                    row.student_id ===
-                    profile.id
-                );
-
-
-              /*
-               * Only students who have
-               * completed biodata appear.
-               */
-              if (!biodata) {
-                return null;
-              }
-
-
-              const enrollments =
-                enrollmentRows
-                  .filter(
-                    row =>
-                      row.student_id ===
-                      profile.id
-                  )
-                  .map(
-                    enrollment => {
-
-                      const department =
-                        departments.find(
-                          department =>
-                            department.id ===
-                            enrollment.department_id
-                        );
-
-
-                      return {
-                        ...enrollment,
-                        department:
-                          department || null
-                      };
-
-                    }
-                  );
-
-
-              const admission =
-                admissions.find(
-                  row =>
-                    row.student_id ===
-                    profile.id
-                ) || null;
-
-
-              return {
-                profile,
-                biodata,
-                enrollments,
-                admission
-              };
-
-            }
-          )
-          .filter(Boolean);
-
-
-      filteredApplications =
-        [...studentApplications];
-
-
-      updateStatistics();
-
-      renderApplications();
-
-      hideLoadingBox();
-
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Application loading error:",
-        error
-      );
-
-      hideLoadingBox();
-
-      showError(
-        "Unable to load student applications.\n\n" +
-        (
-          error.message ||
-          String(error)
-        )
-      );
-
-    }
-
-  }
-
-
-  /* =================================
-     STATISTICS
-  ================================= */
-
-  function updateStatistics() {
-
-    const total =
-      studentApplications.length;
-
-
-    const pending =
-      studentApplications.filter(
-        application =>
-          (
-            application.biodata
-              .admission_status ||
-            "submitted"
-          ).toLowerCase() !==
-          "admitted"
-      ).length;
-
-
-    const admitted =
-      studentApplications.filter(
-        application =>
-          (
-            application.biodata
-              .admission_status ||
-            ""
-          ).toLowerCase() ===
-          "admitted"
-      ).length;
-
-
-    document
-      .getElementById(
-        "totalApplications"
-      )
-      .textContent =
-      total;
-
-
-    document
-      .getElement
-        document
-      .getElementById(
-        "pendingApplications"
-      )
-      .textContent =
-      pending;
-
-
-    document
-      .getElementById(
-        "admittedApplications"
-      )
-      .textContent =
-      admitted;
-
-  }
-
-
-  /* =================================
-     RENDER TABLE
-  ================================= */
-
-  function renderApplications() {
-
-    const body =
-      document.getElementById(
-        "applicationsTableBody"
-      );
-
-    const table =
-      document.getElementById(
-        "tableContainer"
-      );
-
-    const empty =
-      document.getElementById(
-        "emptyBox"
-      );
-
-
-    body.innerHTML = "";
-
-
-    if (
-      filteredApplications.length === 0
-    ) {
-
-      table.style.display =
-        "none";
-
-      empty.style.display =
-        "block";
-
+    if(!data.session){
+      location.href="admin-login.html";
       return;
-
     }
 
+    const {data:profile,error:profileError} =
+      await client
+        .from("profiles")
+        .select("id,role")
+        .eq("id",data.session.user.id)
+        .maybeSingle();
 
-    empty.style.display =
-      "none";
+    if(profileError) throw profileError;
 
-    table.style.display =
-      "block";
+    if(!profile || profile.role!=="admin"){
+      await client.auth.signOut();
+      location.href="admin-login.html";
+      return;
+    }
 
+    await loadApplications();
 
-    filteredApplications.forEach(
-      application => {
+  }catch(error){
 
-        const profile =
-          application.profile;
+    console.error(error);
 
-        const biodata =
-          application.biodata;
-
-        const admission =
-          application.admission;
-
-
-        const departmentsText =
-          getDepartmentsText(
-            application
-          );
-
-
-        const status =
-          biodata.admission_status ||
-          "submitted";
-
-
-        const statusClass =
-          getStatusClass(
-            status
-          );
-
-
-        const row =
-          document.createElement(
-            "tr"
-          );
-
-
-        row.innerHTML = `
-
-          <td>
-
-            <div class="student-name">
-              ${escapeHtml(
-                profile.full_name ||
-                "Unnamed Student"
-              )}
-            </div>
-
-            <div class="student-email">
-              ${escapeHtml(
-                profile.email ||
-                ""
-              )}
-            </div>
-
-          </td>
-
-
-          <td>
-
-            <div class="student-id">
-              ${escapeHtml(
-                profile.student_id ||
-                "Not assigned"
-              )}
-            </div>
-
-          </td>
-
-
-          <td>
-
-            ${escapeHtml(
-              departmentsText
-            )}
-
-          </td>
-
-
-          <td>
-
-            ${escapeHtml(
-              profile.study_level ||
-              "Beginner"
-            )}
-
-          </td>
-
-
-          <td>
-
-            <span
-              class="status ${statusClass}"
-            >
-              ${escapeHtml(
-                status
-              )}
-            </span>
-
-          </td>
-
-
-          <td>
-
-            ${escapeHtml(
-              formatDate(
-                biodata.submitted_at
-              )
-            )}
-
-          </td>
-
-
-          <td>
-
-            <button
-              class="action-btn view-btn"
-              onclick="viewDetails('${profile.id}')"
-            >
-              View Full Biodata
-            </button>
-
-
-            ${
-              admission
-                ? `
-                  <button
-                    class="action-btn download-btn"
-                    onclick="downloadAdmission('${escapeJs(
-                      admission.storage_path
-                    )}')"
-                  >
-                    Admission Letter
-                  </button>
-                `
-                : `
-                  <button
-                    class="action-btn admit-btn"
-                    onclick="issueAdmission('${profile.id}')"
-                  >
-                    Issue Admission
-                  </button>
-                `
-            }
-
-          </td>
-
-        `;
-
-
-        body.appendChild(
-          row
-        );
-
-      }
+    alert(
+      "Unable to load applications.\n\n"+
+      (error.message || "Please try again.")
     );
 
   }
+}
 
 
-  /* =================================
-     SEARCH
-  ================================= */
+/* =========================
+   LOAD DATA
+========================= */
 
-  function filterApplications() {
+async function loadApplications(){
 
-    const query =
-      document
-        .getElementById(
-          "searchBox"
-        )
-        .value
-        .trim()
-        .toLowerCase();
+  showLoading("Loading applications...");
 
+  try{
 
-    if (!query) {
+    const [
+      profilesRes,
+      biodataRes,
+      enrollmentsRes,
+      departmentsRes,
+      lettersRes
+    ] = await Promise.all([
 
-      filteredApplications =
-        [...studentApplications];
+      client
+        .from("profiles")
+        .select("*")
+        .eq("role","student")
+        .order("created_at",{ascending:false}),
 
-      renderApplications();
+      client
+        .from("student_biodata")
+        .select("*"),
 
-      return;
+      client
+        .from("enrollments")
+        .select("*")
+        .eq("status","active"),
 
-    }
+      client
+        .from("departments")
+        .select("*"),
 
+      client
+        .from("admission_letters")
+        .select("*")
 
-    filteredApplications =
-      studentApplications.filter(
-        application => {
+    ]);
 
-          const profile =
-            application.profile;
+    if(profilesRes.error) throw profilesRes.error;
+    if(biodataRes.error) throw biodataRes.error;
+    if(enrollmentsRes.error) throw enrollmentsRes.error;
+    if(departmentsRes.error) throw departmentsRes.error;
+    if(lettersRes.error) throw lettersRes.error;
 
-          const biodata =
-            application.biodata;
 
+    const profiles=profilesRes.data||[];
+    const biodata=biodataRes.data||[];
+    const enrollments=enrollmentsRes.data||[];
+    const departments=departmentsRes.data||[];
+    const letters=lettersRes.data||[];
 
-          const text = [
-            profile.full_name,
-            profile.email,
-            profile.student_id,
-            profile.phone,
-            profile.department,
-            profile.study_level,
-            biodata.country,
-            biodata.province,
-            biodata.district_city,
-            biodata.nationality,
-            biodata.next_of_kin_name
-          ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
 
+    applications=profiles.map(profile=>{
 
-          return text.includes(
-            query
-          );
-
-        }
-      );
-
-
-    renderApplications();
-
-  }
-
-
-  /* =================================
-     VIEW FULL BIODATA
-  ================================= */
-
-  async function viewDetails(
-    studentId
-  ) {
-
-    const application =
-      studentApplications.find(
-        item =>
-          item.profile.id ===
-          studentId
-      );
-
-
-    if (!application) {
-
-      alert(
-        "Student information could not be found."
-      );
-
-      return;
-
-    }
-
-
-    currentApplication =
-      application;
-
-
-    const profile =
-      application.profile;
-
-    const biodata =
-      application.biodata;
-
-    const admission =
-      application.admission;
-
-
-    const modal =
-      document.getElementById(
-        "biodataModal"
-      );
-
-    const body =
-      document.getElementById(
-        "modalBody"
-      );
-
-
-    document
-      .getElementById(
-        "modalStudentId"
-      )
-      .textContent =
-      profile.student_id ||
-      "Student Application";
-
-
-    body.innerHTML = `
-
-      <div class="modal-section">
-
-        <div class="modal-section-title">
-          Personal Information
-        </div>
-
-        <div class="grid">
-
-          <div class="info-card photo-card">
-
-            <div>
-
-              <div class="info-label">
-                Student Photo
-              </div>
-
-              <div class="info-value">
-                Loading photo...
-              </div>
-
-            </div>
-
-            <div
-              id="studentPhotoContainer"
-            ></div>
-
-          </div>
-
-
-          ${info(
-            "Full Name",
-            profile.full_name
-          )}
-
-          ${info(
-            "Email",
-            profile.email
-          )}
-
-          ${info(
-            "Phone",
-            profile.phone
-          )}
-
-          ${info(
-            "Date of Birth",
-            formatDateOnly(
-              biodata.date_of_birth
-            )
-          )}
-
-          ${info(
-            "Gender",
-            biodata.gender
-          )}
-
-          ${info(
-            "Nationality",
-            biodata.nationality
-          )}
-
-        </div>
-
-      </div>
-
-
-      <div class="modal-section">
-
-        <div class="modal-section-title">
-          Location Information
-        </div>
-
-        <div class="grid">
-
-          ${info(
-            "Country",
-            biodata.country
-          )}
-
-          ${info(
-            "State / Province / Region",
-            biodata.province
-          )}
-
-          ${info(
-            "District / City / Area",
-            biodata.district_city
-          )}
-
-          ${info(
-            "State of Origin",
-            biodata.state_of_origin
-          )}
-
-          ${info(
-            "LGA",
-            biodata.lga
-          )}
-
-          ${info(
-            "Residential Address",
-            biodata.residential_address
-          )}
-
-        </div>
-
-      </div>
-
-
-      <div class="modal-section">
-
-        <div class="modal-section-title">
-          Academic Information
-        </div>
-
-        <div class="grid">
-
-          ${info(
-            "Student ID",
-            profile.student_id
-          )}
-
-          ${info(
-            "Study Level",
-            profile.study_level ||
-            "Beginner"
-          )}
-
-          ${info(
-            "Department / Programme",
-            getDepartmentsText(
-              application
-            )
-          )}
-
-          ${info(
-            "Admission Status",
-            biodata.admission_status ||
-            "Submitted"
-          )}
-
-          ${info(
-            "Submitted",
-            formatDate(
-              biodata.submitted_at
-            )
-          )}
-
-          ${info(
-            "Last Updated",
-            formatDate(
-              biodata.updated_at
-            )
-          )}
-
-          ${info(
-            "Reviewed",
-            formatDate(
-              biodata.reviewed_at
-            )
-          )}
-
-        </div>
-
-      </div>
-
-
-      <div class="modal-section">
-
-        <div class="modal-section-title">
-          Next of Kin
-        </div>
-
-        <div class="grid">
-
-          ${info(
-            "Name",
-            biodata.next_of_kin_name
-          )}
-
-          ${info(
-            "Phone",
-            biodata.next_of_kin_phone
-          )}
-
-        </div>
-
-      </div>
-
-
-      <div class="modal-section">
-
-        <div class="modal-section-title">
-          Documents
-        </div>
-
-        <div class="grid">
-
-          <div class="info-card">
-
-            <div class="info-label">
-              Application Form
-            </div>
-
-            <div class="info-value">
-
-              ${
-                biodata.application_pdf_path
-                  ? `
-                    <button
-                      class="small-btn"
-                      onclick="downloadApplication('${escapeJs(
-                        biodata.application_pdf_path
-                      )}')"
-                    >
-                      Download Application PDF
-                    </button>
-                  `
-                  : `
-                    <span class="muted">
-                      No application PDF uploaded
-                    </span>
-                  `
-              }
-
-            </div>
-
-          </div>
-
-
-          <div class="info-card">
-
-            <div class="info-label">
-              Admission Letter
-            </div>
-
-            <div class="info-value">
-
-              ${
-                admission
-                  ? `
-                    <button
-                      class="small-btn"
-                      onclick="downloadAdmission('${escapeJs(
-                        admission.storage_path
-                      )}')"
-                    >
-                      Download Admission Letter
-                    </button>
-                  `
-                  : `
-                    <span class="muted">
-                      Not issued yet
-                    </span>
-                  `
-              }
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="modal-section">
-
-        <div class="modal-section-title">
-          Admission Letter Information
-        </div>
-
-        <div class="grid">
-
-          ${info(
-            "Letter Status",
-            admission
-              ? "Issued"
-              : "Not Issued"
-          )}
-
-          ${info(
-            "Issued Date",
-            admission
-              ? formatDate(
-                  admission.issued_at
-                )
-              : "—"
-          )}
-
-          ${info(
-            "Download Count",
-            admission
-              ? String(
-                  admission.download_count || 0
-                )
-              : "0"
-          )}
-
-          ${info(
-            "Last Downloaded",
-            admission &&
-            admission.last_downloaded_at
-              ? formatDate(
-                  admission.last_downloaded_at
-                )
-              : "Never"
-          )}
-
-        </div>
-
-      </div>
-
-    `;
-
-
-    const admissionButton =
-      document.getElementById(
-        "modalAdmissionBtn"
-      );
-
-
-    admissionButton.textContent =
-      admission
-        ? "Re-issue Admission Letter"
-        : "Issue Admission Letter";
-
-
-    admissionButton.onclick =
-      () =>
-        issueAdmission(
-          profile.id
+      const bio=
+        biodata.find(
+          x=>x.student_id===profile.id
         );
 
+      if(!bio) return null;
 
-    modal.classList.add(
-      "active"
-    );
-
-
-    await loadStudentPhoto(
-      biodata.photo_path
-    );
-
-  }
-    /* =================================
-     STUDENT PHOTO
-  ================================= */
-
-  async function loadStudentPhoto(
-    photoPath
-  ) {
-
-    const container =
-      document.getElementById(
-        "studentPhotoContainer"
-      );
-
-
-    if (!container) {
-      return;
-    }
-
-
-    if (!photoPath) {
-
-      container.innerHTML = `
-        <div
-          class="muted"
-          style="padding:20px;"
-        >
-          No photo uploaded
-        </div>
-      `;
-
-      return;
-
-    }
-
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await client.storage
-          .from(
-            "student-photos"
+      const studentEnrollments=
+        enrollments
+          .filter(
+            x=>x.student_id===profile.id
           )
-          .createSignedUrl(
-            photoPath,
-            300
-          );
+          .map(x=>{
 
+            const department=
+              departments.find(
+                d=>d.id===x.department_id
+              );
 
-      if (error) {
-        throw error;
-      }
-
-
-      container.innerHTML = `
-        <img
-          src="${escapeHtml(
-            data.signedUrl
-          )}"
-          alt="Student Photo"
-          class="biodata-photo"
-        >
-      `;
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Photo error:",
-        error
-      );
-
-      container.innerHTML = `
-        <div
-          class="muted"
-          style="padding:20px;"
-        >
-          Unable to load photo
-        </div>
-      `;
-
-    }
-
-  }
-
-
-  /* =================================
-     ISSUE / RE-ISSUE ADMISSION
-  ================================= */
-
-  async function issueAdmission(
-    studentId
-  ) {
-
-    const application =
-      studentApplications.find(
-        item =>
-          item.profile.id ===
-          studentId
-      );
-
-
-    if (!application) {
-
-      alert(
-        "Student application could not be found."
-      );
-
-      return;
-
-    }
-
-
-    const profile =
-      application.profile;
-
-    const existing =
-      application.admission;
-
-
-    const question =
-      existing
-        ? "This will generate a new admission letter for this student. Continue?"
-        : "Issue an admission letter for this student?";
-
-
-    if (!confirm(question)) {
-      return;
-    }
-
-
-    try {
-
-      showLoading(
-        existing
-          ? "Re-issuing admission letter..."
-          : "Generating admission letter..."
-      );
-
-
-      const pdfBlob =
-        await createAdmissionPDF(
-          profile,
-          application
-        );
-
-
-      const timestamp =
-        Date.now();
-
-
-      const storagePath =
-        `${profile.id}/admission-letter-${timestamp}.pdf`;
-
-
-      const {
-        error: uploadError
-      } =
-        await client.storage
-          .from(
-            "admission-letters"
-          )
-          .upload(
-            storagePath,
-            pdfBlob,
-            {
-              contentType:
-                "application/pdf",
-
-              upsert:
-                false
-            }
-          );
-
-
-      if (uploadError) {
-        throw uploadError;
-      }
-
-
-      /*
-       * Remove the old database record
-       * when re-issuing.
-       */
-      if (existing) {
-
-        const {
-          error: deleteError
-        } =
-          await client
-            .from(
-              "admission_letters"
-            )
-            .delete()
-            .eq(
-              "student_id",
-              profile.id
-            );
-
-
-        if (deleteError) {
-          throw deleteError;
-        }
-
-      }
-
-
-      /*
-       * Create the new admission record.
-       */
-      const {
-        error: insertError
-      } =
-        await client
-          .from(
-            "admission_letters"
-          )
-          .insert({
-
-            student_id:
-              profile.id,
-
-            file_name:
-              "RAYHAR-Academy-Admission-Letter.pdf",
-
-            storage_path:
-              storagePath,
-
-            issued_by:
-              currentUser.id,
-
-            student_name:
-              profile.full_name,
-
-            student_id_number:
-              profile.student_id,
-
-            departments_text:
-              getDepartmentsText(
-                application
-              ),
-
-            study_level:
-              profile.study_level ||
-              "Beginner",
-
-            issued_at:
-              new Date().toISOString(),
-
-            download_count:
-              0
+            return {
+              ...x,
+              department
+            };
 
           });
 
 
-      if (insertError) {
-        throw insertError;
-      }
+      const letter=
+        letters.find(
+          x=>x.student_id===profile.id
+        ) || null;
 
 
-      /*
-       * Mark the application as admitted.
-       */
-      const {
-        error: biodataError
-      } =
-        await client
-          .from(
-            "student_biodata"
-          )
-          .update({
+      return {
+        profile,
+        biodata:bio,
+        enrollments:studentEnrollments,
+        letter
+      };
 
-            admission_status:
-              "admitted",
-
-            reviewed_at:
-              new Date().toISOString(),
-
-            reviewed_by:
-              currentUser.id,
-
-            updated_at:
-              new Date().toISOString()
-
-          })
-          .eq(
-            "student_id",
-            profile.id
-          );
+    }).filter(Boolean);
 
 
-      if (biodataError) {
-        throw biodataError;
-      }
+    updateStats();
+    render();
 
+  }finally{
 
-      alert(
-        existing
-          ? "Admission letter re-issued successfully."
-          : "Admission letter issued successfully."
-      );
-
-
-      closeModal();
-
-      await loadApplications();
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Admission error:",
-        error
-      );
-
-
-      alert(
-        "Unable to issue the admission letter.\n\n" +
-        (
-          error.message ||
-          "Please try again."
-        )
-      );
-
-    }
-
-    finally {
-
-      hideLoading();
-
-    }
+    hideLoading();
 
   }
 
+}
 
-  /* =================================
-     CREATE ADMISSION PDF
-  ================================= */
 
-  async function createAdmissionPDF(
-    profile,
-    application
-  ) {
+/* =========================
+   STATISTICS
+========================= */
 
-    const {
-      jsPDF
-    } =
-      window.jspdf;
+function updateStats(){
 
+  const total=applications.length;
 
-    const doc =
-      new jsPDF({
-        orientation:
-          "portrait",
+  const admitted=
+    applications.filter(
+      x=>x.biodata.admission_status==="admitted"
+    ).length;
 
-        unit:
-          "mm",
+  document.getElementById("total").textContent=total;
+  document.getElementById("pending").textContent=
+    total-admitted;
+  document.getElementById("admitted").textContent=
+    admitted;
+}
 
-        format:
-          "a4"
-      });
 
+/* =========================
+   RENDER
+========================= */
 
-    const pageWidth =
-      doc.internal.pageSize.getWidth();
+function render(){
 
+  const search=
+    document
+      .getElementById("search")
+      .value
+      .trim()
+      .toLowerCase();
 
-    const pageHeight =
-      doc.internal.pageSize.getHeight();
+  const filter=
+    document
+      .getElementById("statusFilter")
+      .value;
 
 
-    const navy =
-      [10, 22, 40];
+  const result=
+    applications.filter(app=>{
 
+      const profile=app.profile;
 
-    const gold =
-      [198, 158, 73];
+      const text=[
+        profile.full_name,
+        profile.email,
+        profile.student_id
+      ]
+      .join(" ")
+      .toLowerCase();
 
 
-    /*
-     * Page background.
-     */
-    doc.setFillColor(
-      248,
-      248,
-      246
-    );
+      const matchesSearch=
+        !search ||
+        text.includes(search);
 
-    doc.rect(
-      0,
-      0,
-      pageWidth,
-      pageHeight,
-      "F"
-    );
 
+      const status=
+        app.biodata.admission_status ||
+        "submitted";
 
-    /*
-     * Outer gold border.
-     */
-    doc.setDrawColor(
-      ...gold
-    );
 
-    doc.setLineWidth(
-      1.2
-    );
+      const matchesStatus=
+        filter==="all" ||
+        status===filter;
 
-    doc.rect(
-      8,
-      8,
-      pageWidth - 16,
-      pageHeight - 16
-    );
 
+      return matchesSearch &&
+             matchesStatus;
 
-    /*
-     * Inner navy border.
-     */
-    doc.setDrawColor(
-      ...navy
-    );
+    });
 
-    doc.setLineWidth(
-      0.4
-    );
 
-    doc.rect(
-      12,
-      12,
-      pageWidth - 24,
-      pageHeight - 24
-    );
-
+  document.getElementById("showing").textContent=
+    result.length;
 
-    /*
-     * Logo.
-     */
-    try {
-
-      const logo =
-        await loadImageAsDataURL(
-          "logo.jpg"
-        );
-
-
-      if (logo) {
-
-        doc.addImage(
-          logo,
-          "JPEG",
-          pageWidth / 2 - 17,
-          18,
-          34,
-          34
-        );
-
-      }
-
-    }
-
-    catch (error) {
-
-      console.warn(
-        "Logo could not be loaded:",
-        error
-      );
-
-    }
-
-
-    /*
-     * Academy name.
-     */
-    doc.setTextColor(
-      ...navy
-    );
-
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
-
-    doc.setFontSize(
-      20
-    );
-
-    doc.text(
-      "RAYHAR ACADEMY",
-      pageWidth / 2,
-      61,
-      {
-        align:
-          "center"
-      }
-    );
-
-
-    /*
-     * Slogan.
-     */
-    doc.setFont(
-      "helvetica",
-      "italic"
-    );
-
-    doc.setFontSize(
-      10
-    );
-
-    doc.setTextColor(
-      95,
-      95,
-      95
-    );
-
-    doc.text(
-      "For Knowledge and Leadership",
-      pageWidth / 2,
-      68,
-      {
-        align:
-          "center"
-      }
-    );
-
-
-    /*
-     * Gold separator.
-     */
-    doc.setDrawColor(
-      ...gold
-    );
-
-    doc.setLineWidth(
-      0.8
-    );
-
-    doc.line(
-      35,
-      74,
-      pageWidth - 35,
-      74
-    );
-
-
-    /*
-     * Watermark.
-     */
-    doc.setTextColor(
-      225,
-      225,
-      225
-    );
-
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
-
-    doc.setFontSize(
-      45
-    );
-
-    doc.text(
-      "RAYHAR",
-      pageWidth / 2,
-      160,
-      {
-        align:
-          "center",
-
-        angle:
-          45
-      }
-    );
-
-
-    /*
-     * Letter title.
-     */
-    doc.setTextColor(
-      ...navy
-    );
-
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
-
-    doc.setFontSize(
-      17
-    );
-
-    doc.text(
-      "ADMISSION LETTER",
-      pageWidth / 2,
-      91,
-      {
-        align:
-          "center"
-      }
-    );
-
-
-    const admissionDate =
-      new Date();
-
-
-    const dateText =
-      admissionDate.toLocaleDateString(
-        "en-GB",
-        {
-          day:
-            "2-digit",
-
-          month:
-            "long",
-
-          year:
-            "numeric"
-        }
-      );
-
-
-    /*
-     * Admission date.
-     */
-    doc.setFont(
-      "helvetica",
-      "normal"
-    );
-
-    doc.setFontSize(
-      10
-    );
-
-    doc.setTextColor(
-      70,
-      70,
-      70
-    );
-
-    doc.text(
-      `Admission Date: ${dateText}`,
-      25,
-      104
-    );
-
-
-    /*
-     * Student ID.
-     */
-    doc.text(
-      `Student ID: ${profile.student_id || "N/A"}`,
-      pageWidth - 25,
-      104,
-      {
-        align:
-          "right"
-      }
-    );
-
-
-    /*
-     * Student name.
-     */
-    doc.setTextColor(
-      ...navy
-    );
-
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
-
-    doc.setFontSize(
-      13
-    );
-
-    doc.text(
-      `Dear ${profile.full_name || "Student"},`,
-      25,
-      121
-    );
-
-
-    const departments =
-      getDepartmentsText(
-        application
-      );
-
-
-    const studyLevel =
-      profile.study_level ||
+
+  const tbody=
+    document.getElementById("tbody");
+
+  tbody.innerHTML="";
+
+
+  document.getElementById("empty").style.display=
+    result.length ? "none" : "block";
+
+  document.getElementById("table").style.display=
+    result.length ? "table" : "none";
+
+
+  result.forEach(app=>{
+
+    const tr=document.createElement("tr");
+
+    const status=
+      app.biodata.admission_status ||
+      "submitted";
+
+    const departments=
+      getDepartments(app) ||
+      "Not specified";
+
+    const level=
+      app.profile.study_level ||
       "Beginner";
 
 
-    /*
-     * Main admission message.
-     */
-    doc.setFont(
-      "helvetica",
-      "normal"
+    tr.innerHTML=`
+
+      <td>
+        <div class="student-name">
+          ${esc(app.profile.full_name||"—")}
+        </div>
+
+        <div class="email">
+          ${esc(app.profile.email||"—")}
+        </div>
+      </td>
+
+      <td>
+        <span class="sid">
+          ${esc(app.profile.student_id||"—")}
+        </span>
+      </td>
+
+      <td>
+        ${esc(departments)}
+      </td>
+
+      <td>
+        ${esc(level)}
+      </td>
+
+      <td>
+        <span class="status ${status==="admitted"?"admitted":"pending"}">
+          ${status==="admitted"?"ADMITTED":"PENDING"}
+        </span>
+      </td>
+
+      <td>
+        ${formatDate(app.biodata.submitted_at)}
+      </td>
+
+      <td>
+        <button
+          class="btn view"
+          onclick="openApplication('${app.profile.id}')"
+        >
+          View
+        </button>
+
+        ${
+          app.letter
+          ? `
+            <button
+              class="btn download"
+              onclick="downloadAdmissionById('${app.profile.id}')"
+            >
+              Admission
+            </button>
+          `
+          : ""
+        }
+
+      </td>
+
+    `;
+
+    tbody.appendChild(tr);
+
+  });
+
+}
+
+
+/* =========================
+   OPEN BIODATA
+========================= */
+
+async function openApplication(id){
+
+  currentApplication=
+    applications.find(
+      x=>x.profile.id===id
     );
 
-    doc.setFontSize(
-      11
-    );
-
-    doc.setTextColor(
-      45,
-      45,
-      45
-    );
+  if(!currentApplication) return;
 
 
-    const message =
-      `We are pleased to inform you that you have been granted admission to RAYHAR ACADEMY to study in the ${departments} programme at the ${studyLevel} level.`;
+  const app=currentApplication;
+
+  const b=app.biodata;
+  const p=app.profile;
 
 
-    const messageLines =
-      doc.splitTextToSize(
-        message,
-        pageWidth - 50
-      );
+  document.getElementById("modalId").textContent=
+    p.student_id || "RAYHAR ACADEMY";
 
 
-    doc.text(
-      messageLines,
-      25,
-      136,
-      {
-        lineHeightFactor:
-          1.7
+  let photoHtml=
+    `<div class="photo-area">
+       <div class="photo"></div>
+       <div>Student photograph</div>
+     </div>`;
+
+
+  if(b.photo_path){
+
+    try{
+
+      const {data,error}=
+        await client.storage
+          .from("student-photos")
+          .createSignedUrl(
+            b.photo_path,
+            300
+          );
+
+      if(!error && data?.signedUrl){
+
+        photoHtml=`
+          <div class="photo-area">
+            <img
+              class="photo"
+              src="${data.signedUrl}"
+              alt="Student photo"
+            >
+
+            <div>
+              <strong>Student Photograph</strong>
+            </div>
+          </div>
+        `;
+
       }
-    );
 
-
-    /*
-     * Formal paragraph.
-     */
-    const paragraph =
-      "Your admission has been processed based on the information provided in your application. We welcome you to RAYHAR ACADEMY and encourage you to uphold the values of knowledge, discipline, integrity and leadership throughout your academic journey.";
-
-
-    const paragraphLines =
-      doc.splitTextToSize(
-        paragraph,
-        pageWidth - 50
-      );
-
-
-    doc.text(
-      paragraphLines,
-      25,
-      164,
-      {
-        lineHeightFactor:
-          1.7
-      }
-    );
-
-
-    /*
-     * Admission details box.
-     */
-    doc.setDrawColor(
-      ...gold
-    );
-
-    doc.setFillColor(
-      252,
-      250,
-      244
-    );
-
-
-    doc.roundedRect(
-      25,
-      193,
-      pageWidth - 50,
-      52,
-      3,
-      3,
-      "FD"
-    );
-
-
-    doc.setTextColor(
-      ...navy
-    );
-
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
-
-    doc.setFontSize(
-      10
-    );
-
-
-    doc.text(
-      "ADMISSION DETAILS",
-      32,
-      203
-    );
-
-
-    doc.setFont(
-      "helvetica",
-      "normal"
-    );
-
-    doc.setTextColor(
-      55,
-      55,
-      55
-    );
-
-
-    doc.text(
-      `Student Name: ${profile.full_name || "N/A"}`,
-      32,
-      214
-    );
-
-
-    doc.text(
-      `Student ID: ${profile.student_id || "N/A"}`,
-      32,
-      224
-    );
-
-
-    doc.text(
-      `Study Level: ${studyLevel}`,
-      32,
-      234
-    );
-
-
-    const programmeLines =
-      doc.splitTextToSize(
-        `Programme: ${departments}`,
-        82
-      );
-
-
-    doc.text(
-      programmeLines,
-      105,
-      214,
-      {
-        lineHeightFactor:
-          1.5
-      }
-    );
-
-
-    /*
-     * Closing.
-     */
-    doc.setTextColor(
-      45,
-      45,
-      45
-    );
-
-    doc.setFontSize(
-      11
-    );
-
-
-    doc.text(
-      "We congratulate you on this achievement and look forward to welcoming you as a member of the RAYHAR ACADEMY community.",
-      25,
-      260,
-      {
-        maxWidth:
-          pageWidth - 50,
-
-        lineHeightFactor:
-          1.6
-      }
-    );
-
-
-    /*
-     * Authorization area.
-     */
-    doc.setDrawColor(
-      ...navy
-    );
-
-
-    doc.line(
-      30,
-      282,
-      85,
-      282
-    );
-
-
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
-
-    doc.setFontSize(
-      9
-    );
-
-    doc.setTextColor(
-      ...navy
-    );
-
-
-    doc.text(
-      "Authorized Officer",
-      30,
-      288
-    );
-
-
-    doc.setFont(
-      "helvetica",
-      "normal"
-    );
-
-
-    doc.setTextColor(
-      80,
-      80,
-      80
-    );
-
-
-    doc.text(
-      "RAYHAR ACADEMY",
-      30,
-      294
-    );
-
-
-    /*
-     * Document reference.
-     */
-    doc.setFontSize(
-      8
-    );
-
-
-    const reference =
-      `RA-${profile.student_id || "STUDENT"}-${Date.now()}`;
-
-
-    doc.text(
-      `Document Reference: ${reference}`,
-      pageWidth - 25,
-      294,
-      {
-        align:
-          "right"
-      }
-    );
-
-
-    /*
-     * Footer.
-     */
-    doc.setDrawColor(
-      ...gold
-    );
-
-
-    doc.line(
-      25,
-      302,
-      pageWidth - 25,
-      302
-    );
-
-
-    doc.setFontSize(
-      8
-    );
-
-
-    doc.setTextColor(
-      100,
-      100,
-      100
-    );
-
-
-    doc.text(
-      "RAYHAR ACADEMY • For Knowledge and Leadership",
-      pageWidth / 2,
-      309,
-      {
-        align:
-          "center"
-      }
-    );
-
-
-    return doc.output(
-      "blob"
-    );
+    }catch(e){
+      console.warn(e);
+    }
 
   }
+
+
+  document.getElementById("modalBody").innerHTML=`
+
+    <div class="section">
+      <h4>Student Information</h4>
+
+      <div class="grid">
+
+        ${info("Full Name",p.full_name)}
+
+        ${info("Student ID",p.student_id)}
+
+        ${info("Email",p.email)}
+
+        ${info("Phone",p.phone)}
+
+        ${info("Study Level",p.study_level||"Beginner")}
+
+        ${info(
+          "Admission Status",
+          b.admission_status==="admitted"
+            ? "ADMITTED"
+            : "PENDING"
+        )}
+
+      </div>
+    </div>
+
+
+    <div class="section">
+      <h4>Photograph</h4>
+      ${photoHtml}
+    </div>
+
+
+    <div class="section">
+      <h4>Personal Biodata</h4>
+
+      <div class="grid">
+
+        ${info("Date of Birth",formatDateOnly(b.date_of_birth))}
+
+        ${info("Gender",b.gender)}
+
+        ${info("Nationality",b.nationality)}
+
+        ${info("Country",b.country)}
+
+        ${info("State / Province",b.state_of_origin||b.province)}
+
+        ${info("District / City",b.district_city)}
+
+        ${info("LGA",b.lga)}
+
+        ${info("Residential Address",b.residential_address)}
+
+      </div>
+    </div>
+
+
+    <div class="section">
+      <h4>Next of Kin</h4>
+
+      <div class="grid">
+
+        ${info("Name",b.next_of_kin_name)}
+
+        ${info("Phone",b.next_of_kin_phone)}
+
+      </div>
+    </div>
+
+
+    <div class="section">
+      <h4>Programme</h4>
+
+      <div class="grid">
+
+        ${info(
+          "Departments",
+          getDepartments(app)||"Not specified"
+        )}
+
+        ${info(
+          "Study Level",
+          p.study_level||"Beginner"
+        )}
+
+      </div>
+    </div>
+
+  `;
+
+
+  const admissionBtn=
+    document.getElementById("admissionBtn");
+
+
+  if(app.letter){
+
+    admissionBtn.textContent=
+      "Re-Issue Admission Letter";
+
+  }else{
+
+    admissionBtn.textContent=
+      "Issue Admission Letter";
+
+  }
+
+
+  document.getElementById("modal")
+    .classList.add("show");
+
+}
+
+
+/* =========================
+   ISSUE ADMISSION
+========================= */
+
+async function issueAdmission(){
+
+  if(!currentApplication) return;
+
+  const app=currentApplication;
+
+  if(
+    !confirm(
+      app.letter
+        ? "Re-issue this student's admission letter?"
+        : "Issue an admission letter to this student?"
+    )
+  ) return;
+
+
+  showLoading(
+    app.letter
+      ? "Re-issuing admission letter..."
+      : "Generating admission letter..."
+  );
+
+
+  try{
+
+    const blob=
+      await createAdmissionPDF(app);
+
+
+    const uid=
+      app.profile.id;
+
+    const path=
+      `${uid}/admission-letter-${Date.now()}.pdf`;
+
+
+    const upload=
+      await client.storage
+        .from("admission-letters")
+        .upload(
+          path,
+          blob,
+          {
+            contentType:"application/pdf",
+            upsert:false
+          }
+        );
+
+
+    if(upload.error)
+      throw upload.error;
+
+
+    /* Remove old file after successful upload. */
+
+    if(app.letter?.storage_path){
+
+      await client.storage
+        .from("admission-letters")
+        .remove([
+          app.letter.storage_path
+        ]);
+
+    }
+
+
+    /* Update existing database row when possible. */
+
+    let dbResult;
+
+    if(app.letter){
+
+      dbResult=
+        await client
+          .from("admission_letters")
+          .update({
+            file_name:
+              `${app.profile.student_id || "student"}-admission-letter.pdf`,
+            storage_path:path,
+            issued_at:new Date().toISOString(),
+            issued_by:null,
+            download_count:0,
+            last_downloaded_at:nu
+                        download_count: 0,
+            last_downloaded_at: null,
+            updated_at: new Date().toISOString()
+          })
+          .eq("id", app.letter.id);
+
+    } else {
+
+      dbResult =
+        await client
+          .from("admission_letters")
+          .insert({
+            student_id: uid,
+            file_name:
+              `${app.profile.student_id || "student"}-admission-letter.pdf`,
+            storage_path: path,
+            issued_by: null
+          });
+    }
+
+    if (dbResult.error) {
+      throw dbResult.error;
+    }
+
+
     /* =================================
-     APPLICATION PDF DOWNLOAD
-  ================================= */
+       MARK STUDENT AS ADMITTED
+    ================================= */
 
-  async function downloadApplication(
-    storagePath
-  ) {
+    const statusUpdate =
+      await client
+        .from("student_biodata")
+        .update({
+          admission_status: "admitted",
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: null
+        })
+        .eq("student_id", uid);
 
-    if (!storagePath) {
-
-      alert(
-        "Application PDF is not available."
-      );
-
-      return;
-
+    if (statusUpdate.error) {
+      throw statusUpdate.error;
     }
 
 
-    try {
+    alert(
+      "Admission letter issued successfully.\n\n" +
+      "The student's status is now ADMITTED."
+    );
 
-      showLoading(
-        "Preparing application PDF..."
-      );
+    closeModal();
 
+    await loadApplications();
 
-      const {
-        data,
-        error
-      } =
-        await client.storage
-          .from(
-            "student-applications"
-          )
-          .createSignedUrl(
-            storagePath,
-            120
-          );
+  } catch (error) {
 
+    console.error(
+      "Admission error:",
+      error
+    );
 
-      if (error) {
-        throw error;
-      }
+    alert(
+      "Unable to issue the admission letter.\n\n" +
+      (
+        error.message ||
+        "Please try again."
+      )
+    );
 
+  } finally {
 
-      window.open(
-        data.signedUrl,
-        "_blank"
-      );
-
-    }
-
-    catch (error) {
-
-      console.error(
-        error
-      );
-
-      alert(
-        "Unable to open the application PDF.\n\n" +
-        (
-          error.message ||
-          "Please try again."
-        )
-      );
-
-    }
-
-    finally {
-
-      hideLoading();
-
-    }
+    hideLoading();
 
   }
 
-
-  /* =================================
-     ADMISSION PDF DOWNLOAD
-  ================================= */
-
-  async function downloadAdmission(
-    storagePath
-  ) {
-
-    if (!storagePath) {
-
-      alert(
-        "Admission letter is not available."
-      );
-
-      return;
-
-    }
+}
 
 
-    try {
+/* =================================
+   CREATE ADMISSION PDF
+================================= */
 
-      showLoading(
-        "Preparing admission letter..."
-      );
+async function createAdmissionPDF(app) {
 
+  const { jsPDF } = window.jspdf;
 
-      const {
-        data,
-        error
-      } =
-        await client.storage
-          .from(
-            "admission-letters"
-          )
-          .createSignedUrl(
-            storagePath,
-            120
-          );
+  const doc = new jsPDF({
+    unit: "mm",
+    format: "a4"
+  });
 
+  const width =
+    doc.internal.pageSize.getWidth();
 
-      if (error) {
-        throw error;
-      }
+  const height =
+    doc.internal.pageSize.getHeight();
+
+  const navy = [10, 22, 40];
+  const gold = [198, 158, 73];
 
 
-      window.open(
-        data.signedUrl,
-        "_blank"
-      );
+  doc.setFillColor(
+    248,
+    248,
+    246
+  );
 
-    }
-
-    catch (error) {
-
-      console.error(
-        error
-      );
-
-      alert(
-        "Unable to open the admission letter.\n\n" +
-        (
-          error.message ||
-          "Please try again."
-        )
-      );
-
-    }
-
-    finally {
-
-      hideLoading();
-
-    }
-
-  }
+  doc.rect(
+    0,
+    0,
+    width,
+    height,
+    "F"
+  );
 
 
-  /* =================================
-     IMAGE TO DATA URL
-  ================================= */
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(1.2);
 
-  async function loadImageAsDataURL(
-    path
-  ) {
+  doc.rect(
+    8,
+    8,
+    width - 16,
+    height - 16
+  );
+
+
+  doc.setDrawColor(...navy);
+  doc.setLineWidth(.4);
+
+  doc.rect(
+    12,
+    12,
+    width - 24,
+    height - 24
+  );
+
+
+  /* Logo */
+
+  try {
 
     const response =
-      await fetch(
-        path
-      );
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        "Unable to load image."
-      );
-
-    }
-
+      await fetch("logo.jpg");
 
     const blob =
       await response.blob();
 
+    const dataUrl =
+      await blobToDataURL(blob);
 
-    return new Promise(
-      (
-        resolve,
-        reject
-      ) => {
+    doc.addImage(
+      dataUrl,
+      "JPEG",
+      width / 2 - 16,
+      18,
+      32,
+      32
+    );
 
-        const reader =
-          new FileReader();
+  } catch (error) {
 
-
-        reader.onload =
-          () =>
-            resolve(
-              reader.result
-            );
-
-
-        reader.onerror =
-          reject;
-
-
-        reader.readAsDataURL(
-          blob
-        );
-
-      }
+    console.warn(
+      "Logo could not be loaded:",
+      error
     );
 
   }
 
 
-  /* =================================
-     DEPARTMENT TEXT
-  ================================= */
-
-  function getDepartmentsText(
-    application
-  ) {
-
-    if (
-      application &&
-      Array.isArray(
-        application.enrollments
-      ) &&
-      application.enrollments.length
-    ) {
-
-      const names =
-        application.enrollments
-          .map(
-            enrollment =>
-              enrollment.department &&
-              enrollment.department.name
-          )
-          .filter(Boolean);
-
-
-      if (names.length) {
-
-        return [
-          ...new Set(names)
-        ].join(
-          ", "
-        );
-
-      }
-
-    }
-
-
-    if (
-      application &&
-      application.profile &&
-      application.profile.department
-    ) {
-
-      return application
-        .profile
-        .department;
-
-    }
-
-
-    return "Not specified";
-
-  }
-
-
-  /* =================================
-     INFO CARD
-  ================================= */
-
-  function info(
-    label,
-    value
-  ) {
-
-    let safeValue =
-      value;
-
-
-    if (
-      safeValue === null ||
-      safeValue === undefined ||
-      safeValue === ""
-    ) {
-
-      safeValue =
-        "Not provided";
-
-    }
-
-
-    return `
-
-      <div class="info-card">
-
-        <div class="info-label">
-          ${escapeHtml(label)}
-        </div>
-
-        <div class="info-value">
-          ${escapeHtml(
-            String(safeValue)
-          )}
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  /* =================================
-     STATUS CLASS
-  ================================= */
-
-  function getStatusClass(
-    status
-  ) {
-
-    const value =
-      String(
-        status || ""
-      ).toLowerCase();
-
-
-    if (
-      value ===
-      "submitted"
-    ) {
-
-      return "status-submitted";
-
-    }
-
-
-    if (
-      value ===
-      "admitted"
-    ) {
-
-      return "status-admitted";
-
-    }
-
-
-    if (
-      value ===
-      "active"
-    ) {
-
-      return "status-active";
-
-    }
-
-
-    return "status-default";
-
-  }
-
-
-  /* =================================
-     DATE
-  ================================= */
-
-  function formatDate(
-    value
-  ) {
-
-    if (!value) {
-      return "—";
-    }
-
-
-    const date =
-      new Date(value);
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
-      return "—";
-
-    }
-
-
-    return date.toLocaleString(
-      "en-GB",
-      {
-        day:
-          "2-digit",
-
-        month:
-          "short",
-
-        year:
-          "numeric",
-
-        hour:
-          "2-digit",
-
-        minute:
-          "2-digit"
-      }
-    );
-
-  }
-
-
-  function formatDateOnly(
-    value
-  ) {
-
-    if (!value) {
-      return "Not provided";
-    }
-
-
-    const date =
-      new Date(
-        `${value}T00:00:00`
-      );
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
-      return value;
-
-    }
-
-
-    return date.toLocaleDateString(
-      "en-GB",
-      {
-        day:
-          "2-digit",
-
-        month:
-          "long",
-
-        year:
-          "numeric"
-      }
-    );
-
-  }
-
-
-  /* =================================
-     ESCAPE HTML
-  ================================= */
-
-  function escapeHtml(
-    value
-  ) {
-
-    if (
-      value === null ||
-      value === undefined
-    ) {
-
-      return "";
-
-    }
-
-
-    return String(value)
-      .replace(
-        /&/g,
-        "&amp;"
-      )
-      .replace(
-        /</g,
-        "&lt;"
-      )
-      .replace(
-        />/g,
-        "&gt;"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      )
-      .replace(
-        /'/g,
-        "&#039;"
-      );
-
-  }
-
-
-  /*
-   * Escape values used inside
-   * onclick attributes.
-   */
-  function escapeJs(
-    value
-  ) {
-
-    if (
-      value === null ||
-      value === undefined
-    ) {
-
-      return "";
-
-    }
-
-
-    return String(value)
-      .replace(
-        /\\/g,
-        "\\\\"
-      )
-      .replace(
-        /'/g,
-        "\\'"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      );
-
-  }
-
-
-  /* =================================
-     MODAL
-  ================================= */
-
-  function closeModal() {
-
-    document
-      .getElementById(
-        "biodataModal"
-      )
-      .classList.remove(
-        "active"
-      );
-
-
-    currentApplication =
-      null;
-
-  }
-
-
-  /* =================================
-     LOADING
-  ================================= */
-
-  function showLoading(
-    message
-  ) {
-
-    const overlay =
-      document.getElementById(
-        "loadingOverlay"
-      );
-
-
-    document
-      .getElementById(
-        "loadingMessage"
-      )
-      .textContent =
-      message ||
-      "Please wait...";
-
-
-    overlay.style.display =
-      "flex";
-
-  }
-
-
-  function hideLoading() {
-
-    document
-      .getElementById(
-        "loadingOverlay"
-      )
-      .style.display =
-      "none";
-
-  }
-
-
-  function showLoadingBox() {
-
-    document
-      .getElementById(
-        "loadingBox"
-      )
-      .style.display =
-      "block";
-
-
-    document
-      .getElementById(
-        "tableContainer"
-      )
-      .style.display =
-      "none";
-
-
-    document
-      .getElementById(
-        "emptyBox"
-      )
-      .style.display =
-      "none";
-
-
-    document
-      .getElementById(
-        "errorBox"
-      )
-      .style.display =
-      "none";
-
-  }
-
-
-  function hideLoadingBox() {
-
-    document
-      .getElementById(
-        "loadingBox"
-      )
-      .style.display =
-      "none";
-
-  }
-
-
-  /* =================================
-     ERROR
-  ================================= */
-
-  function showError(
-    message
-  ) {
-
-    const errorBox =
-      document.getElementById(
-        "errorBox"
-      );
-
-
-    errorBox.innerHTML =
-      escapeHtml(
-        message
-      ).replace(
-        /\n/g,
-        "<br>"
-      );
-
-
-    errorBox.style.display =
-      "block";
-
-
-    document
-      .getElementById(
-        "tableContainer"
-      )
-      .style.display =
-      "none";
-
-
-    document
-      .getElementById(
-        "emptyBox"
-      )
-      .style.display =
-      "none";
-
-  }
-
-
-  /* =================================
-     LOGOUT
-  ================================= */
-
-  async function logout() {
-
-    try {
-
-      await client.auth.signOut();
-
-    }
-
-    finally {
-
-      window.location.href =
-        "admin-login.html";
-
-    }
-
-  }
-
-
-  /* =================================
-     CLICK OUTSIDE MODAL
-  ================================= */
-
-  document.addEventListener(
-    "click",
-    function(event) {
-
-      const modal =
-        document.getElementById(
-          "biodataModal"
-        );
-
-
-      if (
-        event.target ===
-        modal
-      ) {
-
-        closeModal();
-
-      }
-
+  /* Academy name */
+
+  doc.setTextColor(...navy);
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(20);
+
+  doc.text(
+    "RAYHAR ACADEMY",
+    width / 2,
+    60,
+    {
+      align: "center"
     }
   );
 
 
-  /* =================================
-     ESC KEY
-  ================================= */
+  /* Slogan */
 
-  document.addEventListener(
-    "keydown",
-    function(event) {
+  doc.setFont(
+    "helvetica",
+    "italic"
+  );
+
+  doc.setFontSize(10);
+
+  doc.setTextColor(
+    90,
+    90,
+    90
+  );
+
+  doc.text(
+    "For Knowledge and Leadership",
+    width / 2,
+    67,
+    {
+      align: "center"
+    }
+  );
+
+
+  /* Separator */
+
+  doc.setDrawColor(...gold);
+
+  doc.setLineWidth(.8);
+
+  doc.line(
+    35,
+    74,
+    width - 35,
+    74
+  );
+
+
+  /* Title */
+
+  doc.setTextColor(...navy);
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(17);
+
+  doc.text(
+    "ADMISSION LETTER",
+    width / 2,
+    91,
+    {
+      align: "center"
+    }
+  );
+
+
+  const date =
+    new Date().toLocaleDateString(
+      "en-GB",
+      {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setFontSize(10);
+
+  doc.setTextColor(
+    65,
+    65,
+    65
+  );
+
+  doc.text(
+    `Admission Date: ${date}`,
+    25,
+    104
+  );
+
+  doc.text(
+    `Student ID: ${
+      app.profile.student_id || "N/A"
+    }`,
+    width - 25,
+    104,
+    {
+      align: "right"
+    }
+  );
+
+
+  /* Student name */
+
+  doc.setTextColor(...navy);
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(13);
+
+  doc.text(
+    `Dear ${
+      app.profile.full_name || "Student"
+    },`,
+    25,
+    121
+  );
+
+
+  const departments =
+    getDepartments(app) ||
+    "Not specified";
+
+  const level =
+    app.profile.study_level ||
+    "Beginner";
+
+
+  /* Main message */
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setFontSize(11);
+
+  doc.setTextColor(
+    45,
+    45,
+    45
+  );
+
+
+  const message =
+    `We are pleased to inform you that you have been ADMITTED to RAYHAR ACADEMY to study ${departments} at the ${level} level.`;
+
+
+  const messageLines =
+    doc.splitTextToSize(
+      message,
+      width - 50
+    );
+
+  doc.text(
+    messageLines,
+    25,
+    137,
+    {
+      lineHeightFactor: 1.7
+    }
+  );
+
+
+  /* Formal paragraph */
+
+  const paragraph =
+    "Your admission has been processed based on the information provided in your application. We welcome you to RAYHAR ACADEMY and encourage you to uphold the values of knowledge, discipline, integrity and leadership throughout your academic journey.";
+
+
+  const paragraphLines =
+    doc.splitTextToSize(
+      paragraph,
+      width - 50
+    );
+
+  doc.text(
+    paragraphLines,
+    25,
+    165,
+    {
+      lineHeightFactor: 1.7
+    }
+  );
+
+
+  /* Admission details */
+
+  doc.setFillColor(
+    252,
+    250,
+    244
+  );
+
+  doc.setDrawColor(...gold);
+
+  doc.roundedRect(
+    25,
+    193,
+    width - 50,
+    52,
+    3,
+    3,
+    "FD"
+  );
+
+
+  doc.setTextColor(...navy);
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(10);
+
+  doc.text(
+    "ADMISSION DETAILS",
+    32,
+    203
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setTextColor(
+    55,
+    55,
+    55
+  );
+
+
+  doc.text(
+    `Student Name: ${
+      app.profile.full_name || "N/A"
+    }`,
+    32,
+    214
+  );
+
+  doc.text(
+    `Student ID: ${
+      app.profile.student_id || "N/A"
+    }`,
+    32,
+    224
+  );
+
+  doc.text(
+    `Study Level: ${level}`,
+    32,
+    234
+  );
+
+
+  const programmeLines =
+    doc.splitTextToSize(
+      `Programme: ${departments}`,
+      85
+    );
+
+  doc.text(
+    programmeLines,
+    105,
+    214,
+    {
+      lineHeightFactor: 1.5
+    }
+  );
+
+
+  /* Closing */
+
+  doc.setTextColor(
+    45,
+    45,
+    45
+  );
+
+  doc.setFontSize(11);
+
+  const closing =
+    "We congratulate you on your admission and look forward to welcoming you as a member of the RAYHAR ACADEMY community.";
+
+  doc.text(
+    doc.splitTextToSize(
+      closing,
+      width - 50
+    ),
+    25,
+    260,
+    {
+      lineHeightFactor: 1.6
+    }
+  );
+
+
+  /* Authorization */
+
+  doc.setDrawColor(...navy);
+
+  doc.line(
+    30,
+    282,
+    85,
+    282
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(9);
+
+  doc.setTextColor(...navy);
+
+  doc.text(
+    "Authorized Officer",
+    30,
+    288
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setTextColor(
+    80,
+    80,
+    80
+  );
+
+  doc.text(
+    "RAYHAR ACADEMY",
+    30,
+    294
+  );
+
+
+  /* Document reference */
+
+  doc.setFontSize(8);
+
+  const reference =
+    `RA-${
+      app.profile.student_id || "STUDENT"
+    }-${Date.now()}`;
+
+  doc.text(
+    `Document Reference: ${reference}`,
+    width - 25,
+    294,
+    {
+      align: "right"
+    }
+  );
+
+
+  /* Footer */
+
+  doc.setDrawColor(...gold);
+
+  doc.line(
+    25,
+    302,
+    width - 25,
+    302
+  );
+
+  doc.setTextColor(
+    100,
+    100,
+    100
+  );
+
+  doc.text(
+    "RAYHAR ACADEMY • For Knowledge and Leadership",
+    width / 2,
+    309,
+    {
+      align: "center"
+    }
+  );
+
+
+  return doc.output("blob");
+
+}
+
+
+/* =================================
+   DOWNLOAD APPLICATION
+================================= */
+
+async function downloadApplication() {
+
+  if (!currentApplication) return;
+
+  const path =
+    currentApplication.biodata
+      .application_pdf_path;
+
+  if (!path) {
+
+    alert(
+      "Application PDF is not available."
+    );
+
+    return;
+  }
+
+  await openStorageFile(
+    "student-applications",
+    path,
+    "Unable to open application PDF."
+  );
+
+}
+
+
+/* =================================
+   DOWNLOAD ADMISSION
+================================= */
+
+async function downloadAdmissionById(id) {
+
+  const app =
+    applications.find(
+      x => x.profile.id === id
+    );
+
+  if (
+    !app ||
+    !app.letter ||
+    !app.letter.storage_path
+  ) {
+
+    alert(
+      "Admission letter is not available."
+    );
+
+    return;
+  }
+
+  await openStorageFile(
+    "admission-letters",
+    app.letter.storage_path,
+    "Unable to open admission letter."
+  );
+
+}
+
+
+/* =================================
+   OPEN STORAGE FILE
+================================= */
+
+async function openStorageFile(
+  bucket,
+  path,
+  errorMessage
+) {
+
+  showLoading(
+    "Preparing document..."
+  );
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await client.storage
+        .from(bucket)
+        .createSignedUrl(
+          path,
+          120
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    window.open(
+      data.signedUrl,
+      "_blank"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      errorMessage +
+      "\n\n" +
+      (
+        error.message ||
+        "Please try again."
+      )
+    );
+
+  } finally {
+
+    hideLoading();
+
+  }
+
+}
+
+
+/* =================================
+   GET DEPARTMENTS
+================================= */
+
+function getDepartments(app) {
+
+  const names =
+    app.enrollments
+      .map(
+        enrollment =>
+          enrollment.department &&
+          enrollment.department.name
+      )
+      .filter(Boolean);
+
+  if (names.length) {
+
+    return [
+      ...new Set(names)
+    ].join(", ");
+
+  }
+
+  return (
+    app.profile.department ||
+    ""
+  );
+
+}
+
+
+/* =================================
+   INFO CARD
+================================= */
+
+function info(label, value) {
+
+  return `
+    <div class="info">
+      <small>${esc(label)}</small>
+      <span>
+        ${esc(
+          value === null ||
+          value === undefined ||
+          value === ""
+            ? "Not provided"
+            : String(value)
+        )}
+      </span>
+    </div>
+  `;
+
+}
+
+
+/* =================================
+   DATE FORMAT
+================================= */
+
+function formatDate(value) {
+
+  if (!value) {
+    return "—";
+  }
+
+  const date =
+    new Date(value);
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "—";
+  }
+
+  return date.toLocaleString(
+    "en-GB",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }
+  );
+
+}
+
+
+function formatDateOnly(value) {
+
+  if (!value) {
+    return "Not provided";
+  }
+
+  const date =
+    new Date(
+      `${value}T00:00:00`
+    );
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return value;
+  }
+
+  return date.toLocaleDateString(
+    "en-GB",
+    {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+/* =================================
+   ESCAPE HTML
+================================= */
+
+function esc(value) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =================================
+   MODAL
+================================= */
+
+function closeModal() {
+
+  document
+    .getElementById("modal")
+    .classList.remove("show");
+
+  currentApplication =
+    null;
+
+}
+
+
+/* =================================
+   LOADING
+================================= */
+
+function showLoading(message) {
+
+  document
+    .getElementById("loadingText")
+    .textContent =
+      message ||
+      "Please wait...";
+
+  document
+    .getElementById("loading")
+    .classList.add("show");
+
+}
+
+
+function hideLoading() {
+
+  document
+    .getElementById("loading")
+    .classList.remove("show");
+
+}
+
+
+/* =================================
+   IMAGE TO DATA URL
+================================= */
+
+function blobToDataURL(blob) {
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        () =>
+          resolve(
+            reader.result
+          );
+
+      reader.onerror =
+        reject;
+
+      reader.readAsDataURL(
+        blob
+      );
+
+    }
+  );
+
+}
+
+
+/* =================================
+   LOGOUT
+================================= */
+
+async function logout() {
+
+  await client.auth.signOut();
+
+  location.href =
+    "admin-login.html";
+
+}
+
+
+/* =================================
+   ESC KEY
+================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape"
+    ) {
+      closeModal();
+    }
+
+  }
+);
+
+
+/* =================================
+   CLICK OUTSIDE MODAL
+================================= */
+
+document
+  .getElementById("modal")
+  .addEventListener(
+    "click",
+    event => {
 
       if (
-        event.key ===
-        "Escape"
+        event.target ===
+        document.getElementById("modal")
       ) {
 
         closeModal();
@@ -3688,4 +2180,3 @@
 
 </body>
 </html>
-  
