@@ -2,333 +2,224 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Student Applications | RAYHAR ACADEMY</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:Arial,sans-serif;
   background:#f4f5f7;
-  color:#111827;
+  color:#111827
 }
-
 header{
   background:#07111f;
   color:white;
-  padding:18px 20px;
+  padding:18px
 }
-
-.header-inner{
+.header{
   max-width:1100px;
   margin:auto;
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:15px;
+  align-items:center
 }
-
-.brand{
+.logo{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:12px
 }
-
-.brand img{
+.logo img{
   width:48px;
   height:48px;
-  object-fit:cover;
   border-radius:8px;
+  object-fit:cover
 }
-
-.brand h1{
+.logo h1{
   margin:0;
-  font-size:19px;
   color:#d4af37;
+  font-size:19px
 }
-
-.brand p{
+.logo p{
   margin:3px 0 0;
-  font-size:12px;
-  color:#ddd;
+  font-size:12px
 }
-
 button{
   border:0;
   border-radius:7px;
   padding:11px 15px;
   cursor:pointer;
-  font-weight:600;
+  font-weight:bold
 }
-
 .logout{
   background:#d4af37;
-  color:#07111f;
+  color:#07111f
 }
-
 main{
   max-width:1100px;
   margin:30px auto;
-  padding:0 18px;
+  padding:0 18px
 }
-
-.page-title{
-  margin-bottom:25px;
+h2{
+  margin-bottom:6px
 }
-
-.page-title h2{
-  margin:0 0 7px;
-  font-size:27px;
-}
-
-.page-title p{
-  margin:0;
+.subtitle{
   color:#6b7280;
+  margin-bottom:25px
 }
-
-.loading{
+.loading,.empty,.error{
   background:white;
   padding:25px;
   border-radius:10px;
-  text-align:center;
-  box-shadow:0 2px 10px rgba(0,0,0,.05);
+  text-align:center
 }
-
 .error{
+  display:none;
   background:#fee2e2;
   color:#991b1b;
-  padding:15px;
-  border-radius:8px;
-  margin-bottom:20px;
-  display:none;
+  text-align:left;
+  white-space:pre-wrap;
 }
-
-.application{
+.card{
   background:white;
   border-radius:12px;
-  margin-bottom:25px;
   padding:22px;
-  box-shadow:0 2px 12px rgba(0,0,0,.06);
+  margin-bottom:25px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06)
 }
-
-.application-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:20px;
-  border-bottom:1px solid #e5e7eb;
-  padding-bottom:18px;
-  margin-bottom:20px;
-}
-
-.student-main{
+.student{
   display:flex;
   gap:15px;
   align-items:center;
+  padding-bottom:18px;
+  border-bottom:1px solid #e5e7eb
 }
-
-.student-photo{
+.photo{
   width:75px;
   height:75px;
   border-radius:8px;
-  object-fit:cover;
   background:#e5e7eb;
+  object-fit:cover
 }
-
-.student-name{
+.name{
   margin:0 0 5px;
-  font-size:20px;
+  font-size:20px
 }
-
-.student-id{
+.sid{
   color:#9a7b16;
-  font-weight:bold;
+  font-weight:bold
 }
-
 .status{
   display:inline-block;
+  margin-top:7px;
   padding:5px 9px;
   border-radius:20px;
   font-size:12px;
-  font-weight:bold;
   background:#fef3c7;
-  color:#92400e;
+  color:#92400e
 }
-
-.status.admitted{
+.admitted{
   background:#dcfce7;
-  color:#166534;
+  color:#166534
 }
-
 .grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:15px;
+  gap:14px;
+  margin-top:20px
 }
-
 .info{
   background:#f8fafc;
-  padding:13px;
-  border-radius:7px;
+  padding:12px;
+  border-radius:7px
 }
-
-.info label{
+.info small{
   display:block;
-  font-size:11px;
-  text-transform:uppercase;
   color:#6b7280;
-  margin-bottom:5px;
+  text-transform:uppercase;
+  font-size:10px;
+  margin-bottom:5px
 }
-
 .info strong{
-  display:block;
-  word-break:break-word;
+  word-break:break-word
 }
-
 .section{
-  margin-top:20px;
+  margin-top:20px
 }
-
 .section h3{
-  margin:0 0 10px;
   font-size:16px;
+  margin-bottom:10px
 }
-
 .departments{
   display:flex;
   flex-wrap:wrap;
-  gap:7px;
+  gap:7px
 }
-
 .department{
   background:#07111f;
   color:#d4af37;
   padding:7px 10px;
   border-radius:20px;
-  font-size:12px;
+  font-size:12px
 }
-
 .actions{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin-top:22px;
+  margin-top:20px
 }
-
-.btn-primary{
+.primary{
   background:#07111f;
-  color:white;
+  color:white
 }
-
-.btn-gold{
+.gold{
   background:#d4af37;
-  color:#07111f;
+  color:#07111f
 }
-
-.btn-light{
-  background:#e5e7eb;
-  color:#111827;
-}
-
-.btn-success{
+.green{
   background:#15803d;
-  color:white;
+  color:white
 }
-
-.admission-box{
+.light{
+  background:#e5e7eb
+}
+.admission{
   margin-top:20px;
   padding:15px;
-  border-radius:8px;
   background:#f0fdf4;
   border:1px solid #bbf7d0;
+  border-radius:8px
 }
-
-.admission-box strong{
-  color:#166534;
-}
-
-.empty{
-  background:white;
-  padding:30px;
-  text-align:center;
-  border-radius:10px;
-  color:#6b7280;
-}
-
 .modal{
+  display:none;
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.65);
-  display:none;
   align-items:center;
   justify-content:center;
   padding:20px;
-  z-index:1000;
+  z-index:20
 }
-
 .modal-box{
   background:white;
   width:min(700px,100%);
   max-height:90vh;
   overflow:auto;
   border-radius:12px;
-  padding:25px;
+  padding:25px
 }
-
 .modal-head{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
+  align-items:center
 }
-
-.modal-head h3{
-  margin:0;
-}
-
-.close{
-  background:#e5e7eb;
-}
-
-.notice{
-  background:#fff7ed;
-  border:1px solid #fed7aa;
-  color:#9a3412;
-  padding:12px;
-  border-radius:7px;
-  margin-bottom:15px;
-  font-size:13px;
-}
-
 @media(max-width:700px){
-  .header-inner{
-    align-items:flex-start;
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  .application-head{
-    flex-direction:column;
-  }
-
-  .student-main{
-    align-items:flex-start;
-  }
-
-  .actions button{
-    width:100%;
-  }
+  .grid{grid-template-columns:1fr}
+  .actions button{width:100%}
 }
 </style>
 </head>
@@ -336,759 +227,1264 @@ main{
 <body>
 
 <header>
-  <div class="header-inner">
+<div class="header">
 
-    <div class="brand">
-      <img src="logo.jpg" alt="RAYHAR ACADEMY">
-      <div>
-        <h1>RAYHAR ACADEMY</h1>
-        <p>For Knowledge and Leadership</p>
-      </div>
-    </div>
+<div class="logo">
+<img src="logo.jpg" alt="RAYHAR ACADEMY">
+<div>
+<h1>RAYHAR ACADEMY</h1>
+<p>For Knowledge and Leadership</p>
+</div>
+</div>
 
-    <button class="logout" onclick="logout()">Logout</button>
+<button class="logout" onclick="logout()">Logout</button>
 
-  </div>
+</div>
 </header>
 
 <main>
 
-  <div class="page-title">
-    <h2>Student Applications</h2>
-    <p>Review submitted student biodata and manage admissions. Admission letters are generated automatically by the system.</p>
-  </div>
+<h2>Student Applications</h2>
 
-  <div id="errorBox" class="error"></div>
+<div class="subtitle">
+Review submitted student biodata and manage admissions.
+Admission letters are generated automatically by the system.
+</div>
 
-  <div id="loading" class="loading">
-    Loading student applications...
-  </div>
+<div id="error" class="error"></div>
 
-  <div id="apps"></div>
+<div id="loading" class="loading">
+Loading student applications...
+</div>
+
+<div id="applications"></div>
 
 </main>
 
-<div id="reviewModal" class="modal">
-  <div class="modal-box">
+<div id="modal" class="modal">
 
-    <div class="modal-head">
-      <h3>Student Application</h3>
-      <button class="close" onclick="closeModal()">Close</button>
-    </div>
+<div class="modal-box">
 
-    <div id="modalContent"></div>
+<div class="modal-head">
+<h3>Student Application</h3>
+<button class="light" onclick="closeModal()">Close</button>
+</div>
 
-  </div>
+<div id="modalContent"></div>
+
+</div>
+
 </div>
 
 <script>
 
-const client = window.supabaseClient;
+const supabaseClient = window.supabaseClient;
 
 let applications = [];
-let currentApplication = null;
 
-function $(id){
-  return document.getElementById(id);
+function escapeHTML(value){
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
 }
 
-function escapeHtml(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function $(id){
+
+return document.getElementById(id);
+
 }
 
 function formatDate(value){
-  if(!value) return "—";
 
-  const date = new Date(value);
+if(!value) return "—";
 
-  if(Number.isNaN(date.getTime())){
-    return value;
-  }
+const d = new Date(value);
 
-  return date.toLocaleString();
+if(isNaN(d.getTime())) return value;
+
+return d.toLocaleString();
+
 }
 
 async function checkAdmin(){
 
-  const {
-    data:{session},
-    error
-  } = await client.auth.getSession();
+const {
+data:{session},
+error
+} = await supabaseClient.auth.getSession();
 
-  if(error || !session){
-    window.location.href="admin-login.html";
-    return false;
-  }
+if(error) throw error;
 
-  const {data:profile,error:profileError} =
-    await client
-      .from("profiles")
-      .select("role")
-      .eq("id",session.user.id)
-      .single();
+if(!session){
 
-  if(profileError || !profile || profile.role !== "admin"){
-    await client.auth.signOut();
-    window.location.href="admin-login.html";
-    return false;
-  }
+location.href="admin-login.html";
 
-  return true;
+return false;
+
 }
 
-async function load(){
+const {data,error:profileError} =
+await supabaseClient
+.from("profiles")
+.select("role")
+.eq("id",session.user.id)
+.single();
 
-  $("loading").style.display="block";
-  $("apps").innerHTML="";
-  $("errorBox").style.display="none";
+if(profileError) throw profileError;
 
-  try{
+if(!data || data.role !== "admin"){
 
-    const isAdmin = await checkAdmin();
+await supabaseClient.auth.signOut();
 
-    if(!isAdmin){
-      return;
-    }
+location.href="admin-login.html";
 
-    /*
-      Use the security-definer RPC.
+return false;
 
-      This loads:
-      - biodata
-      - profile
-      - departments/enrollments
-      - existing admission letter
+}
 
-      in one request.
-    */
+return true;
 
-    const {
-      data,
-      error
-    } = await client.rpc("admin_get_student_applications");
+}
 
-    if(error){
-      throw error;
-    }
+async function loadApplications(){
 
-    applications =
-      (Array.isArray(data) ? data : [])
-      .map(item => ({
-        biodata:item.biodata || {},
-        profile:item.profile || {},
-        enrollments:item.enrollments || [],
-        admission:item.admission || null,
-        photoUrl:""
-      }));
+try{
 
-    render();
+$("error").style.display="none";
 
-    $("loading").style.display="none";
+const admin = await checkAdmin();
 
-    /*
-      Photos are loaded after the applications themselves.
-      Therefore a missing/broken photo can never stop the
-      student applications from appearing.
-    */
+if(!admin) return;
 
-    await Promise.all(
-      applications.map(async app => {
+/*
+The database function returns all application information
+for administrators in one request.
+*/
 
-        const path = app.biodata.photo_path;
+const {data,error} =
+await supabaseClient
+.rpc("admin_get_student_applications");
 
-        if(!path){
-          return;
-        }
+if(error) throw error;
 
-        try{
+applications = Array.isArray(data) ? data.map(item => ({
 
-          const {
-            data:signed,
-            error:signedError
-          } = await client.storage
-            .from("student-photos")
-            .createSignedUrl(path,3600);
+biodata:item.biodata || {},
 
-          if(!signedError && signed){
-            app.photoUrl = signed.signedUrl;
-          }
+profile:item.profile || {},
 
-        }catch(photoError){
+enrollments:item.enrollments || [],
 
-          console.warn(
-            "Could not load student photo:",
-            photoError
-          );
+admission:item.admission || null,
 
-        }
+photoUrl:""
 
-      })
-    );
+})) : [];
 
-    render();
+render();
 
-  }catch(error){
+$("loading").style.display="none";
 
-    console.error(error);
+/*
+Load photos separately.
+A missing photo cannot prevent applications from loading.
+*/
 
-    $("loading").style.display="none";
+for(const app of applications){
 
-    $("errorBox").style.display="block";
+if(!app.biodata.photo_path) continue;
 
-    $("errorBox").textContent =
-      "Unable to load student applications. " +
-      (error?.message || "Please try again.");
+try{
 
-  }
+const {data,error} =
+await supabaseClient.storage
+.from("student-photos")
+.createSignedUrl(
+app.biodata.photo_path,
+3600
+);
+
+if(!error && data){
+
+app.photoUrl=data.signedUrl;
+
+}
+
+}catch(e){
+
+console.log("Photo unavailable");
+
+}
+
+}
+
+render();
+
+}catch(error){
+
+console.error(error);
+
+$("loading").style.display="none";
+
+$("error").style.display="block";
+
+$("error").textContent=
+"Unable to load student applications.\n\n"+
+(error.message || error);
+
+}
+
+}
+
+function getDepartments(app){
+
+const departments=[];
+
+for(const e of app.enrollments || []){
+
+let name=null;
+
+if(e.departments && e.departments.name){
+
+name=e.departments.name;
+
+}
+
+if(!name && e.department && e.department.name){
+
+name=e.department.name;
+
+}
+
+if(!name && e.department_name){
+
+name=e.department_name;
+
+}
+
+if(name && !departments.includes(name)){
+
+departments.push(name);
+
+}
+
+}
+
+return departments;
+
+}
+
+function getStudyLevel(app){
+
+return (
+
+app.profile.study_level ||
+
+app.biodata.study_level ||
+
+(app.enrollments || []).find(
+e=>e.study_level
+)?.study_level ||
+
+"Beginner"
+
+);
+
+}
+
+function information(label,value){
+
+return `
+
+<div class="info">
+
+<small>${escapeHTML(label)}</small>
+
+<strong>${escapeHTML(value || "—")}</strong>
+
+</div>
+
+`;
+
 }
 
 function render(){
 
-  const container = $("apps");
+const container=$("applications");
 
-  container.innerHTML="";
+container.innerHTML="";
 
-  if(!applications.length){
+if(!applications.length){
 
-    container.innerHTML = `
-      <div class="empty">
-        No student applications have been submitted yet.
-      </div>
-    `;
+container.innerHTML=`
 
-    return;
-  }
+<div class="empty">
 
-  applications.forEach((app,index)=>{
+No student applications have been submitted yet.
 
-    const biodata = app.biodata;
-    const profile = app.profile;
+</div>
 
-    const name =
-      profile.full_name ||
-      biodata.full_name ||
-      "Unnamed Student";
+`;
 
-    const studentId =
-      profile.student_id ||
-      "Not available";
+return;
 
-    const status =
-      biodata.admission_status ||
-      "submitted";
+}
 
-    const departments =
-      app.enrollments
-        .filter(e => e && e.status !== "inactive")
-        .map(e =>
-          e.departments?.name ||
-          e.department?.name ||
-          e.department_name ||
-          null
-        )
-        .filter(Boolean);
+applications.forEach((app,index)=>{
 
-    /*
-      The RPC normally returns department name as:
-      enrollments[].departments.name
+const b=app.biodata;
 
-      But also support department_name for safety.
-    */
+const p=app.profile;
 
-    let departmentNames = departments;
+const admission=app.admission;
 
-    if(!departmentNames.length){
+const departments=getDepartments(app);
 
-      departmentNames =
-        app.enrollments
-          .map(e => {
+const admitted=
+String(b.admission_status || "")
+.toLowerCase()==="admitted";
 
-            if(e.departments && e.departments.name){
-              return e.departments.name;
-            }
+const photo=app.photoUrl
 
-            if(e.department && e.department.name){
-              return e.department.name;
-            }
+? `<img class="photo"
+src="${escapeHTML(app.photoUrl)}"
+alt="Student photo">`
 
-            return e.department_name || null;
+: `<div class="photo"></div>`;
 
-          })
-          .filter(Boolean);
+const departmentHTML=
 
-    }
+departments.length
 
-    const studyLevel =
-      profile.study_level ||
-      biodata.study_level ||
-      app.enrollments.find(e=>e.study_level)?.study_level ||
-      "Beginner";
+? departments.map(
+d=>`<span class="department">
+${escapeHTML(d)}
+</span>`
+).join("")
 
-    const admissionStatus =
-      status.toLowerCase() === "admitted"
-        ? `<span class="status admitted">ADMITTED</span>`
-        : `<span class="status">SUBMITTED</span>`;
+: "No department information";
 
-    const photo =
-      app.photoUrl
-      ? `<img class="student-photo" src="${escapeHtml(app.photoUrl)}" alt="Student photo">`
-      : `<div class="student-photo"></div>`;
+let admissionHTML="";
 
-    const admission = app.admission;
+if(admission){
 
-    const admissionBox =
-      admission
-      ? `
-        <div class="admission-box">
+admissionHTML=`
 
-          <strong>Admission Letter Issued</strong>
+<div class="admission">
 
-          <div style="margin-top:7px;font-size:13px;">
-            Issued: ${escapeHtml(formatDate(admission.issued_at))}
-          </div>
-
-          <div style="margin-top:5px;font-size:13px;">
-            Downloads: ${escapeHtml(admission.download_count || 0)}
-          </div>
-
-          <div style="margin-top:5px;font-size:13px;">
-            Last downloaded:
-            ${escapeHtml(
-              formatDate(admission.last_downloaded_at)
-            )}
-          </div>
-
-        </div>
-      `
-      : "";
-
-    container.innerHTML += `
-
-      <div class="application">
-
-        <div class="application-head">
-
-          <div class="student-main">
-
-            ${photo}
-
-            <div>
-
-              <h3 class="student-name">
-                ${escapeHtml(name)}
-              </h3>
-
-              <div class="student-id">
-                ${escapeHtml(studentId)}
-              </div>
-
-              <div style="margin-top:8px;">
-                ${admissionStatus}
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="grid">
-
-          <div class="info">
-            <label>Email</label>
-            <strong>
-              ${escapeHtml(profile.email || "—")}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>Phone</label>
-            <strong>
-              ${escapeHtml(
-                profile.phone ||
-                biodata.next_of_kin_phone ||
-                "—"
-              )}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>Date of Birth</label>
-            <strong>
-              ${escapeHtml(biodata.date_of_birth || "—")}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>Gender</label>
-            <strong>
-              ${escapeHtml(biodata.gender || "—")}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>Nationality</label>
-            <strong>
-              ${escapeHtml(biodata.nationality || "—")}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>Country</label>
-            <strong>
-              ${escapeHtml(biodata.country || "Afghanistan")}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>Province / State</label>
-            <strong>
-              ${escapeHtml(biodata.province || "—")}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>District / City</label>
-            <strong>
-              ${escapeHtml(biodata.district_city || "—")}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>Study Level</label>
-            <strong>
-              ${escapeHtml(studyLevel)}
-            </strong>
-          </div>
-
-          <div class="info">
-            <label>Submitted</label>
-            <strong>
-              ${escapeHtml(
-                formatDate(biodata.submitted_at)
-              )}
-            </strong>
-          </div>
-
-        </div>
-
-        <div class="section">
-
-          <h3>Residential Address</h3>
-
-          <div class="info">
-            ${escapeHtml(
-              biodata.residential_address || "—"
-            )}
-          </div>
-
-        </div>
-
-        <div class="section">
-
-          <h3>Next of Kin</h3>
-
-          <div class="grid">
-
-            <div class="info">
-              <label>Name</label>
-              <strong>
-                ${escapeHtml(
-                  biodata.next_of_kin_name || "—"
-                )}
-              </strong>
-            </div>
-
-            <div class="info">
-              <label>Phone</label>
-              <strong>
-                ${escapeHtml(
-                  biodata.next_of_kin_phone || "—"
-                )}
-              </strong>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="section">
-
-          <h3>Departments</h3>
-
-          <div class="departments">
-
-            ${
-              departmentNames.length
-              ? departmentNames
-                  .map(d =>
-                    `<span class="department">
-                      ${escapeHtml(d)}
-                    </span>`
-                  )
-                  .join("")
-              : `<span style="color:#6b7280;">
-                  No department information
-                 </span>`
-            }
-
-          </div>
-
-        </div>
-
-        ${admissionBox}
-
-        <div class="actions">
-
-          <button
-            class="btn-primary"
-            onclick="reviewApplication(${index})">
-            Review Biodata
-          </button>
-
-          ${
-            biodata.application_pdf_path
-            ? `
-              <button
-                class="btn-light"
-                onclick="downloadApplication(${index})">
-                Download Application PDF
-              </button>
-            `
-            : ""
-          }
-
-          ${
-            admission
-            ? `
-              <button
-                class="btn-gold"
-                onclick="downloadAdmission(${index})">
-                Download Admission Letter
-              </button>
-            `
-            : `
-              <button
-                class="btn-success"
-                onclick="issueAdmission(${index})">
-                Issue Admission Letter
-              </button>
-            `
-          }
-
-        </div>
-
-      </div>
-    `;
-  });
+<strong>Admission Letter Issued</strong>
+
+<div>
+Issued:
+${escapeHTML(formatDate(admission.issued_at))}
+</div>
+
+<div>
+Downloads:
+${escapeHTML(admission.download_count || 0)}
+</div>
+
+<div>
+Last Downloaded:
+${escapeHTML(
+formatDate(admission.last_downloaded_at)
+)}
+</div>
+
+</div>
+
+`;
+
+}
+
+container.innerHTML+=`
+
+<div class="card">
+
+<div class="student">
+
+${photo}
+
+<div>
+
+<h3 class="name">
+${escapeHTML(
+p.full_name || "Unnamed Student"
+)}
+</h3>
+
+<div class="sid">
+${escapeHTML(
+p.student_id || "Not available"
+)}
+</div>
+
+<span class="status ${
+admitted ? "admitted" : ""
+}">
+
+${admitted ? "ADMITTED" : "SUBMITTED"}
+
+</span>
+
+</div>
+
+</div>
+
+<div class="grid">
+
+${information("Email",p.email)}
+
+${information("Phone",p.phone)}
+
+${information("Date of Birth",b.date_of_birth)}
+
+${information("Gender",b.gender)}
+
+${information("Nationality",b.nationality)}
+
+${information(
+"Country",
+b.country || "Afghanistan"
+)}
+
+${information(
+"Province / State",
+b.province
+)}
+
+${information(
+"District / City",
+b.district_city
+)}
+
+${information(
+"Study Level",
+getStudyLevel(app)
+)}
+
+${information(
+"Submitted",
+formatDate(b.submitted_at)
+)}
+
+</div>
+
+<div class="section">
+
+<h3>Residential Address</h3>
+
+<div class="info">
+
+${escapeHTML(
+b.residential_address || "—"
+)}
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h3>Next of Kin</h3>
+
+<div class="grid">
+
+${information(
+"Name",
+b.next_of_kin_name
+)}
+
+${information(
+"Phone",
+b.next_of_kin_phone
+)}
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h3>Departments</h3>
+
+<div class="departments">
+
+${departmentHTML}
+
+</div>
+
+</div>
+
+${admissionHTML}
+
+<div class="actions">
+
+<button
+class="primary"
+onclick="reviewApplication(${index})">
+
+Review Biodata
+
+</button>
+
+${
+b.application_pdf_path
+
+? `
+
+<button
+class="light"
+onclick="downloadApplication(${index})">
+
+Download Application PDF
+
+</button>
+
+`
+
+: ""
+
+}
+
+${
+admission
+
+? `
+
+<button
+class="gold"
+onclick="downloadAdmission(${index})">
+
+Download Admission Letter
+
+</button>
+
+`
+
+: `
+
+<button
+class="green"
+onclick="issueAdmission(${index})">
+
+Issue Admission Letter
+
+</button>
+
+`
+
+}
+
+</div>
+
+</div>
+
+`;
+
+});
+
 }
 
 function reviewApplication(index){
 
-  const app = applications[index];
+const app=applications[index];
 
-  currentApplication = app;
+const b=app.biodata;
 
-  const b = app.biodata;
-  const p = app.profile;
+const p=app.profile;
 
-  const departments =
-    app.enrollments
-      .map(e =>
-        e.departments?.name ||
-        e.department?.name ||
-        e.department_name ||
-        null
-      )
-      .filter(Boolean);
+const departments=getDepartments(app);
 
-  $("modalContent").innerHTML = `
+$("modalContent").innerHTML=`
 
-    <div class="notice">
-      Review the student's submitted biodata before issuing an admission letter.
-    </div>
+<div class="grid">
 
-    <div class="grid">
+${information(
+"Full Name",
+p.full_name
+)}
 
-      <div class="info">
-        <label>Full Name</label>
-        <strong>
-          ${escapeHtml(p.full_name || "—")}
-        </strong>
-      </div>
+${information(
+"Student ID",
+p.student_id
+)}
 
-      <div class="info">
-        <label>Student ID</label>
-        <strong>
-          ${escapeHtml(p.student_id || "—")}
-        </strong>
-      </div>
+${information(
+"Email",
+p.email
+)}
 
-      <div class="info">
-        <label>Email</label>
-        <strong>
-          ${escapeHtml(p.email || "—")}
-        </strong>
-      </div>
+${information(
+"Phone",
+p.phone
+)}
 
-      <div class="info">
-        <label>Phone</label>
-        <strong>
-          ${escapeHtml(p.phone || "—")}
-        </strong>
-      </div>
+${information(
+"Date of Birth",
+b.date_of_birth
+)}
 
-      <div class="info">
-        <label>Date of Birth</label>
-        <strong>
-          ${escapeHtml(b.date_of_birth || "—")}
-        </strong>
-      </div>
+${information(
+"Gender",
+b.gender
+)}
 
-      <div class="info">
-        <label>Gender</label>
-        <strong>
-          ${escapeHtml(b.gender || "—")}
-        </strong>
-      </div>
+${information(
+"Nationality",
+b.nationality
+)}
 
-      <div class="info">
-        <label>Nationality</label>
-        <strong>
-          ${escapeHtml(b.nationality || "—")}
-        </strong>
-      </div>
+${information(
+"Country",
+b.country || "Afghanistan"
+)}
 
-      <div class="info">
-        <label>Country</label>
-        <strong>
-          ${escapeHtml(b.country || "Afghanistan")}
-        </strong>
-      </div>
+${information(
+"Province / State",
+b.province
+)}
 
-      <div class="info">
-        <label>Province / State</label>
-        <strong>
-          ${escapeHtml(b.province || "—")}
-        </strong>
-      </div>
+${information(
+"District / City",
+b.district_city
+)}
 
-      <div class="info">
-        <label>District / City</label>
-        <strong>
-          ${escapeHtml(b.district_city || "—")}
-        </strong>
-      </div>
+</div>
 
-    </div>
+<div class="section">
 
-    <div class="section">
+<h3>Residential Address</h3>
 
-      <h3>Residential Address</h3>
+<div class="info">
 
-      <div class="info">
-        ${escapeHtml(b.residential_address || "—")}
-      </div>
+${escapeHTML(
+b.residential_address || "—"
+)}
 
-    </div>
+</div>
 
-    <div class="section">
+</div>
 
-      <h3>Next of Kin</h3>
+<div class="section">
 
-      <div class="grid">
+<h3>Next of Kin</h3>
 
-        <div class="info">
-          <label>Name</label>
-          <strong>
-            ${escapeHtml(b.next_of_kin_name || "—")}
-          </strong>
-        </div>
+<div class="grid">
 
-        <div class="info">
-          <label>Phone</label>
-          <strong>
-            ${escapeHtml(b.next_of_kin_phone || "—")}
-          </strong>
-        </div>
+${information(
+"Name",
+b.next_of_kin_name
+)}
 
-      </div>
+${information(
+"Phone",
+b.next_of_kin_phone
+)}
 
-    </div>
+</div>
 
-    <div class="section">
+</div>
 
-      <h3>Departments</h3>
+<div class="section">
 
-      <div class="departments">
+<h3>Departments</h3>
 
-        ${
-          departments.length
-          ? departments
-              .map(d =>
-                `<span class="department">
-                  ${escapeHtml(d)}
-                </span>`
-              )
-              .join("")
-          : "No department information"
-        }
+<div class="departments">
 
-      </div>
+${
+departments.length
 
-    </div>
+? departments.map(
+d=>`<span class="department">
+${escapeHTML(d)}
+</span>`
+).join("")
 
-    <div class="actions">
+: "No department information"
 
-      ${
-        !app.admission
-        ? `
-          <button
-            class="btn-success"
-            onclick="closeModal();issueAdmission(${applications.indexOf(app)})">
-            Issue Admission Letter
-          </button>
-        `
-        : `
-          <button
-            class="btn-gold"
-            onclick="closeModal();downloadAdmission(${applications.indexOf(app)})">
-            Download Admission Letter
-          </button>
-        `
-      }
+}
 
-    </div>
-  `;
+</div>
 
-  $("reviewModal").style.display="flex";
+</div>
+
+<div class="actions">
+
+${
+app.admission
+
+? `
+
+<button
+class="gold"
+onclick="closeModal();
+downloadAdmission(${index})">
+
+Download Admission Letter
+
+</button>
+
+`
+
+: `
+
+<button
+class="green"
+onclick="closeModal();
+issueAdmission(${index})">
+
+Issue Admission Letter
+
+</button>
+
+`
+
+}
+
+</div>
+
+`;
+
+$("modal").style.display="flex";
+
 }
 
 function closeModal(){
-  $("reviewModal").style.display="none";
+
+$("modal").style.display="none";
+
 }
 
 async function downloadApplication(index){
 
-  const app = applications[index];
+const path=
+applications[index]
+.biodata
+.application_pdf_path;
 
-  const path =
-    app.biodata.application_pdf_path;
+if(!path){
 
-  if(!path){
-    alert("Application PDF is not available.");
-    return;
-  }
+alert(
+"Application PDF is not available."
+);
 
-  try{
+return;
 
-    const {
-      data,
-      error
-    } = await client.storage
-  
+}
+
+try{
+
+const {data,error}=
+await supabaseClient.storage
+.from("student-applications")
+.createSignedUrl(
+path,
+3600
+);
+
+if(error) throw error;
+
+window.open(
+data.signedUrl,
+"_blank"
+);
+
+}catch(error){
+
+alert(
+"Unable to open application PDF.\n\n"+
+error.message
+);
+
+}
+
+}
+
+async function issueAdmission(index){
+
+const app=applications[index];
+
+const p=app.profile;
+
+if(!p.id || !p.student_id){
+
+alert("Student ID is missing.");
+
+return;
+
+}
+
+const confirmed=confirm(
+
+"Issue an official admission letter for "+
+
+(p.full_name || "this student")+
+
+" ("+p.student_id+")?"
+
+);
+
+if(!confirmed) return;
+
+try{
+
+const userResult=
+await supabaseClient.auth.getUser();
+
+if(userResult.error)
+throw userResult.error;
+
+const adminId=
+userResult.data.user.id;
+
+const departments=
+getDepartments(app);
+
+const departmentText=
+departments.length
+? departments.join(", ")
+: "Not specified";
+
+const studyLevel=
+getStudyLevel(app);
+
+/*
+Generate the admission letter.
+*/
+
+const {jsPDF} = await import(
+"https://cdn.jsdelivr.net/npm/jspdf@2.5.1/+esm"
+);
+
+const pdf=new jsPDF();
+
+pdf.setFillColor(
+7,17,31
+);
+
+pdf.rect(
+0,0,210,35,"F"
+);
+
+pdf.setTextColor(
+212,175,55
+);
+
+pdf.setFontSize(22);
+
+pdf.setFont(
+"helvetica",
+"bold"
+);
+
+pdf.text(
+"RAYHAR ACADEMY",
+105,15,
+{align:"center"}
+);
+
+pdf.setTextColor(
+255,255,255
+);
+
+pdf.setFontSize(10);
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+pdf.text(
+"For Knowledge and Leadership",
+105,24,
+{align:"center"}
+);
+
+pdf.setTextColor(
+17,24,39
+);
+
+pdf.setFontSize(18);
+
+pdf.setFont(
+"helvetica",
+"bold"
+);
+
+pdf.text(
+"ADMISSION LETTER",
+105,52,
+{align:"center"}
+);
+
+pdf.setFontSize(11);
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+pdf.text(
+"Date: "+
+new Date().toLocaleDateString(),
+20,68
+);
+
+pdf.setFont(
+"helvetica",
+"bold"
+);
+
+pdf.text(
+"Student ID:",
+20,82
+);
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+pdf.text(
+p.student_id,
+60,82
+);
+
+pdf.setFont(
+"helvetica",
+"bold"
+);
+
+pdf.text(
+"Student Name:",
+20,92
+);
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+pdf.text(
+p.full_name || "Student",
+60,92
+);
+
+pdf.setFont(
+"helvetica",
+"bold"
+);
+
+pdf.text(
+"Study Level:",
+20,102
+);
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+pdf.text(
+studyLevel,
+60,102
+);
+
+pdf.setFont(
+"helvetica",
+"bold"
+);
+
+pdf.text(
+"Department(s):",
+20,112
+);
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+const deptLines=
+pdf.splitTextToSize(
+departmentText,
+125
+);
+
+pdf.text(
+deptLines,
+60,112
+);
+
+const startY=
+112+
+deptLines.length*6+
+18;
+
+const letter=
+
+"Dear "+
+(p.full_name || "Student")+
+",\n\n"+
+"We are pleased to inform you that you have been granted admission to RAYHAR ACADEMY. Your application and submitted student information have been received and processed by the Academy.\n\n"+
+"Your official Student ID is "+
+p.student_id+
+". Please keep this Student ID safe, as it will be used for your student records and future Academy services.\n\n"+
+"We welcome you to RAYHAR ACADEMY and wish you success in your studies and future academic journey.\n\n"+
+"Sincerely,\n"+
+"RAYHAR ACADEMY\n"+
+"For Knowledge and Leadership";
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+pdf.text(
+pdf.splitTextToSize(
+letter,
+170
+),
+20,
+startY
+);
+
+pdf.setFontSize(8);
+
+pdf.setTextColor(
+100,100,100
+);
+
+pdf.text(
+"RAYHAR ACADEMY — Official Admission Document",
+105,285,
+{align:"center"}
+);
+
+const blob=
+pdf.output("blob");
+
+const fileName=
+"admission-letter-"+
+Date.now()+
+".pdf";
+
+const storagePath=
+p.id+
+"/"+
+fileName;
+
+/*
+Upload generated letter.
+*/
+
+const upload=
+await supabaseClient.storage
+.from("admission-letters")
+.upload(
+storagePath,
+blob,
+{
+contentType:
+"application/pdf",
+upsert:true
+}
+);
+
+if(upload.error)
+throw upload.error;
+
+/*
+Remove previous active admission record.
+*/
+
+const remove=
+await supabaseClient
+.from("admission_letters")
+.delete()
+.eq("student_id",p.id);
+
+if(remove.error)
+throw remove.error;
+
+/*
+Create new admission record.
+*/
+
+const insert=
+await supabaseClient
+.from("admission_letters")
+.insert({
+
+student_id:p.id,
+
+file_name:fileName,
+
+storage_path:
+storagePath,
+
+issued_by:
+adminId,
+
+student_name:
+p.full_name,
+
+student_id_number:
+p.student_id,
+
+departments_text:
+departmentText,
+
+study_level:
+studyLevel
+
+})
+.select()
+.single();
+
+if(insert.error)
+throw insert.error;
+
+/*
+Mark application as admitted.
+*/
+
+const update=
+await supabaseClient
+.from("student_biodata")
+.update({
+
+admission_status:
+"admitted",
+
+reviewed_at:
+new Date().toISOString(),
+
+reviewed_by:
+adminId
+
+})
+.eq(
+"student_id",
+p.id
+);
+
+if(update.error)
+throw update.error;
+
+app.admission=
+insert.data;
+
+app.biodata.admission_status=
+"admitted";
+
+render();
+
+alert(
+"Admission letter issued successfully."
+);
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"Unable to issue admission letter.\n\n"+
+error.message
+);
+
+}
+
+}
+
+async function downloadAdmission(index){
+
+const admission=
+applications[index].admission;
+
+if(!admission){
+
+alert(
+"Admission letter is not available."
+);
+
+return;
+
+}
+
+try{
+
+const {data,error}=
+await supabaseClient.storage
+.from("admission-letters")
+.createSignedUrl(
+admission.storage_path,
+3600
+);
+
+if(error) throw error;
+
+/*
+Record download.
+*/
+
+const tracking=
+await supabaseClient.rpc(
+"record_admission_download",
+{
+letter_id:
+admission.id
+}
+);
+
+if(!tracking.error){
+
+admission.download_count=
+Number(
+admission.download_count || 0
+)+1;
+
+admission.last_downloaded_at=
+new Date().toISOString();
+
+render();
+
+}
+
+window.open(
+data.signedUrl,
+"_blank"
+);
+
+}catch(error){
+
+alert(
+"Unable to open admission letter.\n\n"+
+error.message
+);
+
+}
+
+}
+
+async function logout(){
+
+await supabaseClient.auth.signOut();
+
+location.href=
+"admin-login.html";
+
+}
+
+loadApplications();
+
+</script>
+
+</body>
+  </html>
