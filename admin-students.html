@@ -25,7 +25,7 @@ body {
 header {
   background: #07111f;
   color: white;
-  padding: 18px;
+  padding: 16px 18px;
 }
 
 .header-inner {
@@ -301,14 +301,11 @@ main {
     Admission letters are generated automatically by the system.
   </div>
 
-
   <div id="errorBox" class="box error"></div>
-
 
   <div id="loadingBox" class="box loading">
     Loading student applications...
   </div>
-
 
   <div id="applications"></div>
 
@@ -323,7 +320,7 @@ let studentApplications = [];
 
 
 /* =========================
-   HELPER FUNCTIONS
+   HELPERS
 ========================= */
 
 function esc(value) {
@@ -342,13 +339,8 @@ function info(label, value) {
 
   return `
     <div class="info">
-
       <small>${esc(label)}</small>
-
-      <strong>
-        ${esc(value || "—")}
-      </strong>
-
+      <strong>${esc(value || "—")}</strong>
     </div>
   `;
 
@@ -374,9 +366,13 @@ function formatDate(value) {
 
 function showError(message) {
 
-  document.getElementById("loadingBox").style.display = "none";
+  const loading =
+    document.getElementById("loadingBox");
 
-  const box = document.getElementById("errorBox");
+  loading.style.display = "none";
+
+  const box =
+    document.getElementById("errorBox");
 
   box.style.display = "block";
 
@@ -403,13 +399,39 @@ async function loadApplications() {
 
 
     /*
-      IMPORTANT:
+      First confirm that an authenticated
+      administrator session exists.
+    */
 
-      We do NOT call getSession() here.
+    const sessionResult =
+      await client.auth.getSession();
 
-      The RPC receives the authenticated user's
-      Supabase session automatically and checks
-      whether the user is an administrator.
+
+    if (sessionResult.error) {
+
+      throw sessionResult.error;
+
+    }
+
+
+    const session =
+      sessionResult.data.session;
+
+
+    if (!session) {
+
+      throw new Error(
+        "No administrator session was found. Please log in again."
+      );
+
+    }
+
+
+    /*
+      Secure RPC.
+
+      The database function checks whether
+      the current authenticated user is an admin.
     */
 
     const rpcPromise =
@@ -457,7 +479,8 @@ async function loadApplications() {
     }
 
 
-    studentApplications = result.data;
+    studentApplications =
+      result.data;
 
 
     document.getElementById(
@@ -465,9 +488,7 @@ async function loadApplications() {
     ).style.display = "none";
 
 
-    await renderApplications(
-      studentApplications
-    );
+    await renderApplications();
 
 
   } catch (error) {
@@ -480,7 +501,10 @@ async function loadApplications() {
 
     showError(
       "Unable to load student applications.\n\n" +
-      (error.message || String(error))
+      (
+        error.message ||
+        String(error)
+      )
     );
 
   }
@@ -489,13 +513,15 @@ async function loadApplications() {
 
 
 /* =========================
-   GET STUDENT PHOTO
+   STUDENT PHOTO
 ========================= */
 
 async function getPhotoUrl(path) {
 
   if (!path) {
+
     return "";
+
   }
 
 
@@ -522,7 +548,10 @@ async function getPhotoUrl(path) {
     }
 
 
-    return result.data?.signedUrl || "";
+    return (
+      result.data?.signedUrl ||
+      ""
+    );
 
 
   } catch (error) {
@@ -543,7 +572,7 @@ async function getPhotoUrl(path) {
    RENDER APPLICATIONS
 ========================= */
 
-async function renderApplications(data) {
+async function renderApplications() {
 
   const container =
     document.getElementById(
@@ -551,7 +580,7 @@ async function renderApplications(data) {
     );
 
 
-  if (!data.length) {
+  if (!studentApplications.length) {
 
     container.innerHTML = `
 
@@ -571,352 +600,257 @@ async function renderApplications(data) {
   const photoUrls =
     await Promise.all(
 
-      data.map(item =>
-        getPhotoUrl(
-          item.biodata?.photo_path
-        )
+      studentApplications.map(
+        item =>
+          getPhotoUrl(
+            item.biodata?.photo_path
+          )
       )
 
     );
 
 
   container.innerHTML =
-    data.map((item, index) => {
+    studentApplications.map(
+      (item, index) => {
 
-      const biodata =
-        item.biodata || {};
+        const biodata =
+          item.biodata || {};
 
-      const profile =
-        item.profile || {};
+        const profile =
+          item.profile || {};
 
-      const enrollments =
-        item.enrollments || [];
+        const enrollments =
+          item.enrollments || [];
 
-      const admission =
-        item.admission || null;
-
-
-      const departments =
-        enrollments
-          .map(
-            enrollment =>
-              enrollment.departments?.name
-          )
-          .filter(Boolean);
+        const admission =
+          item.admission || null;
 
 
-      const admitted =
-        String(
-          biodata.admission_status || ""
-        ).toLowerCase() === "admitted";
+        const departments =
+          enrollments
+            .map(
+              enrollment =>
+                enrollment.departments?.name
+            )
+            .filter(Boolean);
 
 
-      const photoUrl =
-        photoUrls[index];
+        const admitted =
+          String(
+            biodata.admission_status || ""
+          ).toLowerCase() === "admitted";
 
 
-      const photoHtml = photoUrl
-
-        ? `
-
-          <img
-            class="student-photo"
-            src="${esc(photoUrl)}"
-            alt="Student photo"
-          >
-
-        `
-
-        : `
-
-          <div class="no-photo">
-            No Photo
-          </div>
-
-        `;
+        const photoUrl =
+          photoUrls[index];
 
 
-      return `
+        const photoHtml =
+          photoUrl
 
-        <div class="card">
+          ?
+
+          `
+            <img
+              class="student-photo"
+              src="${esc(photoUrl)}"
+              alt="Student photo"
+            >
+          `
+
+          :
+
+          `
+            <div class="no-photo">
+              No Photo
+            </div>
+          `;
 
 
-          <div class="student-header">
+        return `
 
-            ${photoHtml}
-
-
-            <div>
-
-              <h3 class="student-name">
-
-                ${esc(
-                  profile.full_name ||
-                  "Unnamed Student"
-                )}
-
-              </h3>
+          <div class="card">
 
 
-              <div class="student-id">
+            <div class="student-header">
 
-                ${esc(
-                  profile.student_id ||
-                  "No Student ID"
-                )}
+              ${photoHtml}
+
+
+              <div>
+
+                <h3 class="student-name">
+
+                  ${esc(
+                    profile.full_name ||
+                    "Unnamed Student"
+                  )}
+
+                </h3>
+
+
+                <div class="student-id">
+
+                  ${esc(
+                    profile.student_id ||
+                    "No Student ID"
+                  )}
+
+                </div>
+
+
+                <span
+                  class="status ${
+                    admitted
+                      ? "admitted"
+                      : ""
+                  }"
+                >
+
+                  ${
+                    admitted
+                      ? "ADMITTED"
+                      : "SUBMITTED"
+                  }
+
+                </span>
 
               </div>
 
-
-              <span
-                class="status ${
-                  admitted
-                    ? "admitted"
-                    : ""
-                }"
-              >
-
-                ${
-                  admitted
-                    ? "ADMITTED"
-                    : "SUBMITTED"
-                }
-
-              </span>
-
             </div>
-
-          </div>
-
-
-          <div class="grid">
-
-            ${info(
-              "Email",
-              profile.email
-            )}
-
-            ${info(
-              "Phone",
-              profile.phone
-            )}
-
-            ${info(
-              "Date of Birth",
-              biodata.date_of_birth
-            )}
-
-            ${info(
-              "Gender",
-              biodata.gender
-            )}
-
-            ${info(
-              "Nationality",
-              biodata.nationality
-            )}
-
-            ${info(
-              "Country",
-              biodata.country ||
-              "Afghanistan"
-            )}
-
-            ${info(
-              "Province / State",
-              biodata.province
-            )}
-
-            ${info(
-              "District / City",
-              biodata.district_city
-            )}
-
-            ${info(
-              "Study Level",
-              profile.study_level ||
-              "Beginner"
-            )}
-
-          </div>
-
-
-          <div class="section">
-
-            <strong class="section-title">
-              Residential Address
-            </strong>
-
-
-            <div class="info">
-
-              ${esc(
-                biodata.residential_address ||
-                "—"
-              )}
-
-            </div>
-
-          </div>
-
-
-          <div class="section">
-
-            <strong class="section-title">
-              Next of Kin
-            </strong>
 
 
             <div class="grid">
 
               ${info(
-                "Name",
-                biodata.next_of_kin_name
+                "Email",
+                profile.email
               )}
 
               ${info(
                 "Phone",
-                biodata.next_of_kin_phone
+                profile.phone
+              )}
+
+              ${info(
+                "Date of Birth",
+                biodata.date_of_birth
+              )}
+
+              ${info(
+                "Gender",
+                biodata.gender
+              )}
+
+              ${info(
+                "Nationality",
+                biodata.nationality
+              )}
+
+              ${info(
+                "Country",
+                biodata.country ||
+                "Afghanistan"
+              )}
+
+              ${info(
+                "Province / State",
+                biodata.province
+              )}
+
+              ${info(
+                "District / City",
+                biodata.district_city
+              )}
+
+              ${info(
+                "Study Level",
+                profile.study_level ||
+                "Beginner"
               )}
 
             </div>
 
-          </div>
 
+            <div class="section">
 
-          <div class="section">
+              <strong class="section-title">
+                Residential Address
+              </strong>
 
-            <strong class="section-title">
-              Departments
-            </strong>
+              <div class="info">
 
-
-            <div class="departments">
-
-              ${
-                departments.length
-
-                ?
-
-                departments
-                  .map(
-                    department => `
-
-                      <span class="department">
-
-                        ${esc(department)}
-
-                      </span>
-
-                    `
-                  )
-                  .join("")
-
-                :
-
-                "No department information"
-              }
-
-            </div>
-
-          </div>
-
-
-          ${
-            admission
-
-            ?
-
-            `
-
-              <div class="admission-box">
-
-                <strong>
-                  Admission Letter Issued
-                </strong>
-
-
-                <p>
-
-                  <strong>
-                    Issued:
-                  </strong>
-
-                  ${esc(
-                    formatDate(
-                      admission.issued_at
-                    )
-                  )}
-
-                </p>
-
-
-                <p>
-
-                  <strong>
-                    Downloads:
-                  </strong>
-
-                  ${esc(
-                    admission.download_count || 0
-                  )}
-
-                </p>
-
-
-                <p>
-
-                  <strong>
-                    Last Downloaded:
-                  </strong>
-
-                  ${esc(
-                    formatDate(
-                      admission.last_downloaded_at
-                    )
-                  )}
-
-                </p>
+                ${esc(
+                  biodata.residential_address ||
+                  "—"
+                )}
 
               </div>
 
-            `
-
-            :
-
-            ""
-          }
+            </div>
 
 
-          <div class="actions">
+            <div class="section">
+
+              <strong class="section-title">
+                Next of Kin
+              </strong>
 
 
-            ${
-              biodata.application_pdf_path
+              <div class="grid">
 
-              ?
+                ${info(
+                  "Name",
+                  biodata.next_of_kin_name
+                )}
 
-              `
+                ${info(
+                  "Phone",
+                  biodata.next_of_kin_phone
+                )}
 
-                <button
-                  class="light"
-                  onclick="downloadApplication(
-                    '${esc(
-                      biodata.application_pdf_path
-                    )}'
-                  )"
-                >
+              </div>
 
-                  Download Application PDF
+            </div>
 
-                </button>
 
-              `
+            <div class="section">
 
-              :
+              <strong class="section-title">
+                Departments
+              </strong>
 
-              ""
-            }
+
+              <div class="departments">
+
+                ${
+                  departments.length
+
+                  ?
+
+                  departments
+                    .map(
+                      department => `
+
+                        <span class="department">
+
+                          ${esc(department)}
+
+                        </span>
+
+                      `
+                    )
+                    .join("")
+
+                  :
+
+                  "No department information"
+                }
+
+              </div>
+
+            </div>
 
 
             ${
@@ -926,46 +860,140 @@ async function renderApplications(data) {
 
               `
 
-                <button
-                  class="gold"
-                  onclick="downloadAdmission(
-                    '${esc(
-                      admission.storage_path
-                    )}'
-                  )"
-                >
+                <div class="admission-box">
 
-                  Download Admission Letter
+                  <strong>
+                    Admission Letter Issued
+                  </strong>
 
-                </button>
+
+                  <p>
+
+                    <strong>
+                      Issued:
+                    </strong>
+
+                    ${esc(
+                      formatDate(
+                        admission.issued_at
+                      )
+                    )}
+
+                  </p>
+
+
+                  <p>
+
+                    <strong>
+                      Downloads:
+                    </strong>
+
+                    ${esc(
+                      admission.download_count || 0
+                    )}
+
+                  </p>
+
+
+                  <p>
+
+                    <strong>
+                      Last Downloaded:
+                    </strong>
+
+                    ${esc(
+                      formatDate(
+                        admission.last_downloaded_at
+                      )
+                    )}
+
+                  </p>
+
+                </div>
 
               `
 
               :
 
-              `
-
-                <button
-                  class="green"
-                  onclick="issueAdmission(${index})"
-                >
-
-                  Issue Admission Letter
-
-                </button>
-
-              `
+              ""
             }
+
+
+            <div class="actions">
+
+
+              ${
+                biodata.application_pdf_path
+
+                ?
+
+                `
+
+                  <button
+                    class="light"
+                    onclick='downloadApplication(${JSON.stringify(
+                      biodata.application_pdf_path
+                    )})'
+                  >
+
+                    Download Application PDF
+
+                  </button>
+
+                `
+
+                :
+
+                ""
+              }
+
+
+              ${
+                admission
+
+                ?
+
+                `
+
+                  <button
+                    class="gold"
+                    onclick='downloadAdmission(${JSON.stringify(
+                      admission.storage_path
+                    )})'
+                  >
+
+                    Download Admission Letter
+
+                  </button>
+
+                `
+
+                :
+
+                `
+
+                  <button
+                    class="green"
+                    onclick="issueAdmission(${index})"
+                  >
+
+                    Issue Admission Letter
+
+                  </button>
+
+                `
+              }
+
+
+            </div>
 
 
           </div>
 
+        `;
 
-        </div>
-
-      `;
-
-    }).join("");
+      }
+    ).join("");
 
 }
 
@@ -1172,18 +1200,28 @@ async function issueAdmission(index) {
 
 
     /*
-      jsPDF is already loaded above.
+      Check PDF library.
     */
 
-    const jsPDF =
-      window.jspdf.jsPDF;
+    if (
+      !window.jspdf ||
+      !window.jspdf.jsPDF
+    ) {
+
+      throw new Error(
+        "The PDF generator could not be loaded. Please refresh the page."
+      );
+
+    }
 
 
     const pdf =
-      new jsPDF();
+      new window.jspdf.jsPDF();
 
 
-    /* HEADER */
+    /* =========================
+       PDF HEADER
+    ========================= */
 
     pdf.setFillColor(
       7,
@@ -1246,7 +1284,9 @@ async function issueAdmission(index) {
     );
 
 
-    /* TITLE */
+    /* =========================
+       TITLE
+    ========================= */
 
     pdf.setTextColor(
       17,
@@ -1287,6 +1327,10 @@ async function issueAdmission(index) {
     );
 
 
+    /* =========================
+       STUDENT DETAILS
+    ========================= */
+
     pdf.setFont(
       "helvetica",
       "bold"
@@ -1298,10 +1342,44 @@ async function issueAdmission(index) {
       82
     );
 
+    pdf.setFont(
+      "helvetica",
+      "normal"
+    );
+
+    pdf.text(
+      profile.student_id || "",
+      60,
+      82
+    );
+
+
+    pdf.setFont(
+      "helvetica",
+      "bold"
+    );
+
+    pdf.text(
+      "Student Name:",
+      20,
+      92
+    );
 
     pdf.setFont(
       "helvetica",
       "normal"
+    );
+
+    pdf.text(
+      profile.full_name || "",
+      60,
+      92
+    );
+
+
+    pdf.setFont(
+      "helvetica",
+            "normal"
     );
 
     pdf.text(
@@ -1391,6 +1469,10 @@ async function issueAdmission(index) {
     );
 
 
+    /* =========================
+       LETTER BODY
+    ========================= */
+
     const bodyText =
 
       "Dear " +
@@ -1413,4 +1495,263 @@ async function issueAdmission(index) {
 
       ". Please keep this Student ID safe, as it will be used for your student records and future Academy services.\n\n" +
 
-      "We welcome you to RAYHAR ACADEMY and wish you success in your studies and future academic journey.\n\n" 
+      "We welcome you to RAYHAR ACADEMY and wish you success in your studies and future academic journey.\n\n" +
+
+      "Sincerely,\n" +
+
+      "RAYHAR ACADEMY\n" +
+
+      "For Knowledge and Leadership";
+
+
+    const bodyLines =
+      pdf.splitTextToSize(
+        bodyText,
+        170
+      );
+
+
+    const bodyStartY =
+      112 +
+      (
+        departmentLines.length *
+        6
+      ) +
+      18;
+
+
+    pdf.text(
+      bodyLines,
+      20,
+      bodyStartY
+    );
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    pdf.setFontSize(8);
+
+    pdf.setTextColor(
+      100,
+      100,
+      100
+    );
+
+    pdf.text(
+      "RAYHAR ACADEMY — Official Admission Document",
+      105,
+      285,
+      {
+        align: "center"
+      }
+    );
+
+
+    /* =========================
+       CREATE PDF FILE
+    ========================= */
+
+    const blob =
+      pdf.output("blob");
+
+
+    const fileName =
+      "admission-letter-" +
+      Date.now() +
+      ".pdf";
+
+
+    const storagePath =
+      profile.id +
+      "/" +
+      fileName;
+
+
+    /* =========================
+       UPLOAD ADMISSION LETTER
+    ========================= */
+
+    const upload =
+      await client.storage
+        .from("admission-letters")
+        .upload(
+          storagePath,
+          blob,
+          {
+            contentType:
+              "application/pdf",
+
+            upsert:
+              true
+          }
+        );
+
+
+    if (upload.error) {
+
+      throw upload.error;
+
+    }
+
+
+    /* =========================
+       DELETE OLD RECORD
+    ========================= */
+
+    const remove =
+      await client
+        .from("admission_letters")
+        .delete()
+        .eq(
+          "student_id",
+          profile.id
+        );
+
+
+    if (remove.error) {
+
+      throw remove.error;
+
+    }
+
+
+    /* =========================
+       CREATE NEW RECORD
+    ========================= */
+
+    const insert =
+      await client
+        .from("admission_letters")
+        .insert({
+
+          student_id:
+            profile.id,
+
+          file_name:
+            fileName,
+
+          storage_path:
+            storagePath,
+
+          issued_by:
+            adminUser.id,
+
+          student_name:
+            profile.full_name,
+
+          student_id_number:
+            profile.student_id,
+
+          departments_text:
+            departmentText,
+
+          study_level:
+            studyLevel
+
+        });
+
+
+    if (insert.error) {
+
+      throw insert.error;
+
+    }
+
+
+    /* =========================
+       MARK STUDENT ADMITTED
+    ========================= */
+
+    const update =
+      await client
+        .from("student_biodata")
+        .update({
+
+          admission_status:
+            "admitted",
+
+          reviewed_at:
+            new Date().toISOString(),
+
+          reviewed_by:
+            adminUser.id
+
+        })
+        .eq(
+          "student_id",
+          profile.id
+        );
+
+
+    if (update.error) {
+
+      throw update.error;
+
+    }
+
+
+    alert(
+      "Admission letter issued successfully."
+    );
+
+
+    await loadApplications();
+
+
+  } catch (error) {
+
+    console.error(
+      "Admission error:",
+      error
+    );
+
+
+    alert(
+      "Unable to issue admission letter.\n\n" +
+      (
+        error.message ||
+        String(error)
+      )
+    );
+
+  }
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout() {
+
+  try {
+
+    if (client) {
+
+      await client.auth.signOut();
+
+    }
+
+  } finally {
+
+    window.location.href =
+      "admin-login.html";
+
+  }
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadApplications();
+
+</script>
+
+</body>
+</html>
