@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Student Biodata | RAYHAR ACADEMY</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #07111f;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #050b14;
+      border-bottom: 1px solid #c9a227;
+      padding: 18px 20px;
+    }
+
+    .header-inner {
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    header img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    header h1 {
+      color: #d4af37;
+      font-size: 22px;
+    }
+
+    header p {
+      color: #ccc;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 35px auto;
+      padding: 0 18px 50px;
+    }
+
+    .card {
+      background: #0d1a2b;
+      border: 1px solid #26364b;
+      border-radius: 15px;
+      padding: 28px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    }
+
+    h2 {
+      color: #d4af37;
+      margin-bottom: 8px;
+    }
+
+    .intro {
+      color: #c9d0d9;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .student-id {
+      background: #101f33;
+      border-left: 4px solid #d4af37;
+      padding: 14px;
+      margin-bottom: 25px;
+      border-radius: 7px;
+    }
+
+    .student-id strong {
+      color: #d4af37;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      color: #ddd;
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 13px;
+      border-radius: 8px;
+      border: 1px solid #35475d;
+      background: #081321;
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #d4af37;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .photo-box {
+      border: 1px dashed #52647a;
+      border-radius: 10px;
+      padding: 18px;
+      background: #081321;
+    }
+
+    .photo-preview {
+      width: 130px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #d4af37;
+      display: none;
+      margin-top: 12px;
+    }
+
+    .help {
+      font-size: 12px;
+      color: #9da9b7;
+      margin-top: 6px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 15px;
+      border: none;
+      border-radius: 9px;
+      background: #d4af37;
+      color: #07111f;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e2c35c;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .success {
+      background: #12351f;
+      border: 1px solid #2e8b57;
+      color: #b8f5ca;
+    }
+
+    .error {
+      background: #391619;
+      border: 1px solid #a94442;
+      color: #ffc5c5;
+    }
+
+    .logout {
+      margin-top: 15px;
+      background: transparent;
+      border: 1px solid #53657b;
+      color: #ddd;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <img src="logo.jpg" alt="RAYHAR ACADEMY">
+    <div>
+      <h1>RAYHAR ACADEMY</h1>
+      <p>For Knowledge and Leadership</p>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="card">
+
+    <h2>Complete Your Biodata</h2>
+
+    <p class="intro">
+      Please complete your personal information below. This information will
+      automatically be submitted to RAYHAR ACADEMY and used to prepare your
+      official student application record.
+    </p>
+
+    <div class="student-id">
+      <strong>Student ID:</strong>
+      <span id="studentId">Loading...</span>
+    </div>
+
+    <form id="biodataForm">
+
+      <div class="grid">
+
+        <div class="full">
+          <label>Full Name</label>
+          <input id="fullName" type="text" readonly>
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input id="email" type="email" readonly>
+        </div>
+
+        <div>
+          <label>Phone Number</label>
+          <input id="phone" type="tel" placeholder="Enter phone number">
+        </div>
+
+        <div>
+          <label>Date of Birth</label>
+          <input id="dateOfBirth" type="date" required>
+        </div>
+
+        <div>
+          <label>Gender</label>
+          <select id="gender" required>
+            <option value="">Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Nationality</label>
+          <input
+            id="nationality"
+            type="text"
+            value="Afghan"
+            placeholder="Enter nationality"
+            required
+          >
+        </div>
+
+        <div>
+          <label>Country</label>
+          <input
+            id="country"
+            type="text"
+            value="Afghanistan"
+            placeholder="Enter country"
+            required
+          >
+        </div>
+
+        <div>
+          <label>Province / State</label>
+          <input
+            id="province"
+            type="text"
+            placeholder="Enter province or state"
+          >
+        </div>
+
+        <div>
+          <label>District / City</label>
+          <input
+            id="districtCity"
+            type="text"
+            placeholder="Enter district or city"
+          >
+        </div>
+
+        <div class="full">
+          <label>Residential Address</label>
+          <textarea
+            id="address"
+            placeholder="Enter your current residential address"
+            required
+          ></textarea>
+        </div>
+
+        <div>
+          <label>Next of Kin Name</label>
+          <input
+            id="nextOfKinName"
+            type="text"
+            placeholder="Enter next of kin name"
+            required
+          >
+        </div>
+
+        <div>
+          <label>Next of Kin Phone</label>
+          <input
+            id="nextOfKinPhone"
+            type="tel"
+            placeholder="Enter next of kin phone"
+            required
+          >
+        </div>
+
+        <div class="full">
+
+          <label>Passport / Student Photograph</label>
+
+          <div class="photo-box">
+
+            <input
+              id="photo"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              required
+            >
+
+            <p class="help">
+              Upload a clear photograph. JPG, PNG or WEBP. Maximum 2 MB.
+            </p>
+
+            <img
+              id="photoPreview"
+              class="photo-preview"
+              alt="Photo preview"
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <button id="submitButton" type="submit">
+        Submit Biodata
+      </button>
+
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <button id="logoutButton" class="logout">
+      Logout
+    </button>
+
+  </div>
+
+</div>
+
+<script src="config.js"></script>
+
+<script>
+
+const client = window.supabaseClient;
+
+let currentUser = null;
+let profile = null;
+let selectedPhoto = null;
+
+const form = document.getElementById("biodataForm");
+const message = document.getElementById("message");
+const submitButton = document.getElementById("submitButton");
+
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = "message " + type;
+  message.style.display = "block";
+}
+
+function escapeText(value) {
+  return value || "";
+}
+
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result);
+
+    reader.onerror = reject;
+
+    reader.readAsDataURL(file);
+  });
+}
+
+function formatDate(dateValue) {
+
+  if (!dateValue) return "";
+
+  const date = new Date(dateValue + "T00:00:00");
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+async function loadStudent() {
+
+  const {
+    data: {
+      user
+    },
+    error: authError
+  } = await client.auth.getUser();
+
+  if (authError || !user) {
+    window.location.href = "student-auth.html";
+    return;
+  }
+
+  currentUser = user;
+
+  const {
+    data,
+    error
+  } = await client
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !data) {
+
+    showMessage(
+      "We could not load your student information. Please contact the administrator.",
+      "error"
+    );
+
+    return;
+  }
+
+  profile = data;
+
+  if (profile.role === "admin") {
+    window.location.href = "admin-portal.html";
+    return;
+  }
+
+  document.getElementById("studentId").textContent =
+    profile.student_id || "Not assigned";
+
+  document.getElementById("fullName").value =
+    escapeText(profile.full_name);
+
+  document.getElementById("email").value =
+    escapeText(profile.email);
+
+  document.getElementById("phone").value =
+    escapeText(profile.phone);
+
+  await loadExistingBiodata();
+}
+
+async function loadExistingBiodata() {
+
+  const {
+    data,
+    error
+  } = await client
+    .from("student_biodata")
+    .select("*")
+    .eq("student_id", currentUser.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (!data) return;
+
+  document.getElementById("dateOfBirth").value =
+    data.date_of_birth || "";
+
+  document.getElementById("gender").value =
+    data.gender || "";
+
+  document.getElementById("nationality").value =
+    data.nationality || "Afghan";
+
+  document.getElementById("country").value =
+    data.country || "Afghanistan";
+
+  document.getElementById("province").value =
+    data.province || "";
+
+  document.getElementById("districtCity").value =
+    data.district_city || "";
+
+  document.getElementById("address").value =
+    data.residential_address || "";
+
+  document.getElementById("nextOfKinName").value =
+    data.next_of_kin_name || "";
+
+  document.getElementById("nextOfKinPhone").value =
+    data.next_of_kin_phone || "";
+}
+
+document.getElementById("photo").addEventListener("change", function() {
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+
+    showMessage(
+      "Please select a valid image file.",
+      "error"
+    );
+
+    this.value = "";
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+
+    showMessage(
+      "Photo must be 2 MB or smaller.",
+      "error"
+    );
+
+    this.value = "";
+    return;
+  }
+
+  selectedPhoto = file;
+
+  const preview = document.getElementById("photoPreview");
+
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+});
+
+async function uploadPhoto(file) {
+
+  const extension =
+    file.name.split(".").pop().toLowerCase();
+
+  const path =
+    currentUser.id +
+    "/photo-" +
+    Date.now() +
+    "." +
+    extension;
+
+  const {
+    error
+  } = await client
+    .storage
+    .from("student-photos")
+    .upload(path, file, {
+      upsert: true,
+      contentType: file.type
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  return path;
+}
+
+async function uploadApplicationPDF(blob) {
+
+  const path =
+    currentUser.id +
+    "/application-" +
+    Date.now() +
+    ".pdf";
+
+  const {
+    error
+  } = await client
+    .storage
+    .from("student-applications")
+    .upload(path, blob, {
+      upsert: false,
+      contentType: "application/pdf"
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  return path;
+}
+
+async function getDepartments() {
+
+  const {
+    data,
+    error
+  } = await client
+    .from("enrollments")
+    .select(`
+      study_level,
+      departments (
+        name
+      )
+    `)
+    .eq("student_id", currentUser.id);
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data || [];
+}
+
+async function generateApplicationPDF(formData, photoDataURL) {
+
+  const {
+    jsPDF
+  } = window.jspdf;
+
+  const pdf = new jsPDF();
+
+  const gold = [212, 175, 55];
+  const navy = [7, 17, 31];
+
+  pdf.setFillColor(...navy);
+  pdf.rect(0, 0, 210, 297, "F");
+
+  pdf.setFillColor(255, 255, 255);
+  pdf.rect(10, 10, 190, 277, "F");
+
+  pdf.setTextColor(...gold);
+  pdf.setFontSize(20);
+  pdf.setFont("helvetica", "bold");
+
+  pdf.text(
+    "RAYHAR ACADEMY",
+    105,
+    25,
+    { align: "center" }
+  );
+
+  pdf.setFontSize(11);
+  pdf.setTextColor(70, 70, 70);
+
+  pdf.text(
+    "For Knowledge and Leadership",
+    105,
+    33,
+    { align: "center" }
+  );
+
+  pdf.setDrawColor(...gold);
+  pdf.line(20, 39, 190, 39);
+
+  pdf.setTextColor(20, 20, 20);
+  pdf.setFontSize(16);
+  pdf.setFont("helvetica", "bold");
+
+  pdf.text(
+    "STUDENT BIODATA / APPLICATION RECORD",
+    105,
+    52,
+    { align: "center" }
+  );
+
+  if (photoDataURL) {
+
+    pdf.addImage(
+      photoDataURL,
+      "JPEG",
+      155,
+      60,
+      30,
+      36
+    );
+  }
+
+  let y = 68;
+
+  function addField(label, value) {
+
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10);
+    pdf.setTextColor(70, 70, 70);
+
+    pdf.text(label, 22, y);
+
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(20, 20, 20);
+
+    const lines = pdf.splitTextToSize(
+      String(value || "Not provided"),
+      120
+    );
+
+    pdf.text(lines, 70, y);
+
+    y += Math.max(8, lines.length * 5);
+  }
+
+  addField(
+    "Student ID:",
+    profile.student_id
+  );
+
+  addField(
+    "Full Name:",
+    formData.fullName
+  );
+
+  addField(
+    "Email:",
+    formData.email
+  );
+
+  addField(
+    "Phone:",
+    formData.phone
+  );
+
+  addField(
+    "Date of Birth:",
+    formatDate(formData.dateOfBirth)
+  );
+
+  addField(
+    "Gender:",
+    formData.gender
+  );
+
+  addField(
+    "Nationality:",
+    formData.nationality
+  );
+
+  addField(
+    "Country:",
+    formData.country
+  );
+
+  addField(
+    "Province / State:",
+    formData.province
+  );
+
+  addField(
+    "District / City:",
+    formData.districtCity
+  );
+
+  addField(
+    "Residential Address:",
+    formData.address
+  );
+
+  addField(
+    "Next of Kin:",
+    formData.nextOfKinName
+  );
+
+  addField(
+    "Next of Kin Phone:",
+    formData.nextOfKinPhone
+  );
+
+  if (formData.departments.length > 0) {
+
+    addField(
+      "Departments:",
+      formData.departments.join(", ")
+    );
+  }
+
+  addField(
+    "Study Level:",
+    formData.studyLevel
+  );
+
+  pdf.setFontSize(9);
+  pdf.setTextColor(100, 100, 100);
+
+  pdf.text(
+    "Automatically generated by RAYHAR ACADEMY.",
+    105,
+    275,
+    { align: "center" }
+  );
+
+  return pdf.output("blob");
+}
+
+form.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  if (!currentUser || !profile) {
+    showMessage(
+      "Student information is not ready. Please refresh the page.",
+      "error"
+    );
+    return;
+  }
+
+  if (!selectedPhoto) {
+
+    showMessage(
+      "Please upload your photograph.",
+      "error"
+    );
+
+    return;
+  }
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting...";
+
+  try {
+
+    const departments = await getDepartments();
+
+    const departmentNames = departments
+      .map(item =>
+        item.departments
+          ? item.departments.name
+          : null
+      )
+      .filter(Boolean);
+
+    const studyLevel =
+      profile.study_level ||
+      (departments[0] ? departments[0].study_level : "") ||
+      "Not provided";
+
+    const formData = {
+
+      fullName:
+        document.getElementById("fullName").value,
+
+      email:
+        document.getElementById("email").value,
+
+      phone:
+        document.getElementById("phone").value,
+
+      dateOfBirth:
+        document.getElementById("dateOfBirth").value,
+
+      gender:
+        document.getElementById("gender").value,
+
+      nationality:
+        document.getElementById("nationality").value,
+
+      country:
+        document.getElementById("country").value,
+
+      province:
+        document.getElementById("province").value,
+
+      districtCity:
+        document.getElementById("districtCity").value,
+
+      address:
+        document.getElementById("address").value,
+
+      nextOfKinName:
+        document.getElementById("nextOfKinName").value,
+
+      nextOfKinPhone:
+        document.getElementById("nextOfKinPhone").value,
+
+      departments:
+        departmentNames,
+
+      studyLevel
+    };
+
+    const photoDataURL =
+      await fileToDataURL(selectedPhoto);
+
+    const photoPath =
+      await uploadPhoto(selectedPhoto);
+
+    const pdfBlob =
+      await generateApplicationPDF(
+        formData,
+        photoDataURL
+      );
+
+    const pdfPath =
+      await uploadApplicationPDF(pdfBlob);
+
+    const {
+      error: saveError
+    } = await client
+      .from("student_biodata")
+      .upsert({
+
+        student_id: currentUser.id,
+
+        date_of_birth:
+          formData.dateOfBirth || null,
+
+        gender:
+          formData.gender || null,
+
+        nationality:
+          formData.nationality || null,
+
+        country:
+          formData.country || null,
+
+        province:
+          formData.province || null,
+
+        district_city:
+          formData.districtCity || null,
+
+        residential_address:
+          formData.address || null,
+
+        next_of_kin_name:
+          formData.nextOfKinName || null,
+
+        next_of_kin_phone:
+          formData.nextOfKinPhone || null,
+
+        photo_path:
+          photoPath,
+
+        application_pdf_path:
+          pdfPath,
+
+        updated_at:
+          new Date().toISOString()
+
+      }, {
+        onConflict: "student_id"
+      });
+
+    if (saveError) {
+      throw saveError;
+    }
+
+    showMessage(
+      "Your biodata has been submitted successfully. Your application record has been automatically generated and sent to RAYHAR ACADEMY for review.",
+      "success"
+    );
+
+    submitButton.textContent =
+      "Biodata Submitted";
+
+    setTimeout(() => {
+
+      window.location.href =
+        "student-portal.html";
+
+    }, 3000);
+
+  } catch (error) {
+
+    console.error(error);
+
+    showMessage(
+      "Something went wrong while submitting your biodata: " +
+      error.message,
+      "error"
+    );
+
+    submitButton.disabled = false;
+    submitButton.textContent =
+      "Submit Biodata";
+  }
+
+});
+
+document
+  .getElementById("logoutButton")
+  .addEventListener("click", async function() {
+
+    await client.auth.signOut();
+
+    window.location.href =
+      "student-auth.html";
+  });
+
+loadStudent();
+
+</script>
+
+</body>
+  </html>
