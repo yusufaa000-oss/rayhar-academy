@@ -3,214 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RAYHAR ACADEMY | Admin Portal</title>
+
+  <title>RAYHAR ACADEMY | Student Portal</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:#080b12;
+      color:#fff;
     }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #080b12;
-      color: #fff;
+    header{
+      background:#05070c;
+      border-bottom:1px solid #c9a227;
+      padding:14px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      position:sticky;
+      top:0;
+      z-index:10;
     }
 
-    header {
-      background: #05070c;
-      border-bottom: 1px solid #c9a227;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .brand img{
+      width:48px;
+      height:48px;
+      object-fit:contain;
+      border-radius:8px;
+      background:#fff;
     }
 
-    .brand img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      border-radius: 8px;
-      background: #fff;
+    .brand h1{
+      margin:0;
+      color:#d4af37;
+      font-size:19px;
     }
 
-    .brand h1 {
-      margin: 0;
-      color: #d4af37;
-      font-size: 19px;
+    .brand p{
+      margin:4px 0 0;
+      color:#aaa;
+      font-size:9px;
+      letter-spacing:1.4px;
     }
 
-    .brand p {
-      margin: 4px 0 0;
-      color: #aaa;
-      font-size: 9px;
-      letter-spacing: 1.4px;
+    button{
+      border:0;
+      cursor:pointer;
+      background:#d4af37;
+      color:#05070c;
+      padding:10px 15px;
+      border-radius:7px;
+      font-weight:bold;
     }
 
-    .actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+    button:hover{
+      background:#e5c657;
     }
 
-    button,
-    .btn {
-      border: 0;
-      cursor: pointer;
-      background: #d4af37;
-      color: #05070c;
-      padding: 10px 15px;
-      border-radius: 7px;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
+    main{
+      width:min(1000px,94%);
+      margin:30px auto;
     }
 
-    button:hover,
-    .btn:hover {
-      background: #e5c657;
+    .welcome{
+      margin-bottom:22px;
     }
 
-    main {
-      width: min(900px, 94%);
-      margin: 35px auto;
+    .welcome h2{
+      margin:0 0 7px;
+      color:#d4af37;
     }
 
-    .welcome {
-      margin-bottom: 25px;
+    .welcome p{
+      margin:0;
+      color:#aaa;
     }
 
-    .welcome h2 {
-      margin: 0 0 8px;
-      color: #d4af37;
+    .section{
+      background:#111722;
+      border:1px solid #252d3d;
+      border-radius:12px;
+      padding:20px;
+      margin-bottom:20px;
     }
 
-    .welcome p {
-      margin: 0;
-      color: #aaa;
-      line-height: 1.6;
+    .section h3{
+      margin:0 0 18px;
+      color:#d4af37;
     }
 
-    .section {
-      background: #111722;
-      border: 1px solid #252d3d;
-      border-radius: 12px;
-      padding: 22px;
-      margin-bottom: 20px;
+    .profile-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+      gap:14px;
     }
 
-    .section h3 {
-      margin: 0 0 18px;
-      color: #d4af37;
+    .profile-item{
+      background:#080b12;
+      padding:15px;
+      border-radius:8px;
+      border:1px solid #1d2533;
     }
 
-    .admin-card {
-      background: #080b12;
-      border: 1px solid #332c18;
-      border-radius: 10px;
-      padding: 20px;
+    .profile-item small{
+      display:block;
+      color:#777;
+      margin-bottom:7px;
     }
 
-    .admin-card h4 {
-      margin: 0 0 10px;
-      color: #d4af37;
-      font-size: 18px;
+    .profile-item span{
+      color:#fff;
+      word-break:break-word;
     }
 
-    .admin-card p {
-      color: #aaa;
-      line-height: 1.6;
-      margin: 0 0 18px;
+    .student-id{
+      color:#d4af37!important;
+      font-weight:bold;
+      letter-spacing:1px;
     }
 
-    .manage-button {
-      font-size: 15px;
+    .department-card{
+      background:#080b12;
+      border:1px solid #292f3c;
+      border-radius:10px;
+      padding:18px;
+      margin-bottom:12px;
     }
 
-    .item {
-      background: #080b12;
-      border-left: 3px solid #c9a227;
-      padding: 16px;
-      border-radius: 7px;
-      margin-bottom: 12px;
+    .department-name{
+      color:#d4af37;
+      font-size:17px;
+      font-weight:bold;
+      margin-bottom:10px;
     }
 
-    .item:last-child {
-      margin-bottom: 0;
+    .department-info{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:10px;
     }
 
-    .item strong {
-      color: #fff;
-      font-size: 16px;
+    .department-info div{
+      background:#111722;
+      padding:10px;
+      border-radius:6px;
     }
 
-    .item p {
-      color: #aaa;
-      margin: 8px 0 0;
-      line-height: 1.6;
+    .department-info small{
+      display:block;
+      color:#777;
+      margin-bottom:4px;
     }
 
-    .muted,
-    .loading {
-      color: #888;
+    .department-info span{
+      color:#eee;
     }
 
-    .error {
-      color: #ff8a8a;
-      line-height: 1.5;
+    .item{
+      background:#080b12;
+      border-left:3px solid #c9a227;
+      padding:16px;
+      border-radius:7px;
+      margin-bottom:12px;
     }
 
-    footer {
-      text-align: center;
-      color: #666;
-      padding: 35px 15px;
-      font-size: 13px;
+    .item strong{
+      color:#fff;
+      font-size:16px;
     }
 
-    @media (max-width: 650px) {
-      header {
-        padding: 11px 12px;
+    .item p{
+      color:#aaa;
+      margin:8px 0 0;
+      line-height:1.6;
+    }
+
+    .muted,.loading{
+      color:#888;
+    }
+
+    .error{
+      color:#ff8a8a;
+      line-height:1.5;
+    }
+
+    footer{
+      text-align:center;
+      color:#666;
+      padding:35px 15px;
+      font-size:13px;
+    }
+
+    @media(max-width:650px){
+
+      header{
+        padding:11px 12px;
       }
 
-      .brand img {
-        width: 40px;
-        height: 40px;
+      .brand img{
+        width:40px;
+        height:40px;
       }
 
-      .brand h1 {
-        font-size: 15px;
+      .brand h1{
+        font-size:15px;
       }
 
-      .brand p {
-        font-size: 7px;
+      .brand p{
+        font-size:7px;
       }
 
-      .actions button {
-        padding: 8px 10px;
-        font-size: 11px;
+      button{
+        padding:8px 10px;
+        font-size:11px;
       }
 
-      main {
-        width: 92%;
-        margin-top: 22px;
+      main{
+        width:92%;
+        margin-top:22px;
       }
 
-      .section {
-        padding: 17px;
+      .section{
+        padding:17px;
       }
+
     }
   </style>
 </head>
@@ -221,31 +250,23 @@
 
   <div class="brand">
 
-    <img
-      src="logo.jpg"
-      alt="RAYHAR ACADEMY Logo"
-    >
+    <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
 
     <div>
+
       <h1>RAYHAR ACADEMY</h1>
 
       <p>
         FOR KNOWLEDGE AND LEADERSHIP
       </p>
+
     </div>
 
   </div>
 
-  <div class="actions">
-
-    <button
-      id="logoutButton"
-      onclick="logout()"
-    >
-      Logout
-    </button>
-
-  </div>
+  <button id="logoutButton" onclick="logout()">
+    Logout
+  </button>
 
 </header>
 
@@ -254,56 +275,108 @@
 
   <div class="welcome">
 
-    <h2>
-      Welcome, Administrator 👋
+    <h2 id="welcomeTitle">
+      Welcome 👋
     </h2>
 
     <p>
-      This is your RAYHAR ACADEMY administration portal.
-      From here, you can manage announcements for students.
+      Your RAYHAR ACADEMY student portal.
     </p>
 
   </div>
 
 
-  <!-- ADMINISTRATION -->
-
   <section class="section">
 
     <h3>
-      Administrator
+      Student Information
     </h3>
 
-    <div class="admin-card">
+    <div class="profile-grid">
 
-      <h4>
-        📢 Announcements
-      </h4>
+      <div class="profile-item">
 
-      <p>
-        Publish new announcements, edit existing announcements,
-        publish or unpublish announcements, and remove announcements
-        that are no longer needed.
-      </p>
+        <small>Student ID</small>
 
-      <a
-        class="btn manage-button"
-        href="admin-announcements.html"
-      >
-        Manage Announcements
-      </a>
+        <span
+          id="studentId"
+          class="student-id"
+        >
+          Loading...
+        </span>
+
+      </div>
+
+
+      <div class="profile-item">
+
+        <small>Full Name</small>
+
+        <span id="fullName">
+          Loading...
+        </span>
+
+      </div>
+
+
+      <div class="profile-item">
+
+        <small>Email</small>
+
+        <span id="email">
+          Loading...
+        </span>
+
+      </div>
+
+
+      <div class="profile-item">
+
+        <small>Study Level</small>
+
+        <span id="studyLevel">
+          Loading...
+        </span>
+
+      </div>
+
+
+      <div class="profile-item">
+
+        <small>Status</small>
+
+        <span id="status">
+          Loading...
+        </span>
+
+      </div>
 
     </div>
 
   </section>
 
 
-  <!-- PUBLISHED ANNOUNCEMENTS -->
+  <section class="section">
+
+    <h3>
+      My Departments
+    </h3>
+
+    <div id="departments">
+
+      <p class="loading">
+        Loading your departments...
+      </p>
+
+    </div>
+
+  </section>
+
 
   <section class="section">
 
     <h3>
-      Published Announcements
+      Announcements
     </h3>
 
     <div id="announcements">
@@ -332,52 +405,50 @@
 const client = window.supabaseClient;
 
 
-/* LOGOUT */
+function esc(value){
 
-async function logout() {
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+async function logout(){
 
   const button =
     document.getElementById("logoutButton");
 
   button.disabled = true;
-  button.textContent = "Logging out...";
 
-  try {
+  button.textContent =
+    "Logging out...";
+
+  try{
 
     await client.auth.signOut({
-      scope: "local"
+      scope:"local"
     });
 
-  } catch (error) {
+  }catch(error){
 
     console.error(error);
 
   }
 
-  window.location.replace("student-auth.html");
+  window.location.replace(
+    "student-auth.html"
+  );
 
 }
 
 
-/* ESCAPE TEXT */
+async function loadPortal(){
 
-function esc(value) {
-
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-/* LOAD ADMIN PORTAL */
-
-async function loadPortal() {
-
-  if (!client) {
+  if(!client){
 
     document.querySelector("main").innerHTML =
       '<section class="section">' +
@@ -391,67 +462,22 @@ async function loadPortal() {
   }
 
 
-  try {
-
-    /* CHECK LOGIN */
+  try{
 
     const {
-      data: { session },
-      error: sessionError
+      data:{session},
+      error:sessionError
     } = await client.auth.getSession();
 
 
-    if (sessionError) {
+    if(sessionError){
 
       throw sessionError;
 
     }
 
 
-    if (!session?.user) {
-
-      window.location.replace("student-auth.html");
-
-      return;
-
-    }
-
-
-    const user = session.user;
-
-
-    /* CHECK ADMIN PROFILE */
-
-    const {
-      data: profile,
-      error: profileError
-    } = await client
-      .from("profiles")
-      .select("role, full_name, email")
-      .eq("id", user.id)
-      .maybeSingle();
-
-
-    if (profileError) {
-
-      throw profileError;
-
-    }
-
-
-    /*
-      ONLY ADMINS CAN USE THIS PORTAL.
-    */
-
-    if (profile?.role !== "admin") {
-
-      await client.auth.signOut({
-        scope: "local"
-      });
-
-      alert(
-        "This page is for administrators only."
-      );
+    if(!session?.user){
 
       window.location.replace(
         "student-auth.html"
@@ -462,24 +488,256 @@ async function loadPortal() {
     }
 
 
-    /* LOAD PUBLISHED ANNOUNCEMENTS */
+    const user =
+      session.user;
+
 
     const {
-      data: announcements,
-      error: announcementError
+      data:profile,
+      error:profileError
     } = await client
-      .from("announcements")
+      .from("profiles")
       .select("*")
-      .eq("published", true)
-      .order(
-        "published_at",
-        {
-          ascending: false
-        }
+      .eq("id",user.id)
+      .maybeSingle();
+
+
+    if(profileError){
+
+      throw profileError;
+
+    }
+
+
+    /*
+      ADMIN PROTECTION
+    */
+
+    if(profile?.role === "admin"){
+
+      window.location.replace(
+        "admin-portal.html"
+      );
+
+      return;
+
+    }
+
+
+    const name =
+      profile?.full_name ||
+      user.user_metadata?.full_name ||
+      "Student";
+
+
+    document.getElementById(
+      "welcomeTitle"
+    ).textContent =
+      "Welcome, " +
+      name +
+      " 👋";
+
+
+    document.getElementById(
+      "studentId"
+    ).textContent =
+      profile?.student_id ||
+      "Not available";
+
+
+    document.getElementById(
+      "fullName"
+    ).textContent =
+      profile?.full_name ||
+      name;
+
+
+    document.getElementById(
+      "email"
+    ).textContent =
+      profile?.email ||
+      user.email ||
+      "—";
+
+
+    document.getElementById(
+      "studyLevel"
+    ).textContent =
+      profile?.study_level ||
+      "Beginner";
+
+
+    document.getElementById(
+      "status"
+    ).textContent =
+      profile?.status ||
+      "Active";
+
+
+    const {
+      data:enrollments,
+      error:enrollmentError
+    } = await client
+      .from("enrollments")
+      .select("*")
+      .eq("student_id",user.id);
+
+
+    if(enrollmentError){
+
+      throw enrollmentError;
+
+    }
+
+
+    const list =
+      enrollments || [];
+
+
+    const ids =
+      list
+        .map(item => item.department_id)
+        .filter(Boolean);
+
+
+    let departments = [];
+
+
+    if(ids.length){
+
+      const {
+        data,
+        error
+      } = await client
+        .from("departments")
+        .select("*")
+        .in("id",ids);
+
+
+      if(error){
+
+        console.error(error);
+
+      }else{
+
+        departments =
+          data || [];
+
+      }
+
+    }
+
+
+    const departmentContainer =
+      document.getElementById(
+        "departments"
       );
 
 
-    if (announcementError) {
+    if(!list.length){
+
+      departmentContainer.innerHTML =
+        '<p class="muted">' +
+        'You have not selected any department yet.' +
+        '</p>';
+
+    }else{
+
+      departmentContainer.innerHTML =
+        list.map(enrollment => {
+
+          const department =
+            departments.find(
+              item =>
+                item.id ===
+                enrollment.department_id
+            );
+
+
+          return `
+
+            <div class="department-card">
+
+              <div class="department-name">
+
+                ${esc(
+                  department?.name ||
+                  "Department"
+                )}
+
+              </div>
+
+              <div class="department-info">
+
+                <div>
+
+                  <small>
+                    Study Level
+                  </small>
+
+                  <span>
+                    ${esc(
+                      enrollment.study_level ||
+                      "Beginner"
+                    )}
+                  </span>
+
+                </div>
+
+
+                <div>
+
+                  <small>
+                    Status
+                  </small>
+
+                  <span>
+                    ${esc(
+                      enrollment.status ||
+                      "Active"
+                    )}
+                  </span>
+
+                </div>
+
+
+                <div>
+
+                  <small>
+                    Enrollment
+                  </small>
+
+                  <span>
+                    Active Student
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }).join("");
+
+    }
+
+
+    const {
+      data:announcements,
+      error:announcementError
+    } = await client
+      .from("announcements")
+      .select("*")
+      .eq("published",true)
+      .order(
+        "published_at",
+        {ascending:false}
+      );
+
+
+    if(announcementError){
 
       throw announcementError;
 
@@ -492,26 +750,21 @@ async function loadPortal() {
       );
 
 
-    const list =
+    const list2 =
       announcements || [];
 
 
-    if (!list.length) {
+    if(!list2.length){
 
       container.innerHTML =
         '<p class="muted">' +
-        'No published announcements yet.' +
+        'No announcements yet.' +
         '</p>';
 
-      return;
+    }else{
 
-    }
-
-
-    container.innerHTML =
-      list.map(item => {
-
-        return `
+      container.innerHTML =
+        list2.map(item => `
 
           <div class="item">
 
@@ -531,15 +784,15 @@ async function loadPortal() {
 
           </div>
 
-        `;
+        `).join("");
 
-      }).join("");
+    }
 
 
-  } catch (error) {
+  }catch(error){
 
     console.error(
-      "Admin portal error:",
+      "Student portal error:",
       error
     );
 
@@ -547,7 +800,7 @@ async function loadPortal() {
     document.querySelector("main").innerHTML =
       '<section class="section">' +
       '<p class="error">' +
-      'We could not load the administrator portal.' +
+      'We could not load your student portal.' +
       '<br><br>' +
       'Please refresh the page and try again.' +
       '</p>' +
