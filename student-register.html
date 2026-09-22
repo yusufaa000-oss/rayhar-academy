@@ -176,7 +176,6 @@
       padding: 12px;
       cursor: pointer;
       background: #fff;
-      transition: 0.2s;
     }
 
     .department-option:hover {
@@ -284,585 +283,493 @@
 
 <body>
 
-  <header class="topbar">
-    <div class="topbar-inner">
+<header class="topbar">
+  <div class="topbar-inner">
 
-      <a href="index.html" class="brand">
+    <a href="index.html" class="brand">
+      <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
 
-        <img
-          src="logo.jpg"
-          alt="RAYHAR ACADEMY Logo"
+      <span class="brand-name">
+        RAYHAR ACADEMY
+        <small class="brand-tagline">
+          FOR KNOWLEDGE AND LEADERSHIP
+        </small>
+      </span>
+    </a>
+
+    <a href="index.html" class="home-link">
+      ← Home
+    </a>
+
+  </div>
+</header>
+
+
+<main class="page">
+
+  <div class="register-card">
+
+    <div class="heading">
+      <h1>Student Registration</h1>
+
+      <p>
+        Create your RAYHAR ACADEMY student account.
+      </p>
+    </div>
+
+
+    <div class="notice">
+      <strong>Admission is open.</strong>
+      <br>
+      There is no admission fee. Select the department
+      or departments you want to study.
+    </div>
+
+
+    <div id="message" class="message"></div>
+
+
+    <form id="registrationForm">
+
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+
+        <input
+          type="text"
+          id="fullName"
+          placeholder="Enter your full name"
+          required
+        >
+      </div>
+
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email address"
+          autocomplete="email"
+          required
+        >
+      </div>
+
+
+      <div class="form-group">
+        <label for="password">Password</label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Create a password"
+          minlength="6"
+          autocomplete="new-password"
+          required
         >
 
-        <span class="brand-name">
-          RAYHAR ACADEMY
-          <small class="brand-tagline">
-            FOR KNOWLEDGE AND LEADERSHIP
-          </small>
-        </span>
+        <div class="help">
+          Password must contain at least 6 characters.
+        </div>
+      </div>
 
-      </a>
 
-      <a href="index.html" class="home-link">
-        ← Home
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Enter your password again"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+
+      <div class="form-group">
+        <label for="studyLevel">Study Level</label>
+
+        <select id="studyLevel" required>
+
+          <option value="">
+            Select your study level
+          </option>
+
+          <option value="Beginner">
+            Beginner
+          </option>
+
+          <option value="Intermediate">
+            Intermediate
+          </option>
+
+          <option value="Advanced">
+            Advanced
+          </option>
+
+        </select>
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Select Department(s)
+        </label>
+
+        <div class="help" style="margin-bottom:10px;">
+          You may select more than one department.
+        </div>
+
+
+        <div class="departments">
+
+          <label class="department-option">
+            <input
+              type="checkbox"
+              name="departments"
+              value="Arabic Department"
+            >
+            <span>Arabic Department</span>
+          </label>
+
+
+          <label class="department-option">
+            <input
+              type="checkbox"
+              name="departments"
+              value="Computer Science Department"
+            >
+            <span>Computer Science Department</span>
+          </label>
+
+
+          <label class="department-option">
+            <input
+              type="checkbox"
+              name="departments"
+              value="English Department"
+            >
+            <span>English Department</span>
+          </label>
+
+
+          <label class="department-option">
+            <input
+              type="checkbox"
+              name="departments"
+              value="Fine Art Department"
+            >
+            <span>Fine Art Department</span>
+          </label>
+
+
+          <label class="department-option">
+            <input
+              type="checkbox"
+              name="departments"
+              value="Mathematics Department"
+            >
+            <span>Mathematics Department</span>
+          </label>
+
+
+          <label class="department-option">
+            <input
+              type="checkbox"
+              name="departments"
+              value="Medical Science Department"
+            >
+            <span>Medical Science Department</span>
+          </label>
+
+
+          <label class="department-option">
+            <input
+              type="checkbox"
+              name="departments"
+              value="Quran & Islamic Studies Department"
+            >
+            <span>Quran & Islamic Studies Department</span>
+          </label>
+
+
+          <label class="department-option">
+            <input
+              type="checkbox"
+              name="departments"
+              value="Science Department"
+            >
+            <span>Science Department</span>
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="submit"
+        id="registerButton"
+      >
+        CREATE STUDENT ACCOUNT
+      </button>
+
+    </form>
+
+
+    <div class="login-link">
+
+      Already have an account?
+
+      <a href="student-auth.html">
+        Student Login
       </a>
 
     </div>
-  </header>
 
+  </div>
 
-  <main class="page">
+</main>
 
-    <div class="register-card">
 
-      <div class="heading">
+<footer>
+  © 2026 RAYHAR ACADEMY — For Knowledge and Leadership.
+</footer>
 
-        <h1>
-          Student Registration
-        </h1>
 
-        <p>
-          Create your RAYHAR ACADEMY student account.
-        </p>
+<script>
 
-      </div>
+  const client = window.supabaseClient;
 
+  const form = document.getElementById("registrationForm");
+  const message = document.getElementById("message");
+  const registerButton = document.getElementById("registerButton");
 
-      <div class="notice">
 
-        <strong>Admission is open.</strong>
+  function showMessage(text, type) {
 
-        <br>
+    message.textContent = text;
+    message.className = "message " + type;
 
-        There is no admission fee. Select the department
-        or departments you want to study.
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
-      </div>
+  }
 
 
-      <div id="message" class="message"></div>
+  form.addEventListener("submit", async function(event) {
 
+    event.preventDefault();
 
-      <form id="registrationForm">
 
-        <!-- FULL NAME -->
+    const fullName =
+      document.getElementById("fullName").value.trim();
 
-        <div class="form-group">
+    const email =
+      document.getElementById("email").value.trim();
 
-          <label for="fullName">
-            Full Name
-          </label>
+    const password =
+      document.getElementById("password").value;
 
-          <input
-            type="text"
-            id="fullName"
-            name="fullName"
-            placeholder="Enter your full name"
-            required
-          >
+    const confirmPassword =
+      document.getElementById("confirmPassword").value;
 
-        </div>
+    const studyLevel =
+      document.getElementById("studyLevel").value;
 
 
-        <!-- EMAIL -->
+    const selectedDepartments =
+      Array.from(
+        document.querySelectorAll(
+          'input[name="departments"]:checked'
+        )
+      ).map(
+        checkbox => checkbox.value
+      );
 
-        <div class="form-group">
 
-          <label for="email">
-            Email Address
-          </label>
+    /* VALIDATION */
 
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your email address"
-            required
-          >
-
-        </div>
-
-
-        <!-- PASSWORD -->
-
-        <div class="form-group">
-
-          <label for="password">
-            Password
-          </label>
-
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Create a password"
-            minlength="6"
-            required
-          >
-
-          <div class="help">
-            Password must contain at least 6 characters.
-          </div>
-
-        </div>
-
-
-        <!-- CONFIRM PASSWORD -->
-
-        <div class="form-group">
-
-          <label for="confirmPassword">
-            Confirm Password
-          </label>
-
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Enter your password again"
-            minlength="6"
-            required
-          >
-
-        </div>
-
-
-        <!-- STUDY LEVEL -->
-
-        <div class="form-group">
-
-          <label for="studyLevel">
-            Study Level
-          </label>
-
-          <select
-            id="studyLevel"
-            name="studyLevel"
-            required
-          >
-
-            <option value="">
-              Select your study level
-            </option>
-
-            <option value="Beginner">
-              Beginner
-            </option>
-
-            <option value="Intermediate">
-              Intermediate
-            </option>
-
-            <option value="Advanced">
-              Advanced
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- DEPARTMENTS -->
-
-        <div class="form-group">
-
-          <label>
-            Select Department(s)
-          </label>
-
-          <div class="help" style="margin-bottom:10px;">
-            You may select more than one department.
-          </div>
-
-
-          <div class="departments">
-
-            <label class="department-option">
-
-              <input
-                type="checkbox"
-                name="departments"
-                value="Arabic Department"
-              >
-
-              <span>
-                Arabic Department
-              </span>
-
-            </label>
-
-
-            <label class="department-option">
-
-              <input
-                type="checkbox"
-                name="departments"
-                value="Computer Science Department"
-              >
-
-              <span>
-                Computer Science Department
-              </span>
-
-            </label>
-
-
-            <label class="department-option">
-
-              <input
-                type="checkbox"
-                name="departments"
-                value="English Department"
-              >
-
-              <span>
-                English Department
-              </span>
-
-            </label>
-
-
-            <label class="department-option">
-
-              <input
-                type="checkbox"
-                name="departments"
-                value="Fine Art Department"
-              >
-
-              <span>
-                Fine Art Department
-              </span>
-
-            </label>
-
-
-            <label class="department-option">
-
-              <input
-                type="checkbox"
-                name="departments"
-                value="Mathematics Department"
-              >
-
-              <span>
-                Mathematics Department
-              </span>
-
-            </label>
-
-
-            <label class="department-option">
-
-              <input
-                type="checkbox"
-                name="departments"
-                value="Medical Science Department"
-              >
-
-              <span>
-                Medical Science Department
-              </span>
-
-            </label>
-
-
-            <label class="department-option">
-
-              <input
-                type="checkbox"
-                name="departments"
-                value="Quran & Islamic Studies Department"
-              >
-
-              <span>
-                Quran & Islamic Studies Department
-              </span>
-
-            </label>
-
-
-            <label class="department-option">
-
-              <input
-                type="checkbox"
-                name="departments"
-                value="Science Department"
-              >
-
-              <span>
-                Science Department
-              </span>
-
-            </label>
-
-          </div>
-
-        </div>
-
-
-        <!-- SUBMIT -->
-
-        <button
-          type="submit"
-          id="registerButton"
-        >
-          CREATE STUDENT ACCOUNT
-        </button>
-
-      </form>
-
-
-      <div class="login-link">
-
-        Already have an account?
-
-        <a href="student-auth.html">
-          Student Login
-        </a>
-
-      </div>
-
-    </div>
-
-  </main>
-
-
-  <footer>
-    © 2026 RAYHAR ACADEMY — For Knowledge and Leadership.
-  </footer>
-
-
-  <script>
-
-    const supabaseClient = window.supabaseClient;
-
-    const form = document.getElementById("registrationForm");
-    const message = document.getElementById("message");
-    const registerButton = document.getElementById("registerButton");
-
-
-    function showMessage(text, type) {
-
-      message.textContent = text;
-
-      message.className = "message " + type;
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
+    if (!fullName) {
+      showMessage(
+        "Please enter your full name.",
+        "error"
+      );
+      return;
     }
 
 
-    form.addEventListener("submit", async function(event) {
-
-      event.preventDefault();
-
-
-      const fullName =
-        document.getElementById("fullName").value.trim();
-
-      const email =
-        document.getElementById("email").value.trim();
-
-      const password =
-        document.getElementById("password").value;
-
-      const confirmPassword =
-        document.getElementById("confirmPassword").value;
-
-      const studyLevel =
-        document.getElementById("studyLevel").value;
+    if (!email) {
+      showMessage(
+        "Please enter your email address.",
+        "error"
+      );
+      return;
+    }
 
 
-      const selectedDepartments =
-        Array.from(
-          document.querySelectorAll(
-            'input[name="departments"]:checked'
-          )
-        ).map(
-          checkbox => checkbox.value
-        );
+    if (password.length < 6) {
+      showMessage(
+        "Your password must contain at least 6 characters.",
+        "error"
+      );
+      return;
+    }
 
 
-      /* =========================
-         VALIDATION
-      ========================= */
-
-      if (!fullName) {
-
-        showMessage(
-          "Please enter your full name.",
-          "error"
-        );
-
-        return;
-      }
+    if (password !== confirmPassword) {
+      showMessage(
+        "The passwords do not match.",
+        "error"
+      );
+      return;
+    }
 
 
-      if (!email) {
-
-        showMessage(
-          "Please enter your email address.",
-          "error"
-        );
-
-        return;
-      }
+    if (!studyLevel) {
+      showMessage(
+        "Please select your study level.",
+        "error"
+      );
+      return;
+    }
 
 
-      if (password.length < 6) {
-
-        showMessage(
-          "Your password must contain at least 6 characters.",
-          "error"
-        );
-
-        return;
-      }
+    if (selectedDepartments.length === 0) {
+      showMessage(
+        "Please select at least one department.",
+        "error"
+      );
+      return;
+    }
 
 
-      if (password !== confirmPassword) {
+    /* CHECK SUPABASE */
 
-        showMessage(
-          "The passwords do not match.",
-          "error"
-        );
+    if (!client) {
 
-        return;
-      }
+      showMessage(
+        "The registration system could not connect to Supabase. Please refresh the page and try again.",
+        "error"
+      );
 
-
-      if (!studyLevel) {
-
-        showMessage(
-          "Please select your study level.",
-          "error"
-        );
-
-        return;
-      }
+      return;
+    }
 
 
-      if (selectedDepartments.length === 0) {
+    /* CREATE ACCOUNT */
 
-        showMessage(
-          "Please select at least one department.",
-          "error"
-        );
-
-        return;
-      }
+    registerButton.disabled = true;
+    registerButton.textContent = "CREATING ACCOUNT...";
 
 
-      /* =========================
-         REGISTER
-      ========================= */
+    try {
 
-      registerButton.disabled = true;
+      const {
+        data,
+        error
+      } = await client.auth.signUp({
 
-      registerButton.textContent =
-        "CREATING ACCOUNT...";
+        email: email,
 
+        password: password,
 
-      try {
+        options: {
 
-        const {
-          data,
-          error
-        } = await supabaseClient.auth.signUp({
+          data: {
 
-          email: email,
+            full_name: fullName,
 
-          password: password,
+            study_level: studyLevel,
 
-          options: {
-
-            data: {
-
-              full_name: fullName,
-
-              study_level: studyLevel,
-
-              departments: selectedDepartments
-
-            }
+            departments: selectedDepartments
 
           }
 
-        });
-
-
-        if (error) {
-          throw error;
         }
 
-
-        /*
-          The Supabase trigger automatically creates:
-          - Student profile
-          - Student ID
-          - Department enrollments
-        */
+      });
 
 
-        showMessage(
-          "Registration successful! Your student account has been created. You can now log in.",
-          "success"
+      if (error) {
+        throw error;
+      }
+
+
+      if (!data || !data.user) {
+
+        throw new Error(
+          "Registration did not create an account. Please try again."
         );
-
-
-        form.reset();
-
-
-        setTimeout(function() {
-
-          window.location.href =
-            "student-auth.html";
-
-        }, 2500);
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        let errorMessage =
-          error.message ||
-          "Registration failed. Please try again.";
-
-
-        if (
-          errorMessage.toLowerCase().includes("already registered")
-        ) {
-
-          errorMessage =
-            "This email is already registered. Please use Student Login instead.";
-
-        }
-
-
-        showMessage(
-          errorMessage,
-          "error"
-        );
-
-
-      } finally {
-
-        registerButton.disabled = false;
-
-        registerButton.textContent =
-          "CREATE STUDENT ACCOUNT";
 
       }
 
-    });
 
-  </script>
+      showMessage(
+        "Registration successful! Your student account has been created. You can now log in.",
+        "success"
+      );
+
+
+      form.reset();
+
+
+      setTimeout(function() {
+
+        window.location.href =
+          "student-auth.html";
+
+      }, 2500);
+
+
+    } catch (error) {
+
+      console.error(
+        "Registration error:",
+        error
+      );
+
+
+      let errorMessage =
+        error.message ||
+        "Registration failed. Please try again.";
+
+
+      if (
+        errorMessage
+          .toLowerCase()
+          .includes("already registered")
+      ) {
+
+        errorMessage =
+          "This email is already registered. Please use Student Login instead.";
+
+      }
+
+
+      showMessage(
+        errorMessage,
+        "error"
+      );
+
+
+    } finally {
+
+      registerButton.disabled = false;
+
+      registerButton.textContent =
+        "CREATE STUDENT ACCOUNT";
+
+    }
+
+  });
+
+</script>
 
 </body>
   </html>
