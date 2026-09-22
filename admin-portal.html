@@ -30,7 +30,7 @@
     }
 
     .header-inner {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: auto;
       display: flex;
       align-items: center;
@@ -78,13 +78,18 @@
     }
 
     main {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: 35px auto;
       padding: 0 18px 50px;
     }
 
     .welcome {
-      background: linear-gradient(135deg, #07111f, #10243b);
+      background: linear-gradient(
+        135deg,
+        #07111f,
+        #10243b
+      );
+
       color: white;
       padding: 30px;
       border-radius: 14px;
@@ -112,18 +117,146 @@
       font-size: 13px;
     }
 
+    .error {
+      display: none;
+      background: #fff0f0;
+      border: 1px solid #e5a5a5;
+      color: #9b2226;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    /* ================================
+       STATISTICS
+    ================================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow:
+        0 4px 16px rgba(0, 0, 0, .05);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #667085;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 800;
+      color: #07111f;
+    }
+
+    .stat.gold {
+      border-top: 4px solid #d4af37;
+    }
+
+    .stat.blue {
+      border-top: 4px solid #1d4ed8;
+    }
+
+    .stat.green {
+      border-top: 4px solid #16803c;
+    }
+
+    .stat.orange {
+      border-top: 4px solid #c56a00;
+    }
+
+    /* ================================
+       DEPARTMENTS
+    ================================= */
+
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 13px;
+      padding: 22px;
+      box-shadow:
+        0 4px 18px rgba(0, 0, 0, .05);
+
+      margin-bottom: 22px;
+    }
+
+    .section h3 {
+      color: #07111f;
+      margin-bottom: 16px;
+    }
+
+    .department-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 12px;
+    }
+
+    .dept {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 13px 15px;
+
+      background: #f8fafc;
+
+      border: 1px solid #e8ebef;
+
+      border-radius: 8px;
+    }
+
+    .dept-name {
+      font-size: 14px;
+    }
+
+    .dept-count {
+      font-weight: bold;
+      color: #594600;
+
+      background: #f5edcf;
+
+      padding: 5px 9px;
+
+      border-radius: 5px;
+    }
+
+    /* ================================
+       MAIN CARDS
+    ================================= */
+
     .cards {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns:
+        repeat(2, 1fr);
+
       gap: 20px;
     }
 
     .card {
       background: white;
+
       border: 1px solid #e5e7eb;
+
       border-radius: 13px;
+
       padding: 24px;
-      box-shadow: 0 4px 18px rgba(0,0,0,.06);
+
+      box-shadow:
+        0 4px 18px rgba(0, 0, 0, .06);
     }
 
     .card h3 {
@@ -140,13 +273,21 @@
 
     .card button {
       width: 100%;
+
       border: none;
+
       background: #07111f;
+
       color: white;
+
       padding: 13px;
+
       border-radius: 7px;
+
       cursor: pointer;
+
       font-weight: bold;
+
       font-size: 14px;
     }
 
@@ -165,34 +306,49 @@
 
     .count {
       display: inline-block;
-      background: #f5edcf;
-      color: #594600;
-      padding: 5px 9px;
-      border-radius: 5px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
 
-    .error {
-      display: none;
-      background: #fff0f0;
-      border: 1px solid #e5a5a5;
-      color: #9b2226;
-      padding: 14px;
-      border-radius: 8px;
-      margin-bottom: 20px;
+      background: #f5edcf;
+
+      color: #594600;
+
+      padding: 5px 9px;
+
+      border-radius: 5px;
+
+      font-size: 12px;
+
+      font-weight: bold;
+
+      margin-bottom: 15px;
     }
 
     footer {
       text-align: center;
+
       color: #777;
+
       font-size: 13px;
+
       padding: 25px;
     }
 
+    /* ================================
+       MOBILE
+    ================================= */
+
+    @media (max-width: 800px) {
+
+      .stats {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+    }
+
     @media (max-width: 700px) {
-      .cards {
+
+      .cards,
+      .department-grid {
         grid-template-columns: 1fr;
       }
 
@@ -203,45 +359,75 @@
       .welcome h2 {
         font-size: 23px;
       }
+
     }
+
   </style>
 </head>
 
 <body>
 
 <header>
+
   <div class="header-inner">
 
     <div class="brand">
-      <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
+
+      <img
+        src="logo.jpg"
+        alt="RAYHAR ACADEMY Logo"
+      >
 
       <div>
-        <h1>RAYHAR ACADEMY</h1>
-        <p>For Knowledge and Leadership</p>
+
+        <h1>
+          RAYHAR ACADEMY
+        </h1>
+
+        <p>
+          For Knowledge and Leadership
+        </p>
+
       </div>
+
     </div>
 
-    <button class="logout" id="logoutBtn">
+    <button
+      class="logout"
+      id="logoutBtn"
+    >
       Logout
     </button>
 
   </div>
+
 </header>
 
 
 <main>
 
-  <div id="errorBox" class="error"></div>
+  <div
+    id="errorBox"
+    class="error"
+  ></div>
+
+
+  <!-- ================================
+       WELCOME
+  ================================= -->
 
   <section class="welcome">
 
-    <h2>Administrator Portal</h2>
+    <h2>
+      Administrator Portal
+    </h2>
 
     <p>
-      Welcome to the RAYHAR ACADEMY administration dashboard.
-      From here you can manage student applications, review
-      submitted biodata, issue admission letters, and manage
-      academy announcements.
+      Welcome to the RAYHAR ACADEMY
+      administration dashboard. Monitor
+      applications, students, admissions,
+      departments, and announcements
+      from one place.
     </p>
 
     <span class="admin-badge">
@@ -251,26 +437,146 @@
   </section>
 
 
+  <!-- ================================
+       STATISTICS
+  ================================= -->
+
+  <section class="stats">
+
+    <div class="stat gold">
+
+      <div class="stat-label">
+        Total Students
+      </div>
+
+      <div
+        class="stat-value"
+        id="totalStudents"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat blue">
+
+      <div class="stat-label">
+        Total Applications
+      </div>
+
+      <div
+        class="stat-value"
+        id="totalApplications"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat orange">
+
+      <div class="stat-label">
+        Pending Applications
+      </div>
+
+      <div
+        class="stat-value"
+        id="pendingApplications"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat green">
+
+      <div class="stat-label">
+        Admitted Students
+      </div>
+
+      <div
+        class="stat-value"
+        id="admittedStudents"
+      >
+        —
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       DEPARTMENT STATISTICS
+  ================================= -->
+
+  <section class="section">
+
+    <h3>
+      Students by Department
+    </h3>
+
+    <div
+      id="departmentGrid"
+      class="department-grid"
+    >
+
+      <div class="dept">
+
+        <span class="dept-name">
+          Loading departments...
+        </span>
+
+        <span class="dept-count">
+          —
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       ADMIN CARDS
+  ================================= -->
+
   <section class="cards">
+
 
     <!-- STUDENT APPLICATIONS -->
 
     <div class="card applications-card">
 
-      <h3>Student Applications</h3>
+      <h3>
+        Student Applications
+      </h3>
 
       <p>
-        View students who have completed their biodata.
-        Review their personal information, photographs,
-        application documents, and issue admission letters.
+        View completed biodata,
+        photographs, application
+        documents, admission status,
+        and issue or re-issue
+        admission letters.
       </p>
 
-      <div id="applicationCount" class="count">
+      <div
+        id="applicationCount"
+        class="count"
+      >
         Checking applications...
       </div>
 
       <button
-        onclick="window.location.href='admin-students.html'">
+        onclick="
+          window.location.href=
+          'admin-students.html'
+        "
+      >
         Open Student Applications
       </button>
 
@@ -281,15 +587,23 @@
 
     <div class="card announcements-card">
 
-      <h3>Announcements</h3>
+      <h3>
+        Announcements
+      </h3>
 
       <p>
-        Create, publish, update, and remove announcements
-        that will appear on the student portal.
+        Create, publish, update,
+        and remove announcements
+        that appear on the student
+        portal.
       </p>
 
       <button
-        onclick="window.location.href='admin-announcements.html'">
+        onclick="
+          window.location.href=
+          'admin-announcements.html'
+        "
+      >
         Manage Announcements
       </button>
 
@@ -301,29 +615,53 @@
 
 
 <footer>
-  © <span id="year"></span> RAYHAR ACADEMY — For Knowledge and Leadership
+
+  ©
+  <span id="year"></span>
+  RAYHAR ACADEMY —
+  For Knowledge and Leadership
+
 </footer>
 
 
 <script>
 
-  const client = window.supabaseClient;
+  const client =
+    window.supabaseClient;
+
 
   const errorBox =
-    document.getElementById("errorBox");
+    document.getElementById(
+      "errorBox"
+    );
 
 
-  document.getElementById("year").textContent =
+  document
+    .getElementById("year")
+    .textContent =
     new Date().getFullYear();
 
 
-  function showError(message) {
+  /* ================================
+     ERROR
+  ================================= */
 
-    errorBox.textContent = message;
+  function showError(
+    message
+  ) {
 
-    errorBox.style.display = "block";
+    errorBox.textContent =
+      message;
+
+    errorBox.style.display =
+      "block";
+
   }
 
+
+  /* ================================
+     ADMIN CHECK
+  ================================= */
 
   async function checkAdmin() {
 
@@ -334,32 +672,50 @@
       );
 
       return;
+
     }
 
 
     const {
-      data: { user },
+      data: {
+        user
+      },
       error: userError
-    } = await client.auth.getUser();
+    } =
+      await client.auth.getUser();
 
 
-    if (userError || !user) {
+    if (
+      userError ||
+      !user
+    ) {
 
       window.location.href =
         "admin-login.html";
 
       return;
+
     }
 
 
     const {
       data: profile,
       error: profileError
-    } = await client
-      .from("profiles")
-      .select("role, full_name")
-      .eq("id", user.id)
-      .single();
+    } =
+      await client
+
+        .from("profiles")
+
+        .select(
+          "role, full_name"
+        )
+
+        .eq(
+          "id",
+          user.id
+        )
+
+        .single();
 
 
     if (profileError) {
@@ -369,10 +725,14 @@
       );
 
       return;
+
     }
 
 
-    if (profile.role !== "admin") {
+    if (
+      profile.role !==
+      "admin"
+    ) {
 
       await client.auth.signOut();
 
@@ -380,74 +740,397 @@
         "admin-login.html";
 
       return;
+
     }
 
 
-    await loadApplicationCount();
+    await loadDashboard();
+
   }
 
 
-  async function loadApplicationCount() {
+  /* ================================
+     DASHBOARD
+  ================================= */
 
-    const countElement =
-      document.getElementById("applicationCount");
+  async function loadDashboard() {
+
+    const [
+
+      profilesResult,
+
+      biodataResult,
+
+      enrollmentsResult,
+
+      departmentsResult
+
+    ] = await Promise.all([
 
 
-    const {
-      data,
-      error
-    } = await client
-      .from("student_biodata")
-      .select("id, admission_status");
+      client
+
+        .from("profiles")
+
+        .select(
+          "id, role, status"
+        ),
 
 
-    if (error) {
+      client
 
-      countElement.textContent =
-        "Applications available";
+        .from("student_biodata")
+
+        .select(
+          "id, student_id, admission_status"
+        ),
+
+
+      client
+
+        .from("enrollments")
+
+        .select(
+          "student_id, department_id, status"
+        ),
+
+
+      client
+
+        .from("departments")
+
+        .select(
+          "id, name, active"
+        )
+
+        .eq(
+          "active",
+          true
+        )
+
+        .order(
+          "name"
+        )
+
+    ]);
+
+
+    if (
+
+      profilesResult.error ||
+
+      biodataResult.error ||
+
+      enrollmentsResult.error ||
+
+      departmentsResult.error
+
+    ) {
+
+      console.error(
+        profilesResult.error,
+        biodataResult.error,
+        enrollmentsResult.error,
+        departmentsResult.error
+      );
+
+      showError(
+        "Some dashboard statistics could not be loaded. Please refresh and try again."
+      );
 
       return;
+
     }
 
 
-    const total =
-      data ? data.length : 0;
+    /*
+     * Never count administrators
+     * as students.
+     */
+
+    const students =
+      (
+        profilesResult.data ||
+        []
+      ).filter(
+        profile =>
+          profile.role !==
+          "admin"
+      );
+
+
+    const applications =
+      biodataResult.data ||
+      [];
+
+
+    const enrollments =
+      (
+        enrollmentsResult.data ||
+        []
+      ).filter(
+        enrollment =>
+          enrollment.status ===
+          "active"
+      );
+
+
+    const departments =
+      departmentsResult.data ||
+      [];
+
+
+    /* ================================
+       APPLICATION STATUS
+    ================================= */
+
+    const admitted =
+      applications.filter(
+        application =>
+          String(
+            application.admission_status ||
+            ""
+          ).toLowerCase() ===
+          "admitted"
+      ).length;
 
 
     const pending =
-      data
-        ? data.filter(
-            item =>
-              item.admission_status !== "admitted"
-          ).length
-        : 0;
+      applications.filter(
+        application =>
+          String(
+            application.admission_status ||
+            ""
+          ).toLowerCase() !==
+          "admitted"
+      ).length;
 
 
-    if (total === 0) {
+    /* ================================
+       UPDATE STATISTICS
+    ================================= */
 
-      countElement.textContent =
+    document
+      .getElementById(
+        "totalStudents"
+      )
+      .textContent =
+      students.length;
+
+
+    document
+      .getElementById(
+        "totalApplications"
+      )
+      .textContent =
+      applications.length;
+
+
+    document
+      .getElementById(
+        "pendingApplications"
+      )
+      .textContent =
+      pending;
+
+
+    document
+      .getElementById(
+        "admittedStudents"
+      )
+      .textContent =
+      admitted;
+
+
+    /* ================================
+       APPLICATION MESSAGE
+    ================================= */
+
+    const count =
+      document.getElementById(
+        "applicationCount"
+      );
+
+
+    if (
+      applications.length ===
+      0
+    ) {
+
+      count.textContent =
         "No applications yet";
 
-      return;
+    }
+
+    else if (
+      pending > 0
+    ) {
+
+      count.textContent =
+        pending +
+        " application" +
+        (
+          pending === 1
+            ? ""
+            : "s"
+        ) +
+        " awaiting review";
+
+    }
+
+    else {
+
+      count.textContent =
+        applications.length +
+        " application" +
+        (
+          applications.length === 1
+            ? ""
+            : "s"
+        ) +
+        " received";
+
     }
 
 
-    if (pending > 0) {
+    /* ================================
+       DEPARTMENT COUNTS
+    ================================= */
 
-      countElement.textContent =
-        `${pending} application${pending === 1 ? "" : "s"} awaiting review`;
+    const departmentGrid =
+      document.getElementById(
+        "departmentGrid"
+      );
+
+
+    if (
+      departments.length ===
+      0
+    ) {
+
+      departmentGrid.innerHTML = `
+
+        <div class="dept">
+
+          <span class="dept-name">
+            No active departments found.
+          </span>
+
+          <span class="dept-count">
+            0
+          </span>
+
+        </div>
+
+      `;
 
       return;
+
     }
 
 
-    countElement.textContent =
-      `${total} application${total === 1 ? "" : "s"} received`;
+    const counts = {};
+
+
+    enrollments.forEach(
+      enrollment => {
+
+        counts[
+          enrollment.department_id
+        ] =
+          (
+            counts[
+              enrollment.department_id
+            ] ||
+            0
+          ) + 1;
+
+      }
+    );
+
+
+    departmentGrid.innerHTML =
+      departments
+        .map(
+          department => `
+
+            <div class="dept">
+
+              <span class="dept-name">
+                ${
+                  escapeHtml(
+                    department.name
+                  )
+                }
+              </span>
+
+              <span class="dept-count">
+                ${
+                  counts[
+                    department.id
+                  ] || 0
+                }
+              </span>
+
+            </div>
+
+          `
+        )
+        .join("");
+
   }
 
 
+  /* ================================
+     ESCAPE HTML
+  ================================= */
+
+  function escapeHtml(
+    value
+  ) {
+
+    return String(
+      value ??
+      ""
+    )
+
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+
+      .replace(
+        /</g,
+        "&lt;"
+      )
+
+      .replace(
+        />/g,
+        "&gt;"
+      )
+
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  /* ================================
+     LOGOUT
+  ================================= */
+
   document
-    .getElementById("logoutBtn")
+    .getElementById(
+      "logoutBtn"
+    )
+
     .addEventListener(
       "click",
       async () => {
@@ -456,13 +1139,18 @@
 
         window.location.href =
           "admin-login.html";
+
       }
     );
 
+
+  /* ================================
+     START
+  ================================= */
 
   checkAdmin();
 
 </script>
 
 </body>
-</html>
+  </html>
