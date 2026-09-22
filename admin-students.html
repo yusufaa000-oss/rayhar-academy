@@ -247,7 +247,94 @@ main{
   margin:7px 0;
 }
 
+/* =========================
+   BIODATA MODAL
+========================= */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(7,17,31,.75);
+  z-index:1000;
+  padding:20px;
+  overflow:auto;
+}
+
+.modal-card{
+  max-width:850px;
+  margin:30px auto;
+  background:white;
+  border-radius:14px;
+  padding:25px;
+  box-shadow:0 15px 50px rgba(0,0,0,.3);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  border-bottom:1px solid #e5e7eb;
+  padding-bottom:15px;
+  margin-bottom:20px;
+}
+
+.modal-head h3{
+  margin:0;
+  color:#07111f;
+}
+
+.close-modal{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+.modal-photo{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.modal-photo img{
+  width:130px;
+  height:130px;
+  object-fit:cover;
+  border-radius:12px;
+  border:3px solid #d4af37;
+}
+
+.modal-section{
+  margin-top:22px;
+}
+
+.modal-section-title{
+  background:#07111f;
+  color:#d4af37;
+  padding:10px 13px;
+  border-radius:7px;
+  font-size:13px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+.document-status{
+  padding:12px;
+  background:#f8fafc;
+  border-radius:7px;
+}
+
+.document-yes{
+  color:#15803d;
+  font-weight:bold;
+}
+
+.document-no{
+  color:#991b1b;
+  font-weight:bold;
+}
+
 @media(max-width:700px){
+
   .grid{
     grid-template-columns:1fr;
   }
@@ -259,6 +346,15 @@ main{
   .student-header{
     align-items:flex-start;
   }
+
+  .modal{
+    padding:10px;
+  }
+
+  .modal-card{
+    margin:10px auto;
+    padding:18px;
+  }
 }
 </style>
 </head>
@@ -266,36 +362,62 @@ main{
 <body>
 
 <header>
+
   <div class="header-inner">
 
     <div class="brand">
-      <img src="logo.jpg" alt="RAYHAR ACADEMY">
+
+      <img
+        src="logo.jpg"
+        alt="RAYHAR ACADEMY"
+      >
 
       <div>
+
         <h1>RAYHAR ACADEMY</h1>
-        <p>For Knowledge and Leadership</p>
+
+        <p>
+          For Knowledge and Leadership
+        </p>
+
       </div>
+
     </div>
 
-    <button class="logout" onclick="logout()">
+    <button
+      class="logout"
+      onclick="logout()"
+    >
       Logout
     </button>
 
   </div>
+
 </header>
+
 
 <main>
 
-  <h2>Student Applications</h2>
+  <h2>
+    Student Applications
+  </h2>
 
   <div class="subtitle">
+
     Review submitted student biodata and manage admissions.
     Admission letters are generated automatically by the system.
+
   </div>
 
-  <div id="errorBox" class="box error"></div>
+  <div
+    id="errorBox"
+    class="box error"
+  ></div>
 
-  <div id="loadingBox" class="box loading">
+  <div
+    id="loadingBox"
+    class="box loading"
+  >
     Loading student applications...
   </div>
 
@@ -303,9 +425,48 @@ main{
 
 </main>
 
+
+<!-- =========================
+     FULL BIODATA MODAL
+========================= -->
+
+<div
+  id="detailsModal"
+  class="modal"
+  onclick="closeDetails(event)"
+>
+
+  <div
+    class="modal-card"
+    onclick="event.stopPropagation()"
+  >
+
+    <div class="modal-head">
+
+      <h3>
+        Full Student Biodata
+      </h3>
+
+      <button
+        class="close-modal"
+        onclick="hideDetails()"
+      >
+        Close
+      </button>
+
+    </div>
+
+    <div id="detailsContent"></div>
+
+  </div>
+
+</div>
+
+
 <script>
 
-const client = window.supabaseClient;
+const client =
+  window.supabaseClient;
 
 let studentApplications = [];
 
@@ -315,47 +476,67 @@ let studentApplications = [];
 ========================= */
 
 function esc(value){
+
   return String(value ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
 
 
 function info(label,value){
+
   return `
     <div class="info">
-      <small>${esc(label)}</small>
-      <strong>${esc(value || "—")}</strong>
+
+      <small>
+        ${esc(label)}
+      </small>
+
+      <strong>
+        ${esc(value || "—")}
+      </strong>
+
     </div>
   `;
+
 }
 
 
 function formatDate(value){
 
-  if(!value) return "—";
+  if(!value){
+    return "—";
+  }
 
-  const date = new Date(value);
+  const date =
+    new Date(value);
 
   if(isNaN(date.getTime())){
     return value;
   }
 
   return date.toLocaleString();
+
 }
 
 
 function showError(message){
 
-  document.getElementById("loadingBox").style.display="none";
+  document
+    .getElementById("loadingBox")
+    .style.display="none";
 
-  const box=document.getElementById("errorBox");
+  const box =
+    document.getElementById("errorBox");
 
   box.style.display="block";
+
   box.textContent=message;
+
 }
 
 
@@ -368,9 +549,11 @@ async function loadApplications(){
   try{
 
     if(!client){
+
       throw new Error(
         "Supabase client was not loaded. Please check config.js."
       );
+
     }
 
     const sessionResult =
@@ -384,9 +567,11 @@ async function loadApplications(){
       sessionResult.data.session;
 
     if(!session){
+
       throw new Error(
         "No administrator session was found. Please log in again."
       );
+
     }
 
     const rpcPromise =
@@ -420,16 +605,19 @@ async function loadApplications(){
     }
 
     if(!Array.isArray(result.data)){
+
       throw new Error(
         "The server returned an unexpected applications response."
       );
+
     }
 
-    studentApplications=result.data;
+    studentApplications =
+      result.data;
 
-    document.getElementById(
-      "loadingBox"
-    ).style.display="none";
+    document
+      .getElementById("loadingBox")
+      .style.display="none";
 
     await renderApplications();
 
@@ -442,9 +630,14 @@ async function loadApplications(){
 
     showError(
       "Unable to load student applications.\n\n"+
-      (error.message || String(error))
+      (
+        error.message ||
+        String(error)
+      )
     );
+
   }
+
 }
 
 
@@ -463,18 +656,26 @@ async function getPhotoUrl(path){
     const result =
       await client.storage
         .from("student-photos")
-        .createSignedUrl(path,3600);
+        .createSignedUrl(
+          path,
+          3600
+        );
 
     if(result.error){
+
       console.error(
         "Photo error:",
         result.error
       );
 
       return "";
+
     }
 
-    return result.data?.signedUrl || "";
+    return (
+      result.data?.signedUrl ||
+      ""
+    );
 
   }catch(error){
 
@@ -484,7 +685,9 @@ async function getPhotoUrl(path){
     );
 
     return "";
+
   }
+
 }
 
 
@@ -495,36 +698,61 @@ async function getPhotoUrl(path){
 async function renderApplications(){
 
   const container =
-    document.getElementById("applications");
+    document.getElementById(
+      "applications"
+    );
 
   if(!studentApplications.length){
 
     container.innerHTML=`
+
       <div class="box">
-        No student applications have been submitted yet.
+
+        No student applications
+        have been submitted yet.
+
       </div>
+
     `;
 
     return;
+
   }
 
   const photoUrls =
     await Promise.all(
-      studentApplications.map(item =>
-        getPhotoUrl(item.biodata?.photo_path)
+
+      studentApplications.map(
+        item =>
+          getPhotoUrl(
+            item.biodata?.photo_path
+          )
       )
+
     );
 
+
   container.innerHTML =
+
     studentApplications.map(
+
       (item,index)=>{
 
-        const biodata=item.biodata || {};
-        const profile=item.profile || {};
-        const enrollments=item.enrollments || [];
-        const admission=item.admission || null;
+        const biodata =
+          item.biodata || {};
+
+        const profile =
+          item.profile || {};
+
+        const enrollments =
+          item.enrollments || [];
+
+        const admission =
+          item.admission || null;
+
 
         const departments =
+
           enrollments
             .map(
               enrollment =>
@@ -532,16 +760,24 @@ async function renderApplications(){
             )
             .filter(Boolean);
 
+
         const admitted =
+
           String(
             biodata.admission_status || ""
           ).toLowerCase()==="admitted";
 
-        const photoUrl=photoUrls[index];
+
+        const photoUrl =
+          photoUrls[index];
+
 
         const photoHtml =
+
           photoUrl
+
           ?
+
           `
             <img
               class="student-photo"
@@ -549,12 +785,15 @@ async function renderApplications(){
               alt="Student photo"
             >
           `
+
           :
+
           `
             <div class="no-photo">
               No Photo
             </div>
           `;
+
 
         return `
 
@@ -567,40 +806,55 @@ async function renderApplications(){
               <div>
 
                 <h3 class="student-name">
+
                   ${esc(
                     profile.full_name ||
                     "Unnamed Student"
                   )}
+
                 </h3>
 
                 <div class="student-id">
+
                   ${esc(
                     profile.student_id ||
                     "No Student ID"
                   )}
+
                 </div>
 
                 <span
                   class="status ${
-                    admitted ? "admitted" : ""
+                    admitted
+                      ? "admitted"
+                      : ""
                   }"
                 >
+
                   ${
                     admitted
                     ? "ADMITTED"
                     : "SUBMITTED"
                   }
+
                 </span>
 
               </div>
 
             </div>
 
+
             <div class="grid">
 
-              ${info("Email",profile.email)}
+              ${info(
+                "Email",
+                profile.email
+              )}
 
-              ${info("Phone",profile.phone)}
+              ${info(
+                "Phone",
+                profile.phone
+              )}
 
               ${info(
                 "Date of Birth",
@@ -634,29 +888,39 @@ async function renderApplications(){
 
               ${info(
                 "Study Level",
-                profile.study_level || "Beginner"
+                profile.study_level ||
+                "Beginner"
               )}
 
             </div>
 
+
             <div class="section">
 
               <strong class="section-title">
+
                 Residential Address
+
               </strong>
 
               <div class="info">
+
                 ${esc(
-                  biodata.residential_address || "—"
+                  biodata.residential_address ||
+                  "—"
                 )}
+
               </div>
 
             </div>
 
+
             <div class="section">
 
               <strong class="section-title">
+
                 Next of Kin
+
               </strong>
 
               <div class="grid">
@@ -675,27 +939,34 @@ async function renderApplications(){
 
             </div>
 
+
             <div class="section">
 
               <strong class="section-title">
+
                 Departments
+
               </strong>
 
               <div class="departments">
 
                 ${
                   departments.length
+
                   ?
+
                   departments
                     .map(
-                      department=>`
+                      department => `
                         <span class="department">
                           ${esc(department)}
                         </span>
                       `
                     )
                     .join("")
+
                   :
+
                   "No department information"
                 }
 
@@ -703,9 +974,12 @@ async function renderApplications(){
 
             </div>
 
+
             ${
               admission
+
               ?
+
               `
                 <div class="admission-box">
 
@@ -716,7 +990,9 @@ async function renderApplications(){
                   <p>
                     <strong>Issued:</strong>
                     ${esc(
-                      formatDate(admission.issued_at)
+                      formatDate(
+                        admission.issued_at
+                      )
                     )}
                   </p>
 
@@ -738,15 +1014,28 @@ async function renderApplications(){
 
                 </div>
               `
+
               :
+
               ""
             }
 
+
             <div class="actions">
+
+              <button
+                class="light"
+                onclick="viewDetails(${index})"
+              >
+                View Full Biodata
+              </button>
+
 
               ${
                 biodata.application_pdf_path
+
                 ?
+
                 `
                   <button
                     class="light"
@@ -757,13 +1046,18 @@ async function renderApplications(){
                     Download Application PDF
                   </button>
                 `
+
                 :
+
                 ""
               }
 
+
               ${
                 admission
+
                 ?
+
                 `
                   <button
                     class="gold"
@@ -781,7 +1075,9 @@ async function renderApplications(){
                     Re-issue Admission Letter
                   </button>
                 `
+
                 :
+
                 `
                   <button
                     class="green"
@@ -797,924 +1093,24 @@ async function renderApplications(){
           </div>
 
         `;
+
       }
+
     ).join("");
+
 }
 
 
 /* =========================
-   APPLICATION PDF
+   VIEW FULL BIODATA
 ========================= */
 
-async function downloadApplication(path){
-
-  try{
-
-    const result =
-      await client.storage
-        .from("student-applications")
-        .createSignedUrl(path,3600);
-
-    if(result.error){
-      throw result.error;
-    }
-
-    window.open(
-      result.data.signedUrl,
-      "_blank"
-    );
-
-  }catch(error){
-
-    alert(
-      "Unable to open application PDF.\n\n"+
-      error.message
-    );
-  }
-}
-
-
-/* =========================
-   ADMISSION PDF DOWNLOAD
-========================= */
-
-async function downloadAdmission(path){
-
-  try{
-
-    const result =
-      await client.storage
-        .from("admission-letters")
-        .createSignedUrl(path,3600);
-
-    if(result.error){
-      throw result.error;
-    }
-
-    window.open(
-      result.data.signedUrl,
-      "_blank"
-    );
-
-  }catch(error){
-
-    alert(
-      "Unable to open admission letter.\n\n"+
-      error.message
-    );
-  }
-}
-
-
-/* =========================
-   IMAGE TO DATA URL
-========================= */
-
-function loadImageAsDataURL(src){
-
-  return new Promise((resolve,reject)=>{
-
-    const img=new Image();
-
-    img.onload=()=>{
-
-      try{
-
-        const canvas=
-          document.createElement("canvas");
-
-        canvas.width=
-          img.naturalWidth;
-
-        canvas.height=
-          img.naturalHeight;
-
-        const ctx=
-          canvas.getContext("2d");
-
-        ctx.drawImage(
-          img,
-          0,
-          0
-        );
-
-        resolve(
-          canvas.toDataURL(
-            "image/jpeg",
-            0.92
-          )
-        );
-
-      }catch(error){
-
-        reject(error);
-      }
-    };
-
-    img.onerror=()=>{
-      reject(
-        new Error(
-          "The RAYHAR ACADEMY logo could not be loaded."
-        )
-      );
-    };
-
-    img.src=src;
-  });
-}
-
-
-/* =========================
-   CREATE ADMISSION PDF
-========================= */
-
-async function createAdmissionPDF({
-  profile,
-  biodata,
-  departments,
-  studyLevel,
-  country,
-  province,
-  district
-}){
-
-  if(
-    !window.jspdf ||
-    !window.jspdf.jsPDF
-  ){
-
-    throw new Error(
-      "The PDF generator could not be loaded. Please refresh the page."
-    );
-  }
-
-  const jsPDF=window.jspdf.jsPDF;
-
-  const pdf=
-    new jsPDF({
-      orientation:"portrait",
-      unit:"mm",
-      format:"a4"
-    });
-
-  const navy=[7,17,31];
-  const gold=[212,175,55];
-  const dark=[30,35,45];
-  const grey=[95,101,112];
-  const paleGold=[250,246,231];
-  const white=[255,255,255];
-
-  const pageWidth=210;
-  const pageHeight=297;
-
-  const now=new Date();
-
-  const admissionDate=
-    now.toLocaleDateString("en-GB");
-
-  const year=now.getFullYear();
-
-  const studentId=
-    profile.student_id || "STUDENT";
-
-  const reference=
-    "RA/ADM/" +
-    year +
-    "/" +
-    studentId;
-
-
-  /* =========================
-     WHITE PAGE
-  ========================= */
-
-  pdf.setFillColor(
-    white[0],
-    white[1],
-    white[2]
-  );
-
-  pdf.rect(
-    0,
-    0,
-    pageWidth,
-    pageHeight,
-    "F"
-  );
-
-
-  /* =========================
-     GOLD OUTER BORDER
-  ========================= */
-
-  pdf.setDrawColor(
-    gold[0],
-    gold[1],
-    gold[2]
-  );
-
-  pdf.setLineWidth(1.1);
-
-  pdf.rect(
-    7,
-    7,
-    196,
-    283
-  );
-
-
-  /* =========================
-     INNER BORDER
-  ========================= */
-
-  pdf.setDrawColor(
-    navy[0],
-    navy[1],
-    navy[2]
-  );
-
-  pdf.setLineWidth(0.3);
-
-  pdf.rect(
-    10,
-    10,
-    190,
-    277
-  );
-
-
-  /* =========================
-     WATERMARK
-  ========================= */
-
-  try{
-
-    const logoData=
-      await loadImageAsDataURL(
-        "logo.jpg"
-      );
-
-    const img=new Image();
-
-    img.src=logoData;
-
-    await new Promise(resolve=>{
-
-      img.onload=resolve;
-      img.onerror=resolve;
-
-    });
-
-    const canvas=
-      document.createElement("canvas");
-
-    canvas.width=
-      img.naturalWidth || 500;
-
-    canvas.height=
-      img.naturalHeight || 500;
-
-    const ctx=
-      canvas.getContext("2d");
-
-    ctx.globalAlpha=0.075;
-
-    ctx.drawImage(
-      img,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-    const watermark=
-      canvas.toDataURL("image/png");
-
-    pdf.addImage(
-      watermark,
-      "PNG",
-      45,
-      82,
-      120,
-      120,
-      undefined,
-      "FAST"
-    );
-
-  }catch(error){
-
-    console.warn(
-      "Watermark could not be created:",
-      error
-    );
-  }
-
-
-  /* =========================
-     HEADER
-  ========================= */
-
-  pdf.setFillColor(
-    navy[0],
-    navy[1],
-    navy[2]
-  );
-
-  pdf.roundedRect(
-    15,
-    15,
-    180,
-    43,
-    2,
-    2,
-    "F"
-  );
-
-
-  /* Logo */
-
-  try{
-
-    const logo=
-      await loadImageAsDataURL(
-        "logo.jpg"
-      );
-
-    pdf.addImage(
-      logo,
-      "JPEG",
-      21,
-      20,
-      33,
-      33
-    );
-
-  }catch(error){
-
-    console.warn(
-      "Logo could not be added:",
-      error
-    );
-  }
-
-
-  /* School name */
-
-  pdf.setTextColor(
-    gold[0],
-    gold[1],
-    gold[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  pdf.setFontSize(21);
-
-  pdf.text(
-    "RAYHAR ACADEMY",
-    108,
-    31,
-    {
-      align:"center"
-    }
-  );
-
-
-  /* Slogan */
-
-  pdf.setTextColor(
-    white[0],
-    white[1],
-    white[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "normal"
-  );
-
-  pdf.setFontSize(9);
-
-  pdf.text(
-    "For Knowledge and Leadership",
-    108,
-    40,
-    {
-      align:"center"
-    }
-  );
-
-  pdf.setFontSize(7.5);
-
-  pdf.text(
-    "STUDENT ADMISSIONS OFFICE",
-    108,
-    49,
-    {
-      align:"center"
-    }
-  );
-
-
-  /* =========================
-     TITLE
-  ========================= */
-
-  pdf.setTextColor(
-    navy[0],
-    navy[1],
-    navy[2]
-  );
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  pdf.setFontSize(11);
-
-  pdf.text(
-    "ADMITTED",
-    120,
-    130
-  );
-
-
-  /* =========================
-     FORMAL LETTER
-  ========================= */
-
-  pdf.setTextColor(
-    dark[0],
-    dark[1],
-    dark[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "normal"
-  );
-
-  pdf.setFontSize(10);
-
-  pdf.text(
-    "Dear " +
-    (profile.full_name || "Student") +
-    ",",
-    20,
-    153
-  );
-
-
-  const opening =
-    "We are pleased to formally offer you admission to RAYHAR ACADEMY. " +
-    "Following the review of your submitted application and student information, " +
-    "you have been admitted to study with us under the programme details stated below.";
-
-  const openingLines =
-    pdf.splitTextToSize(
-      opening,
-      170
-    );
-
-  pdf.text(
-    openingLines,
-    20,
-    162,
-    {
-      lineHeightFactor: 1.5
-    }
-  );
-
-
-  /* =========================
-     PROGRAMME SECTION
-  ========================= */
-
-  let y = 181;
-
-  pdf.setFillColor(
-    navy[0],
-    navy[1],
-    navy[2]
-  );
-
-  pdf.roundedRect(
-    20,
-    y,
-    170,
-    8,
-    1.5,
-    1.5,
-    "F"
-  );
-
-  pdf.setTextColor(
-    gold[0],
-    gold[1],
-    gold[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  pdf.setFontSize(8);
-
-  pdf.text(
-    "PROGRAMME INFORMATION",
-    25,
-    y + 5.5
-  );
-
-  y += 16;
-
-
-  /* =========================
-     DEPARTMENTS
-  ========================= */
-
-  pdf.setTextColor(
-    grey[0],
-    grey[1],
-    grey[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "normal"
-  );
-
-  pdf.setFontSize(8);
-
-  pdf.text(
-    "Department(s):",
-    25,
-    y
-  );
-
-  pdf.setTextColor(
-    dark[0],
-    dark[1],
-    dark[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  const departmentLines =
-    pdf.splitTextToSize(
-      departments.length
-        ? departments.join(", ")
-        : "Not specified",
-      115
-    );
-
-  pdf.text(
-    departmentLines,
-    70,
-    y
-  );
-
-  y += Math.max(
-    7,
-    departmentLines.length * 5
-  );
-
-
-  /* =========================
-     COUNTRY
-  ========================= */
-
-  pdf.setTextColor(
-    grey[0],
-    grey[1],
-    grey[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "normal"
-  );
-
-  pdf.setFontSize(8);
-
-  pdf.text(
-    "Country:",
-    25,
-    y
-  );
-
-  pdf.setTextColor(
-    dark[0],
-    dark[1],
-    dark[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  pdf.text(
-    country,
-    70,
-    y
-  );
-
-  y += 7;
-
-
-  /* =========================
-     PROVINCE / STATE / REGION
-  ========================= */
-
-  pdf.setTextColor(
-    grey[0],
-    grey[1],
-    grey[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "normal"
-  );
-
-  pdf.text(
-    "State / Province / Region:",
-    25,
-    y
-  );
-
-  pdf.setTextColor(
-    dark[0],
-    dark[1],
-    dark[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  pdf.text(
-    province,
-    70,
-    y
-  );
-
-  y += 7;
-
-
-  /* =========================
-     DISTRICT / CITY
-  ========================= */
-
-  pdf.setTextColor(
-    grey[0],
-    grey[1],
-    grey[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "normal"
-  );
-
-  pdf.text(
-    "District / City / Area:",
-    25,
-    y
-  );
-
-  pdf.setTextColor(
-    dark[0],
-    dark[1],
-    dark[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  pdf.text(
-    district,
-    70,
-    y
-  );
-
-
-  /* =========================
-     CLOSING
-  ========================= */
-
-  y += 12;
-
-  const closing =
-    "We welcome you to RAYHAR ACADEMY and look forward to supporting " +
-    "your academic development, character, knowledge and leadership journey. " +
-    "Please retain this letter as your official admission document.";
-
-  const closingLines =
-    pdf.splitTextToSize(
-      closing,
-      170
-    );
-
-  pdf.setTextColor(
-    dark[0],
-    dark[1],
-    dark[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "normal"
-  );
-
-  pdf.setFontSize(9.5);
-
-  pdf.text(
-    closingLines,
-    20,
-    y,
-    {
-      lineHeightFactor: 1.45
-    }
-  );
-
-
-  /* =========================
-     AUTHORIZATION
-  ========================= */
-
-  y += Math.max(
-    20,
-    closingLines.length * 6 + 12
-  );
-
-  pdf.setDrawColor(
-    gold[0],
-    gold[1],
-    gold[2]
-  );
-
-  pdf.setLineWidth(0.5);
-
-  pdf.line(
-    25,
-    y,
-    85,
-    y
-  );
-
-  pdf.line(
-    125,
-    y,
-    185,
-    y
-  );
-
-  pdf.setTextColor(
-    navy[0],
-    navy[1],
-    navy[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  pdf.setFontSize(8);
-
-  pdf.text(
-    "Admissions Office",
-    55,
-    y + 6,
-    {
-      align: "center"
-    }
-  );
-
-  pdf.text(
-    "Authorized Signature",
-    155,
-    y + 6,
-    {
-      align: "center"
-    }
-  );
-
-
-  /* =========================
-     OFFICIAL DOCUMENT NOTICE
-  ========================= */
-
-  pdf.setFillColor(
-    navy[0],
-    navy[1],
-    navy[2]
-  );
-
-  pdf.roundedRect(
-    20,
-    263,
-    170,
-    10,
-    2,
-    2,
-    "F"
-  );
-
-  pdf.setTextColor(
-    gold[0],
-    gold[1],
-    gold[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "bold"
-  );
-
-  pdf.setFontSize(7.5);
-
-  pdf.text(
-    "OFFICIAL ADMISSION DOCUMENT",
-    105,
-    269.5,
-    {
-      align: "center"
-    }
-  );
-
-
-  /* =========================
-     FOOTER
-  ========================= */
-
-  pdf.setTextColor(
-    grey[0],
-    grey[1],
-    grey[2]
-  );
-
-  pdf.setFont(
-    "helvetica",
-    "normal"
-  );
-
-  pdf.setFontSize(6.5);
-
-  pdf.text(
-    "RAYHAR ACADEMY • For Knowledge and Leadership",
-    105,
-    280,
-    {
-      align: "center"
-    }
-  );
-
-  pdf.text(
-    reference,
-    105,
-    284,
-    {
-      align: "center"
-    }
-  );
-
-
-  /* =========================
-     RETURN PDF
-  ========================= */
-
-  return pdf.output("blob");
-}
-
-
-/* =========================
-   ISSUE / RE-ISSUE ADMISSION
-========================= */
-
-async function issueAdmission(index){
+async function viewDetails(index){
 
   const application =
     studentApplications[index];
 
   if(!application){
-
-    alert(
-      "Student application could not be found."
-    );
-
     return;
   }
 
@@ -1724,164 +1120,490 @@ async function issueAdmission(index){
   const profile =
     application.profile || {};
 
-  if(!profile.id){
+  const enrollments =
+    application.enrollments || [];
 
-    alert(
-      "Student information is incomplete."
-    );
-
-    return;
-  }
-
-  const isReissue =
-    !!application.admission;
-
-  const confirmed =
-    confirm(
-      (
-        isReissue
-          ? "Re-issue"
-          : "Issue"
-      ) +
-      " an admission letter for " +
-      (
-        profile.full_name ||
-        "this student"
-      ) +
-      " (" +
-      (
-        profile.student_id ||
-        "No Student ID"
-      ) +
-      ")?"
-    );
-
-  if(!confirmed){
-    return;
-  }
-
-  try{
-
-    const userResult =
-      await client.auth.getUser();
-
-    if(userResult.error){
-      throw userResult.error;
-    }
-
-    const adminUser =
-      userResult.data.user;
-
-    if(!adminUser){
-
-      throw new Error(
-        "Your administrator session has expired."
-      );
-    }
+  const admission =
+    application.admission || null;
 
 
-    /* =========================
-       STUDENT DETAILS
-    ========================= */
+  const departments =
 
-    const departments =
-      (
-        application.enrollments || []
-      )
+    enrollments
       .map(
-        enrollment =>
-          enrollment.departments?.name
+        item =>
+          item.departments?.name
       )
       .filter(Boolean);
 
-    const studyLevel =
-      profile.study_level ||
-      "Beginner";
 
-    const country =
-      biodata.country ||
-      "Not specified";
-
-    const province =
-      biodata.province ||
-      "Not specified";
-
-    const district =
-      biodata.district_city ||
-      "Not specified";
+  let photoUrl="";
 
 
-    /* =========================
-       GENERATE PDF
-    ========================= */
+  if(biodata.photo_path){
 
+    photoUrl =
+      await getPhotoUrl(
+        biodata.photo_path
+      );
+
+  }
+
+
+  const content =
+    document.getElementById(
+      "detailsContent"
+    );
+
+
+  const photoHtml =
+
+    photoUrl
+
+    ?
+
+    `
+      <img
+        src="${esc(photoUrl)}"
+        alt="Student photo"
+      >
+    `
+
+    :
+
+    `
+      <div class="no-photo">
+        No Photo
+      </div>
+    `;
+
+
+  content.innerHTML = `
+
+    <div class="modal-photo">
+
+      ${photoHtml}
+
+    </div>
+
+
+    <div class="modal-section">
+
+      <div class="modal-section-title">
+        Personal Information
+      </div>
+
+      <div class="grid">
+
+        ${info(
+          "Full Name",
+          profile.full_name
+        )}
+
+        ${info(
+          "Student ID",
+          profile.student_id
+        )}
+
+        ${info(
+          "Email",
+          profile.email
+        )}
+
+        ${info(
+          "Phone",
+          profile.phone
+        )}
+
+        ${info(
+          "Date of Birth",
+          biodata.date_of_birth
+        )}
+
+        ${info(
+          "Gender",
+          biodata.gender
+        )}
+
+        ${info(
+          "Nationality",
+          biodata.nationality
+        )}
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-section">
+
+      <div class="modal-section-title">
+        Location Information
+      </div>
+
+      <div class="grid">
+
+        ${info(
+          "Country",
+          biodata.country
+        )}
+
+        ${info(
+          "State / Province / Region",
+          biodata.province
+        )}
+
+        ${info(
+          "District / City / Area",
+          biodata.district_city
+        )}
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-section">
+
+      <div class="modal-section-title">
+        Academic Information
+      </div>
+
+      <div class="grid">
+
+        ${info(
+          "Study Level",
+          profile.study_level ||
+          "Beginner"
+        )}
+
+        ${info(
+          "Admission Status",
+          biodata.admission_status ||
+          "Submitted"
+        )}
+
+        ${info(
+          "Submitted",
+          formatDate(
+            biodata.submitted_at
+          )
+        )}
+
+        ${info(
+          "Last Updated",
+          formatDate(
+            biodata.updated_at
+          )
+        )}
+
+        ${info(
+          "Reviewed",
+          formatDate(
+            biodata.reviewed_at
+          )
+        )}
+
+      </div>
+
+
+      <div class="section">
+
+        <strong class="section-title">
+                  Documents
+      </div>
+
+      <div class="grid">
+
+        <div class="info-card">
+          <div class="info-label">
+            Student Photo
+          </div>
+
+          <div class="info-value">
+            ${
+              photoUrl
+                ? `<img
+                    src="${photoUrl}"
+                    alt="Student Photo"
+                    class="biodata-photo"
+                  >`
+                : `<span class="muted">
+                    No photo uploaded
+                  </span>`
+            }
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-label">
+            Application Form
+          </div>
+
+          <div class="info-value">
+            ${
+              biodata.application_pdf_path
+                ? `
+                  <button
+                    class="small-btn"
+                    onclick="downloadApplication('${escapeHtml(
+                      biodata.application_pdf_path
+                    )}')"
+                  >
+                    Download Application PDF
+                  </button>
+                `
+                : `
+                  <span class="muted">
+                    No application PDF
+                  </span>
+                `
+            }
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-label">
+            Admission Letter
+          </div>
+
+          <div class="info-value">
+            ${
+              admissionLetter
+                ? `
+                  <button
+                    class="small-btn"
+                    onclick="downloadAdmission('${escapeHtml(
+                      admissionLetter.storage_path
+                    )}')"
+                  >
+                    Download Admission Letter
+                  </button>
+                `
+                : `
+                  <span class="muted">
+                    Not issued yet
+                  </span>
+                `
+            }
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-section">
+
+      <div class="modal-section-title">
+        Next of Kin
+      </div>
+
+      <div class="grid">
+
+        ${info(
+          "Name",
+          biodata.next_of_kin_name
+        )}
+
+        ${info(
+          "Phone",
+          biodata.next_of_kin_phone
+        )}
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-section">
+
+      <div class="modal-section-title">
+        Address
+      </div>
+
+      <div class="grid">
+
+        ${info(
+          "Residential Address",
+          biodata.residential_address
+        )}
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-section">
+
+      <div class="modal-section-title">
+        Admission Letter Information
+      </div>
+
+      <div class="grid">
+
+        ${info(
+          "Student ID",
+          profile.student_id
+        )}
+
+        ${info(
+          "Letter Status",
+          admissionLetter
+            ? "Issued"
+            : "Not Issued"
+        )}
+
+        ${info(
+          "Issued Date",
+          admissionLetter
+            ? formatDate(
+                admissionLetter.issued_at
+              )
+            : "—"
+        )}
+
+        ${info(
+          "Download Count",
+          admissionLetter
+            ? admissionLetter.download_count
+            : "0"
+        )}
+
+        ${info(
+          "Last Downloaded",
+          admissionLetter &&
+          admissionLetter.last_downloaded_at
+            ? formatDate(
+                admissionLetter.last_downloaded_at
+              )
+            : "Never"
+        )}
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+
+    <button
+      class="secondary-btn"
+      onclick="closeModal()"
+    >
+      Close
+    </button>
+
+    <button
+      class="primary-btn"
+      onclick="issueAdmission('${profile.id}')"
+    >
+      ${
+        admissionLetter
+          ? "Re-issue Admission Letter"
+          : "Issue Admission Letter"
+      }
+    </button>
+
+  </div>
+
+</div>
+<script>
+
+async function issueAdmission(studentId) {
+
+  const profile =
+    studentApplications.find(
+      item => item.profile.id === studentId
+    )?.profile;
+
+  if (!profile) {
+    alert("Student information could not be found.");
+    return;
+  }
+
+  const application =
+    studentApplications.find(
+      item => item.profile.id === studentId
+    );
+
+  if (!application) {
+    alert("Application information could not be found.");
+    return;
+  }
+
+  const confirmed = confirm(
+    application.admissionLetter
+      ? "This will issue a new admission letter for this student. Continue?"
+      : "Issue an admission letter for this student?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+
+    showLoading("Generating admission letter...");
+
+    const biodata = application.biodata;
+
+    if (!biodata) {
+      throw new Error(
+        "Student biodata could not be found."
+      );
+    }
+
+    /*
+     * Generate the admission letter PDF
+     */
     const pdfBlob =
-      await createAdmissionPDF({
-
+      await createAdmissionPDF(
         profile,
+        application
+      );
 
-        biodata,
-
-        departments,
-
-        studyLevel,
-
-        country,
-
-        province,
-
-        district
-
-      });
-
-
-    /* =========================
-       UNIQUE FILE
-    ========================= */
-
+    /*
+     * Create a unique storage path.
+     * The student's permanent Student ID does not change.
+     */
     const timestamp =
       Date.now();
 
-    const fileName =
-      "admission-letter-" +
-      timestamp +
-      ".pdf";
-
     const storagePath =
-      profile.id +
-      "/" +
-      fileName;
+      `${profile.id}/admission-letter-${timestamp}.pdf`;
 
-
-    /* =========================
-       UPLOAD PDF
-    ========================= */
-
-    const uploadResult =
-      await client.storage
+    /*
+     * Upload the newly generated PDF
+     */
+    const {
+      error: uploadError
+    } =
+      await supabaseClient.storage
         .from("admission-letters")
         .upload(
           storagePath,
           pdfBlob,
           {
-            contentType:
-              "application/pdf",
-
-            upsert:false
+            contentType: "application/pdf",
+            upsert: false
           }
         );
 
-    if(uploadResult.error){
-      throw uploadResult.error;
+    if (uploadError) {
+      throw uploadError;
     }
 
-
-    /* =========================
-       DELETE OLD DATABASE RECORD
-    ========================= */
-
-    const deleteResult =
-      await client
+    /*
+     * If an old admission record exists,
+     * remove only the database record.
+     *
+     * The old PDF remains unchanged in storage.
+     */
+    const {
+      error: deleteError
+    } =
+      await supabaseClient
         .from("admission_letters")
         .delete()
         .eq(
@@ -1889,69 +1611,66 @@ async function issueAdmission(index){
           profile.id
         );
 
-    if(deleteResult.error){
-
-      console.warn(
-        "Old admission record could not be removed:",
-        deleteResult.error
-      );
-
+    if (deleteError) {
+      throw deleteError;
     }
 
-
-    /* =========================
-       SAVE NEW ADMISSION
-    ========================= */
-
-    const insertResult =
-      await client
+    /*
+     * Create the new active admission-letter record.
+     */
+    const {
+      error: insertError
+    } =
+      await supabaseClient
         .from("admission_letters")
         .insert({
-
           student_id:
             profile.id,
 
           file_name:
-            fileName,
+            "RAYHAR-Academy-Admission-Letter.pdf",
 
           storage_path:
             storagePath,
 
           issued_by:
-            adminUser.id,
+            currentUser.id,
 
           student_name:
-            profile.full_name || "",
+            profile.full_name,
 
           student_id_number:
-            profile.student_id || "",
+            profile.student_id,
 
           departments_text:
-            departments.length
-              ? departments.join(", ")
-              : "Not specified",
+            application.departmentsText ||
+            profile.department ||
+            "Not specified",
 
           study_level:
-            studyLevel
+            profile.study_level ||
+            "Beginner",
 
-        })
-        .select()
-        .single();
+          issued_at:
+            new Date().toISOString(),
 
-    if(insertResult.error){
-      throw insertResult.error;
+          download_count:
+            0
+        });
+
+    if (insertError) {
+      throw insertError;
     }
 
-
-    /* =========================
-       MARK AS ADMITTED
-    ========================= */
-
-    const biodataUpdate =
-      await client
+    /*
+     * Update biodata status.
+     */
+    const {
+      error: biodataError
+    } =
+      await supabaseClient
         .from("student_biodata")
         .update({
-
           admission_status:
             "admitted",
 
@@ -1959,93 +1678,979 @@ async function issueAdmission(index){
             new Date().toISOString(),
 
           reviewed_by:
-            adminUser.id
+            currentUser.id,
 
+          updated_at:
+            new Date().toISOString()
         })
         .eq(
           "student_id",
           profile.id
         );
 
-    if(biodataUpdate.error){
-      throw biodataUpdate.error;
+    if (biodataError) {
+      throw biodataError;
     }
 
-
-    /* =========================
-       SUCCESS
-    ========================= */
-
     alert(
-      "Admission letter " +
-      (
-        isReissue
-          ? "re-issued"
-          : "issued"
-      ) +
-      " successfully.\n\n" +
-      "The new professionally designed PDF is now available in the student's portal."
+      application.admissionLetter
+        ? "Admission letter re-issued successfully."
+        : "Admission letter issued successfully."
     );
+
+    closeModal();
 
     await loadApplications();
 
-  }catch(error){
+  } catch (error) {
 
     console.error(
-      "Admission issue error:",
+      "Admission issuing error:",
       error
     );
 
     alert(
-      "Unable to " +
-      (
-        isReissue
-          ? "re-issue"
-          : "issue"
-      ) +
-      " the admission letter.\n\n" +
+      "Unable to issue the admission letter.\n\n" +
       (
         error.message ||
-        String(error)
+        "Please try again."
       )
     );
+
+  } finally {
+
+    hideLoading();
+
   }
 }
 
 
-/* =========================
-   LOGOUT
-========================= */
+/* =========================================
+   CREATE ADMISSION PDF
+========================================= */
 
-async function logout(){
+async function createAdmissionPDF(
+  profile,
+  application
+) {
 
-  try{
+  const {
+    jsPDF
+  } = window.jspdf;
 
-    await client.auth.signOut();
+  const doc =
+    new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4"
+    });
 
-  }catch(error){
+  const pageWidth =
+    doc.internal.pageSize.getWidth();
 
-    console.error(
-      "Logout error:",
-      error
+  const pageHeight =
+    doc.internal.pageSize.getHeight();
+
+  const navy =
+    [10, 22, 40];
+
+  const gold =
+    [198, 158, 73];
+
+  /*
+   * Page background
+   */
+  doc.setFillColor(
+    248,
+    248,
+    246
+  );
+
+  doc.rect(
+    0,
+    0,
+    pageWidth,
+    pageHeight,
+    "F"
+  );
+
+  /*
+   * Outer gold border
+   */
+  doc.setDrawColor(
+    ...gold
+  );
+
+  doc.setLineWidth(
+    1.2
+  );
+
+  doc.rect(
+    8,
+    8,
+    pageWidth - 16,
+    pageHeight - 16
+  );
+
+  /*
+   * Inner navy border
+   */
+  doc.setDrawColor(
+    ...navy
+  );
+
+  doc.setLineWidth(
+    0.4
+  );
+
+  doc.rect(
+    12,
+    12,
+    pageWidth - 24,
+    pageHeight - 24
+  );
+
+  /*
+   * Logo
+   */
+  try {
+
+    const logoData =
+      await loadImageAsDataURL(
+        "logo.jpg"
+      );
+
+    if (logoData) {
+
+      doc.addImage(
+        logoData,
+        "JPEG",
+        pageWidth / 2 - 17,
+        18,
+        34,
+        34
+      );
+
+    }
+
+  } catch (logoError) {
+
+    console.warn(
+      "Logo could not be loaded:",
+      logoError
     );
 
-  }finally{
+  }
 
-    window.location.href =
-      "admin-login.html";
+  /*
+   * Academy name
+   */
+  doc.setTextColor(
+    ...navy
+  );
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(
+    20
+  );
+
+  doc.text(
+    "RAYHAR ACADEMY",
+    pageWidth / 2,
+    61,
+    {
+      align: "center"
+    }
+  );
+
+  /*
+   * Slogan
+   */
+  doc.setFont(
+    "helvetica",
+    "italic"
+  );
+
+  doc.setFontSize(
+    10
+  );
+
+  doc.setTextColor(
+    95,
+    95,
+    95
+  );
+
+  doc.text(
+    "For Knowledge and Leadership",
+    pageWidth / 2,
+    68,
+    {
+      align: "center"
+    }
+  );
+
+  /*
+   * Gold separator
+   */
+  doc.setDrawColor(
+    ...gold
+  );
+
+  doc.setLineWidth(
+    0.8
+  );
+
+  doc.line(
+    35,
+    74,
+    pageWidth - 35,
+    74
+  );
+
+  /*
+   * Watermark
+   */
+  doc.setTextColor(
+    225,
+    225,
+    225
+  );
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(
+    45
+  );
+
+  doc.text(
+    "RAYHAR",
+    pageWidth / 2,
+    160,
+    {
+      align: "center",
+      angle: 45
+    }
+  );
+
+  /*
+   * Document title
+   */
+  doc.setTextColor(
+    ...navy
+  );
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(
+    17
+  );
+
+  doc.text(
+    "ADMISSION LETTER",
+    pageWidth / 2,
+    91,
+    {
+      align: "center"
+    }
+  );
+
+  /*
+   * Reference and date
+   */
+  const admissionDate =
+    new Date();
+
+  const dateText =
+    admissionDate.toLocaleDateString(
+      "en-GB",
+      {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setFontSize(
+    10
+  );
+
+  doc.setTextColor(
+    70,
+    70,
+    70
+  );
+
+  doc.text(
+    `Date: ${dateText}`,
+    25,
+    104
+  );
+
+  doc.text(
+    `Student ID: ${profile.student_id}`,
+    pageWidth - 25,
+    104,
+    {
+      align: "right"
+    }
+  );
+
+  /*
+   * Student name
+   */
+  doc.setTextColor(
+    ...navy
+  );
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(
+    13
+  );
+
+  doc.text(
+    `Dear ${profile.full_name},`,
+    25,
+    121
+  );
+
+  /*
+   * Main admission message
+   */
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setFontSize(
+    11
+  );
+
+  doc.setTextColor(
+    45,
+    45,
+    45
+  );
+
+  const departments =
+    application.departmentsText ||
+    profile.department ||
+    "your selected programme";
+
+  const studyLevel =
+    profile.study_level ||
+    "Beginner";
+
+  const message =
+    `We are pleased to inform you that you have been granted admission to RAYHAR ACADEMY to study in the ${departments} programme at the ${studyLevel} level.`;
+
+  const messageLines =
+    doc.splitTextToSize(
+      message,
+      pageWidth - 50
+    );
+
+  doc.text(
+    messageLines,
+    25,
+    136,
+    {
+      lineHeightFactor:
+        1.7
+    }
+  );
+
+  /*
+   * Formal paragraph
+   */
+  const paragraph =
+    "Your admission has been processed based on the information provided in your application. We welcome you to RAYHAR ACADEMY and encourage you to uphold the values of knowledge, discipline, integrity and leadership throughout your academic journey.";
+
+  const paragraphLines =
+    doc.splitTextToSize(
+      paragraph,
+      pageWidth - 50
+    );
+
+  doc.text(
+    paragraphLines,
+    25,
+    164,
+    {
+      lineHeightFactor:
+        1.7
+    }
+  );
+
+  /*
+   * Student information box
+   */
+  doc.setDrawColor(
+    ...gold
+  );
+
+  doc.setFillColor(
+    252,
+    250,
+    244
+  );
+
+  doc.roundedRect(
+    25,
+    193,
+    pageWidth - 50,
+    48,
+    3,
+    3,
+    "FD"
+  );
+
+  doc.setTextColor(
+    ...navy
+  );
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(
+    10
+  );
+
+  doc.text(
+    "ADMISSION DETAILS",
+    32,
+    203
+  );
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setTextColor(
+    55,
+    55,
+    55
+  );
+
+  doc.text(
+    `Student Name: ${profile.full_name}`,
+    32,
+    214
+  );
+
+  doc.text(
+    `Student ID: ${profile.student_id}`,
+    32,
+    224
+  );
+
+  doc.text(
+    `Study Level: ${studyLevel}`,
+    32,
+    234
+  );
+
+  /*
+   * Departments
+   */
+  const departmentLines =
+    doc.splitTextToSize(
+      `Programme: ${departments}`,
+      pageWidth - 90
+    );
+
+  doc.text(
+    departmentLines,
+    105,
+    214
+  );
+
+  /*
+   * Closing
+   */
+  doc.setTextColor(
+    45,
+    45,
+    45
+  );
+
+  doc.setFontSize(
+    11
+  );
+
+  doc.text(
+    "We congratulate you on this achievement and look forward to welcoming you as a member of the RAYHAR ACADEMY community.",
+    25,
+    258,
+    {
+      maxWidth:
+        pageWidth - 50,
+      lineHeightFactor:
+        1.6
+    }
+  );
+
+  /*
+   * Authorization area
+   */
+  doc.setDrawColor(
+    ...navy
+  );
+
+  doc.line(
+    30,
+    282,
+    85,
+    282
+  );
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(
+    9
+  );
+
+  doc.setTextColor(
+    ...navy
+  );
+
+  doc.text(
+    "Authorized Officer",
+    30,
+    288
+  );
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setTextColor(
+    80,
+    80,
+    80
+  );
+
+  doc.text(
+    "RAYHAR ACADEMY",
+    30,
+    294
+  );
+
+  /*
+   * Official document reference
+   */
+  doc.setFontSize(
+    8
+  );
+
+  doc.text(
+    `Document Reference: RA-${profile.student_id}-${Date.now()}`,
+    pageWidth - 25,
+    294,
+    {
+      align: "right"
+    }
+  );
+
+  /*
+   * Footer
+   */
+  doc.setDrawColor(
+    ...gold
+  );
+
+  doc.line(
+    25,
+    302,
+    pageWidth - 25,
+    302
+  );
+
+  doc.setFontSize(
+    8
+  );
+
+  doc.setTextColor(
+    100,
+    100,
+    100
+  );
+
+  doc.text(
+    "RAYHAR ACADEMY • For Knowledge and Leadership",
+    pageWidth / 2,
+    309,
+    {
+      align: "center"
+    }
+  );
+
+  /*
+   * Return PDF Blob
+   */
+  return doc.output(
+    "blob"
+  );
+}
+
+
+/* =========================================
+   IMAGE LOADER
+========================================= */
+
+async function loadImageAsDataURL(
+  imagePath
+) {
+
+  const response =
+    await fetch(
+      imagePath
+    );
+
+  if (!response.ok) {
+    throw new Error(
+      "Unable to load image."
+    );
+  }
+
+  const blob =
+    await response.blob();
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        () => resolve(
+          reader.result
+        );
+
+      reader.onerror =
+        reject;
+
+      reader.readAsDataURL(
+        blob
+      );
+
+    }
+  );
+}
+
+
+/* =========================================
+   APPLICATION DOWNLOAD
+========================================= */
+
+async function downloadApplication(
+  storagePath
+) {
+
+  if (!storagePath) {
+    alert(
+      "Application PDF is not available."
+    );
+    return;
+  }
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.storage
+        .from(
+          "student-applications"
+        )
+        .createSignedUrl(
+          storagePath,
+          120
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    window.open(
+      data.signedUrl,
+      "_blank"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Unable to open the application PDF."
+    );
 
   }
 }
 
 
-/* =========================
-   START
-========================= */
+/* =========================================
+   ADMISSION LETTER DOWNLOAD
+========================================= */
 
-loadApplications();
+async function downloadAdmission(
+  storagePath
+) {
+
+  if (!storagePath) {
+    alert(
+      "Admission letter is not available."
+    );
+    return;
+  }
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.storage
+        .from(
+          "admission-letters"
+        )
+        .createSignedUrl(
+          storagePath,
+          120
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    window.open(
+      data.signedUrl,
+      "_blank"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Unable to open the admission letter."
+    );
+
+  }
+}
+
+
+/* =========================================
+   MODAL CLOSE
+========================================= */
+
+function closeModal() {
+
+  const modal =
+    document.getElementById(
+      "biodataModal"
+    );
+
+  if (modal) {
+    modal.classList.remove(
+      "active"
+    );
+  }
+
+}
+
+
+/* =========================================
+   LOADING HELPERS
+========================================= */
+
+function showLoading(
+  message = "Please wait..."
+) {
+
+  let loading =
+    document.getElementById(
+      "loadingOverlay"
+    );
+
+  if (!loading) {
+
+    loading =
+      document.createElement(
+        "div"
+      );
+
+    loading.id =
+      "loadingOverlay";
+
+    loading.innerHTML = `
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <div>${message}</div>
+      </div>
+    `;
+
+    document.body.appendChild(
+      loading
+    );
+
+  } else {
+
+    const text =
+      loading.querySelector(
+        ".loading-box div:last-child"
+      );
+
+    if (text) {
+      text.textContent =
+        message;
+    }
+
+  }
+
+  loading.style.display =
+    "flex";
+}
+
+
+function hideLoading() {
+
+  const loading =
+    document.getElementById(
+      "loadingOverlay"
+    );
+
+  if (loading) {
+    loading.style.display =
+      "none";
+  }
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
+
+  return String(value)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  window.location.href =
+    "admin-login.html";
+
+}
+
+
+/* =========================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================= */
+
+document.addEventListener(
+  "click",
+  function(event) {
+
+    const modal =
+      document.getElementById(
+        "biodataModal"
+      );
+
+    if (
+      modal &&
+      event.target === modal
+    ) {
+      closeModal();
+    }
+
+  }
+);
+
+
+/* =========================================
+   ESC KEY
+========================================= */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Escape"
+    ) {
+      closeModal();
+    }
+
+  }
+);
 
 </script>
 
 </body>
-</html>    
+</html>
