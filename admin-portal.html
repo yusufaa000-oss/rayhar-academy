@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAYHAR ACADEMY | Admin Portal</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+
+  <style>
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:#080b12;
+      color:#fff;
+    }
+
+    header{
+      background:#05070c;
+      border-bottom:1px solid #c9a227;
+      padding:14px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand img{
+      width:48px;
+      height:48px;
+      object-fit:contain;
+      border-radius:8px;
+      background:#fff;
+    }
+
+    .brand h1{
+      margin:0;
+      color:#d4af37;
+      font-size:19px;
+    }
+
+    .brand p{
+      margin:4px 0 0;
+      color:#aaa;
+      font-size:9px;
+      letter-spacing:1.4px;
+    }
+
+    button,.btn{
+      border:0;
+      cursor:pointer;
+      background:#d4af37;
+      color:#05070c;
+      padding:10px 15px;
+      border-radius:7px;
+      font-weight:bold;
+      text-decoration:none;
+      display:inline-block;
+    }
+
+    button:hover,.btn:hover{
+      background:#e5c657;
+    }
+
+    main{
+      width:min(900px,94%);
+      margin:35px auto;
+    }
+
+    .welcome{
+      margin-bottom:25px;
+    }
+
+    .welcome h2{
+      margin:0 0 8px;
+      color:#d4af37;
+    }
+
+    .welcome p{
+      margin:0;
+      color:#aaa;
+      line-height:1.6;
+    }
+
+    .section{
+      background:#111722;
+      border:1px solid #252d3d;
+      border-radius:12px;
+      padding:22px;
+      margin-bottom:20px;
+    }
+
+    .section h3{
+      margin:0 0 18px;
+      color:#d4af37;
+    }
+
+    .admin-card{
+      background:#080b12;
+      border:1px solid #332c18;
+      border-radius:10px;
+      padding:20px;
+    }
+
+    .admin-card h4{
+      margin:0 0 10px;
+      color:#d4af37;
+      font-size:18px;
+    }
+
+    .admin-card p{
+      color:#aaa;
+      line-height:1.6;
+      margin:0 0 18px;
+    }
+
+    .item{
+      background:#080b12;
+      border-left:3px solid #c9a227;
+      padding:16px;
+      border-radius:7px;
+      margin-bottom:12px;
+    }
+
+    .item:last-child{
+      margin-bottom:0;
+    }
+
+    .item strong{
+      color:#fff;
+      font-size:16px;
+    }
+
+    .item p{
+      color:#aaa;
+      margin:8px 0 0;
+      line-height:1.6;
+    }
+
+    .muted,.loading{
+      color:#888;
+    }
+
+    .error{
+      color:#ff8a8a;
+      line-height:1.5;
+    }
+
+    footer{
+      text-align:center;
+      color:#666;
+      padding:35px 15px;
+      font-size:13px;
+    }
+
+    @media(max-width:650px){
+      header{
+        padding:11px 12px;
+      }
+
+      .brand img{
+        width:40px;
+        height:40px;
+      }
+
+      .brand h1{
+        font-size:15px;
+      }
+
+      .brand p{
+        font-size:7px;
+      }
+
+      button{
+        padding:8px 10px;
+        font-size:11px;
+      }
+
+      main{
+        width:92%;
+        margin-top:22px;
+      }
+
+      .section{
+        padding:17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="brand">
+
+    <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
+
+    <div>
+      <h1>RAYHAR ACADEMY</h1>
+      <p>FOR KNOWLEDGE AND LEADERSHIP</p>
+    </div>
+
+  </div>
+
+  <button id="logoutButton" onclick="logout()">
+    Logout
+  </button>
+
+</header>
+
+
+<main>
+
+  <div class="welcome">
+
+    <h2>Welcome, Administrator 👋</h2>
+
+    <p>
+      This is your RAYHAR ACADEMY administration portal.
+      From here, you can manage announcements for students.
+    </p>
+
+  </div>
+
+
+  <section class="section">
+
+    <h3>Administrator</h3>
+
+    <div class="admin-card">
+
+      <h4>📢 Announcements</h4>
+
+      <p>
+        Publish new announcements, edit existing announcements,
+        publish or unpublish announcements, and remove announcements
+        that are no longer needed.
+      </p>
+
+      <a
+        class="btn"
+        href="admin-announcements.html"
+      >
+        Manage Announcements
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <h3>Published Announcements</h3>
+
+    <div id="announcements">
+
+      <p class="loading">
+        Loading announcements...
+      </p>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer>
+  © 2026 RAYHAR ACADEMY — For Knowledge and Leadership.
+</footer>
+
+
+<script>
+
+const client = window.supabaseClient;
+
+
+function esc(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+async function logout(){
+
+  const button =
+    document.getElementById("logoutButton");
+
+  button.disabled = true;
+  button.textContent = "Logging out...";
+
+  try{
+
+    await client.auth.signOut({
+      scope:"local"
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+  window.location.replace("student-auth.html");
+
+}
+
+
+async function loadPortal(){
+
+  if(!client){
+
+    document.querySelector("main").innerHTML =
+      '<section class="section">' +
+      '<p class="error">' +
+      'Supabase configuration could not be loaded.' +
+      '</p>' +
+      '</section>';
+
+    return;
+
+  }
+
+
+  try{
+
+    const {
+      data:{session},
+      error:sessionError
+    } = await client.auth.getSession();
+
+
+    if(sessionError) throw sessionError;
+
+
+    if(!session?.user){
+
+      window.location.replace("student-auth.html");
+
+      return;
+
+    }
+
+
+    const user = session.user;
+
+
+    const {
+      data:profile,
+      error:profileError
+    } = await client
+      .from("profiles")
+      .select("role")
+      .eq("id",user.id)
+      .maybeSingle();
+
+
+    if(profileError) throw profileError;
+
+
+    if(profile?.role !== "admin"){
+
+      window.location.replace("student-portal.html");
+
+      return;
+
+    }
+
+
+    const {
+      data:announcements,
+      error:announcementError
+    } = await client
+      .from("announcements")
+      .select("*")
+      .eq("published",true)
+      .order(
+        "published_at",
+        {ascending:false}
+      );
+
+
+    if(announcementError) throw announcementError;
+
+
+    const container =
+      document.getElementById("announcements");
+
+
+    const list = announcements || [];
+
+
+    if(!list.length){
+
+      container.innerHTML =
+        '<p class="muted">' +
+        'No published announcements yet.' +
+        '</p>';
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      list.map(item => `
+
+        <div class="item">
+
+          <strong>
+            ${esc(item.title || "Announcement")}
+          </strong>
+
+          <p>
+            ${esc(item.message || "No message available.")}
+          </p>
+
+        </div>
+
+      `).join("");
+
+
+  }catch(error){
+
+    console.error("Admin portal error:",error);
+
+    document.querySelector("main").innerHTML =
+      '<section class="section">' +
+      '<p class="error">' +
+      'We could not load the administrator portal.' +
+      '<br><br>' +
+      'Please refresh the page and try again.' +
+      '</p>' +
+      '</section>';
+
+  }
+
+}
+
+
+loadPortal();
+
+</script>
+
+</body>
+  </html>
