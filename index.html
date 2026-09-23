@@ -1,2134 +1,1845 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="description"
-content="RAYHAR ACADEMY — For Knowledge and Leadership. Accessible online learning focused on knowledge, practical skills, integrity and leadership.">
-
-<title>RAYHAR ACADEMY | For Knowledge and Leadership</title>
-
-<style>
-:root{
-  --navy:#071a3a;
-  --navy2:#0d2b5b;
-  --navy3:#041127;
-  --gold:#d4af37;
-  --gold2:#f0cf62;
-  --cream:#fffaf0;
-  --white:#ffffff;
-  --text:#172033;
-  --muted:#66738a;
-  --line:#e6eaf1;
-  --soft:#f6f8fc;
-  --shadow:0 14px 35px rgba(7,26,58,.10);
-}
-
-*{
-  box-sizing:border-box;
-  scroll-behavior:smooth;
-}
-
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  color:var(--text);
-  line-height:1.65;
-  background:#fff;
-}
-
-a{
-  text-decoration:none;
-  color:inherit;
-}
-
-img{
-  max-width:100%;
-  display:block;
-}
-
-.container{
-  width:min(1120px,92%);
-  margin:auto;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(7,26,58,.98);
-  box-shadow:0 3px 15px rgba(0,0,0,.15);
-}
-
-.nav{
-  min-height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  color:#fff;
-  font-weight:800;
-}
-
-.brand img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  border-radius:50%;
-  background:#fff;
-}
-
-.brand-name{
-  line-height:1.1;
-  font-size:17px;
-}
-
-.brand-tagline{
-  display:block;
-  color:var(--gold2);
-  font-size:9px;
-  letter-spacing:1.2px;
-  margin-top:5px;
-}
-
-nav{
-  display:flex;
-  align-items:center;
-  gap:17px;
-}
-
-nav a{
-  color:#fff;
-  font-size:13px;
-  font-weight:700;
-}
-
-nav a:hover{
-  color:var(--gold2);
-}
-
-.nav-login{
-  border:1px solid var(--gold);
-  padding:8px 13px;
-  border-radius:7px;
-  color:var(--gold2);
-}
-
-.menu-btn{
-  display:none;
-  background:none;
-  border:1px solid rgba(255,255,255,.3);
-  color:#fff;
-  border-radius:7px;
-  padding:8px 11px;
-  font-size:20px;
-  cursor:pointer;
-}
-
-.mobile-nav{
-  display:none;
-}
-
-.mobile-nav.open{
-  display:flex;
-  flex-direction:column;
-  background:var(--navy);
-}
-
-.mobile-nav a{
-  color:#fff;
-  padding:13px 4%;
-  border-top:1px solid rgba(255,255,255,.08);
-  font-weight:700;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.btn{
-  display:inline-block;
-  padding:12px 19px;
-  border-radius:8px;
-  font-weight:800;
-  margin:7px 7px 0 0;
-  border:1px solid var(--gold);
-  transition:.2s;
-}
-
-.btn-primary{
-  background:var(--gold);
-  color:var(--navy);
-}
-
-.btn-primary:hover{
-  background:var(--gold2);
-}
-
-.btn-outline{
-  color:#fff;
-}
-
-.btn-outline:hover{
-  background:rgba(255,255,255,.09);
-}
-
-/* =========================
-   HERO
-========================= */
-
-.hero{
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  color:#fff;
-  padding:82px 0 78px;
-  position:relative;
-  overflow:hidden;
-}
-
-.hero:before,
-.hero:after{
-  content:"";
-  position:absolute;
-  border:1px solid rgba(212,175,55,.22);
-  border-radius:50%;
-  pointer-events:none;
-}
-
-.hero:before{
-  width:430px;
-  height:430px;
-  right:-210px;
-  top:-210px;
-}
-
-.hero:after{
-  width:220px;
-  height:220px;
-  left:-150px;
-  bottom:-150px;
-}
-
-.hero-grid{
-  display:grid;
-  grid-template-columns:1.18fr .82fr;
-  gap:50px;
-  align-items:center;
-  position:relative;
-  z-index:1;
-}
-
-.eyebrow,
-.kicker{
-  color:var(--gold2);
-  font-weight:800;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  font-size:12px;
-}
-
-.hero h1{
-  font-size:clamp(42px,7vw,72px);
-  line-height:1.02;
-  margin:14px 0;
-}
-
-.hero h2{
-  color:var(--gold2);
-  font-size:23px;
-  margin:0 0 14px;
-}
-
-.hero p{
-  font-size:18px;
-  color:#e9eef8;
-  max-width:690px;
-}
-
-.hero-buttons{
-  margin-top:24px;
-}
-
-.hero-art{
-  display:flex;
-  justify-content:center;
-}
-
-.hero-art-box{
-  width:min(360px,88%);
-  aspect-ratio:1;
-  border-radius:28px;
-  border:1px solid rgba(240,207,98,.35);
-  background:linear-gradient(145deg,#102e5f,#061632);
-  display:grid;
-  place-items:center;
-  box-shadow:0 25px 60px rgba(0,0,0,.28);
-  padding:25px;
-}
-
-.hero-art-box img{
-  width:78%;
-  max-height:78%;
-  object-fit:contain;
-  background:#fff;
-  border-radius:22px;
-  padding:12px;
-}
-
-/* =========================
-   SECTIONS
-========================= */
-
-section{
-  padding:76px 0;
-}
-
-.section-head{
-  text-align:center;
-  max-width:790px;
-  margin:0 auto 38px;
-}
-
-.section-head h2{
-  font-size:34px;
-  line-height:1.2;
-  color:var(--navy);
-  margin:7px 0 12px;
-}
-
-.section-head p{
-  color:var(--muted);
-  margin:0;
-}
-
-/* =========================
-   ABOUT
-========================= */
-
-.about-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:26px;
-}
-
-.card{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:26px;
-  box-shadow:var(--shadow);
-}
-
-.card h3{
-  color:var(--navy);
-  margin:0 0 10px;
-}
-
-.card ul{
-  padding-left:20px;
-  margin-bottom:0;
-}
-
-.notice{
-  border-left:5px solid var(--gold);
-  background:var(--cream);
-  padding:15px 17px;
-  border-radius:8px;
-  margin-top:18px;
-}
-
-/* =========================
-   PRINCIPLES
-========================= */
-
-.principles{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-}
-
-.principle{
-  border-top:4px solid var(--gold);
-  background:var(--cream);
-  padding:20px;
-  border-radius:10px;
-}
-
-.principle b{
-  display:block;
-  color:var(--navy);
-  margin-bottom:6px;
-}
-
-/* =========================
-   LEARNING EXPERIENCE
-========================= */
-
-.visual-strip{
-  background:var(--soft);
-}
-
-.visual-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
-}
-
-.visual-card{
-  overflow:hidden;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  box-shadow:var(--shadow);
-}
-
-.visual-top{
-  height:170px;
-  background:linear-gradient(135deg,var(--navy),#17427c);
-  display:grid;
-  place-items:center;
-  position:relative;
-}
-
-.visual-top:after{
-  content:"";
-  position:absolute;
-  width:130px;
-  height:130px;
-  border:1px solid rgba(240,207,98,.35);
-  border-radius:50%;
-}
-
-.visual-icon{
-  font-size:58px;
-  position:relative;
-  z-index:1;
-}
-
-.visual-body{
-  padding:21px;
-}
-
-.visual-body h3{
-  margin:0 0 7px;
-  color:var(--navy);
-}
-
-.visual-body p{
-  margin:0;
-  color:var(--muted);
-}
-
-/* =========================
-   DEPARTMENTS
-========================= */
-
-.departments{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-}
-
-.dept{
-  background:var(--navy);
-  color:#fff;
-  border-radius:14px;
-  padding:23px;
-  min-height:155px;
-  border-bottom:4px solid var(--gold);
-  transition:.2s;
-}
-
-.dept:hover{
-  transform:translateY(-3px);
-}
-
-.dept h3{
-  color:var(--gold2);
-  font-size:17px;
-  margin:0 0 12px;
-}
-
-.dept p{
-  color:#e5ebf5;
-  margin:0;
-}
-
-/* =========================
-   STUDY LEVELS
-========================= */
-
-.levels{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:14px;
-}
-
-.level{
-  padding:21px;
-  background:#f8fafc;
-  border:1px solid var(--line);
-  border-radius:12px;
-  text-align:center;
-}
-
-.level b{
-  display:block;
-  color:var(--navy);
-  margin-bottom:5px;
-}
-
-/* =========================
-   ADMISSION PROCESS
-========================= */
-
-.steps{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-}
-
-.step{
-  position:relative;
-  padding:24px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:14px;
-  box-shadow:var(--shadow);
-}
-
-.step-num{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:var(--gold);
-  color:var(--navy);
-  font-weight:900;
-  margin-bottom:15px;
-}
-
-.step h3{
-  margin:0 0 7px;
-  color:var(--navy);
-}
-
-.step p{
-  margin:0;
-  color:var(--muted);
-}
-
-/* =========================
-   ADMISSIONS
-========================= */
-
-.admission-box{
-  background:var(--navy);
-  color:#fff;
-  border-radius:17px;
-  padding:36px;
-  box-shadow:var(--shadow);
-}
-
-.admission-box h3{
-  color:var(--gold2);
-  font-size:25px;
-  margin:0 0 10px;
-}
-
-.admission-box li{
-  margin:9px 0;
-}
-
-.admission-grid{
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:30px;
-  align-items:start;
-}
-
-.requirements{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:12px;
-  padding:22px;
-}
-
-.requirements h4{
-  color:var(--gold2);
-  margin:0 0 10px;
-}
-
-/* =========================
-   CTA
-========================= */
-
-.cta{
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  color:#fff;
-  text-align:center;
-}
-
-.cta h2{
-  color:#fff;
-  font-size:36px;
-  margin-top:0;
-}
-
-.cta p{
-  max-width:700px;
-  margin:0 auto 20px;
-  color:#e7edf8;
-}
-
-/* =========================
-   CONTACT
-========================= */
-
-.contact{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:25px;
-}
-
-.contact-item{
-  display:flex;
-  gap:14px;
-  padding:17px 0;
-  border-bottom:1px solid var(--line);
-}
-
-.contact-item:last-child{
-  border-bottom:0;
-}
-
-.contact-icon{
-  width:42px;
-  height:42px;
-  border-radius:10px;
-  background:var(--cream);
-  display:grid;
-  place-items:center;
-  font-size:20px;
-  flex:none;
-}
-
-.contact-item strong{
-  display:block;
-  color:var(--navy);
-}
-
-.contact-item span{
-  color:var(--muted);
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-footer{
-  background:var(--navy3);
-  color:#dce4f2;
-  padding:45px 0 22px;
-}
-
-.footer-grid{
-  display:grid;
-  grid-template-columns:1.4fr 1fr 1fr;
-  gap:30px;
-}
-
-footer h3{
-  color:var(--gold2);
-  margin-top:0;
-}
-
-.footer-links a{
-  display:block;
-  margin:8px 0;
-  color:#dce4f2;
-}
-
-.footer-links a:hover{
-  color:var(--gold2);
-}
-
-.small{
-  font-size:13px;
-  color:#aebbd0;
-}
-
-.footer-bottom{
-  border-top:1px solid rgba(255,255,255,.1);
-  margin-top:30px;
-  padding-top:18px;
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  flex-wrap:wrap;
-}
-
-/* =========================
-   TABLET
-========================= */
-
-@media(max-width:900px){
-
-  nav{
-    display:none;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RAYHAR ACADEMY | For Knowledge and Leadership</title>
+
+  <meta
+    name="description"
+    content="RAYHAR ACADEMY — For Knowledge and Leadership. Explore our departments, study levels and admission opportunities."
+  >
+
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+
+  <style>
+    :root {
+      --navy: #071426;
+      --navy-2: #0c1d33;
+      --navy-3: #102844;
+      --gold: #d4af37;
+      --gold-light: #f0d77a;
+      --white: #ffffff;
+      --cream: #f8f6ef;
+      --text: #172235;
+      --muted: #687386;
+      --border: #e7e9ee;
+      --shadow: 0 18px 45px rgba(7, 20, 38, 0.10);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      color: var(--text);
+      background: #fff;
+      line-height: 1.65;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 20, 38, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-motto {
+      color: var(--gold-light);
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      color: #e8edf5;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .nav-links a {
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold-light);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================== */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #111;
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-light);
+    }
+
+    .btn-outline {
+      border-color: rgba(212, 175, 55, 0.65);
+      color: white;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--gold);
+    }
+
+    .btn-dark {
+      background: var(--navy);
+      color: white;
+    }
+
+    .btn-dark:hover {
+      background: var(--navy-3);
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(212,175,55,0.16), transparent 30%),
+        radial-gradient(circle at 10% 90%, rgba(40,80,130,0.25), transparent 35%),
+        linear-gradient(135deg, #061322 0%, #0b1d34 55%, #0d2743 100%);
+      color: white;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 42px 42px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      min-height: 650px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      padding: 70px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 30px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -2.5px;
+      margin-bottom: 24px;
+      max-width: 750px;
+    }
+
+    .hero h1 span {
+      color: var(--gold-light);
+    }
+
+    .hero-description {
+      max-width: 650px;
+      color: #cbd5e3;
+      font-size: 18px;
+      line-height: 1.8;
+      margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-note {
+      margin-top: 24px;
+      color: #aebaca;
+      font-size: 13px;
+    }
+
+    .hero-card {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-logo-box {
+      width: min(390px, 80vw);
+      aspect-ratio: 1 / 1;
+      border: 1px solid rgba(212,175,55,0.35);
+      border-radius: 35px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,0.08),
+          rgba(255,255,255,0.025)
+        );
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.28),
+        inset 0 0 60px rgba(212,175,55,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 55px;
+      transform: rotate(2deg);
+    }
+
+    .hero-logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transform: rotate(-2deg);
+      filter: drop-shadow(0 15px 30px rgba(0,0,0,0.2));
+    }
+
+    .floating-label {
+      position: absolute;
+      bottom: 25px;
+      left: 10px;
+      background: white;
+      color: var(--navy);
+      padding: 14px 18px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .floating-label strong {
+      display: block;
+      color: #9b7a10;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 3px;
+    }
+
+    /* =========================
+       SECTION BASICS
+    ========================== */
+
+    section {
+      padding: 95px 0;
+    }
+
+    .section-heading {
+      max-width: 720px;
+      margin-bottom: 45px;
+    }
+
+    .section-heading.center {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-kicker {
+      color: #9a7912;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .section-heading h2 {
+      color: var(--navy);
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* =========================
+       INTRO
+    ========================== */
+
+    .intro {
+      background: white;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 65px;
+      align-items: center;
+    }
+
+    .intro-copy p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      font-size: 16px;
+    }
+
+    .intro-highlight {
+      margin-top: 30px;
+      border-left: 3px solid var(--gold);
+      padding: 18px 22px;
+      background: #fbfaf5;
+      color: var(--navy);
+      font-weight: 700;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .principles {
+      display: grid;
+      gap: 14px;
+    }
+
+    .principle {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: white;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .principle:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .principle-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      border-radius: 12px;
+      background: #f7f1dc;
+      color: #94740f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .principle h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+      color: var(--navy);
+    }
+
+    .principle p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* =========================
+       MISSION / VISION / VALUES
+    ========================== */
+
+    .dark-section {
+      background: var(--navy);
+      color: white;
+    }
+
+    .dark-section .section-heading h2 {
+      color: white;
+    }
+
+    .dark-section .section-heading p {
+      color: #aebaca;
+    }
+
+    .mvv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .mvv-card {
+      padding: 32px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.045);
+    }
+
+    .mvv-number {
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 25px;
+    }
+
+    .mvv-card h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .mvv-card p {
+      color: #b7c2d0;
+      font-size: 14px;
+    }
+
+    /* =========================
+       DEPARTMENTS
+    ========================== */
+
+    .departments {
+      background: var(--cream);
+    }
+
+    .department-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .department-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 25px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .department-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(212,175,55,0.55);
+      box-shadow: var(--shadow);
+    }
+
+    .department-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7f1dc;
+      color: #8f7112;
+      font-size: 21px;
+      margin-bottom: 20px;
+    }
+
+    .department-card h3 {
+      font-size: 16px;
+      color: var(--navy);
+      line-height: 1.35;
+    }
+
+    .department-card span {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* =========================
+       STUDY LEVELS
+    ========================== */
+
+    .levels {
+      background: white;
+    }
+
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+
+    .level {
+      border: 1px solid var(--border);
+      padding: 26px 18px;
+      border-radius: 15px;
+      text-align: center;
+      background: white;
+      transition: 0.2s ease;
+    }
+
+    .level:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .level-number {
+      font-size: 12px;
+      font-weight: 800;
+      color: #9a7912;
+      margin-bottom: 8px;
+    }
+
+    .level h3 {
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    /* =========================
+       LEARNING EXPERIENCE
+    ========================== */
+
+    .experience {
+      background: #f6f8fb;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .experience-card {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 30px;
+      border-radius: var(--radius);
+    }
+
+    .experience-icon {
+      font-size: 30px;
+      margin-bottom: 18px;
+    }
+
+    .experience-card h3 {
+      color: var(--navy);
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+
+    .experience-card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================
+       ADMISSION
+    ========================== */
+
+    .admission {
+      background: white;
+    }
+
+    .admission-box {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(212,175,55,0.15), transparent 25%),
+        linear-gradient(135deg, var(--navy), #102a49);
+      color: white;
+      border-radius: 25px;
+      padding: 55px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 55px;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .admission-box h2 {
+      font-size: clamp(30px, 4vw, 43px);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .admission-box p {
+      color: #bdc9d8;
+      font-size: 15px;
+    }
+
+    .steps {
+      display: grid;
+      gap: 13px;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 15px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .step-number {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex: 0 0 35px;
+    }
+
+    .step strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .step span {
+      display: block;
+      color: #aebaca;
+      font-size: 12px;
+    }
+
+    .fee-note {
+      display: inline-flex;
+      margin-top: 22px;
+      padding: 9px 13px;
+      border: 1px solid rgba(212,175,55,0.35);
+      border-radius: 8px;
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       CTA
+    ========================== */
+
+    .cta {
+      padding-top: 20px;
+      padding-bottom: 95px;
+    }
+
+    .cta-box {
+      text-align: center;
+      background: #fbfaf5;
+      border: 1px solid #eee8d5;
+      border-radius: 22px;
+      padding: 55px 25px;
+    }
+
+    .cta-box h2 {
+      color: var(--navy);
+      font-size: clamp(28px, 4vw, 40px);
+      margin-bottom: 12px;
+    }
+
+    .cta-box p {
+      max-width: 620px;
+      margin: 0 auto 25px;
+      color: var(--muted);
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* =========================
+       CONTACT
+    ========================== */
+
+    .contact {
+      background: var(--navy);
+      color: white;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: start;
+    }
+
+    .contact h2 {
+      color: white;
+      font-size: 38px;
+      line-height: 1.15;
+      margin-bottom: 15px;
+    }
+
+    .contact-intro {
+      color: #aebaca;
+      max-width: 520px;
+      margin-bottom: 28px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 13px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      color: #d8e0eb;
+      font-size: 14px;
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 30px;
+    }
+
+    .contact-card h3 {
+      color: var(--gold-light);
+      margin-bottom: 10px;
+    }
+
+    .contact-card p {
+      color: #b7c2d0;
+      font-size: 14px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      background: #040c16;
+      color: #aab5c3;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer-main {
+      padding: 45px 0;
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr 0.8fr;
+      gap: 45px;
+    }
+
+    .footer-brand {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+    }
+
+    .footer-brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 9px;
+      background: white;
+    }
+
+    .footer-brand h3 {
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .footer-brand p {
+      font-size: 12px;
+      color: var(--gold-light);
+    }
+
+    .footer-column h4 {
+      color: white;
+      font-size: 13px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-column a {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 9px;
+      color: #aab5c3;
+    }
+
+    .footer-column a:hover {
+      color: var(--gold-light);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 18px 0;
+      font-size: 12px;
+      color: #7f8a99;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 980px) {
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .navbar.mobile-open {
+        position: relative;
+      }
+
+      .navbar.mobile-open .nav-links {
+        display: flex;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 76px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 10px;
+        background: var(--navy);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 0 0 14px 14px;
+      }
+
+      .navbar.mobile-open .nav-links a {
+        padding: 13px;
+        border-radius: 8px;
+      }
+
+      .navbar.mobile-open .nav-links a:hover {
+        background: rgba(255,255,255,0.05);
+      }
+
+      .hero-inner,
+      .intro-grid,
+      .admission-box,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-inner {
+        min-height: auto;
+        padding: 45px 0 70px;
+      }
+
+      .hero-content {
+        padding: 25px 0 0;
+      }
+
+      .hero-card {
+        padding-bottom: 25px;
+      }
+
+      .department-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .level-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .mvv-grid,
+      .experience-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: min(100% - 28px, 1180px);
+      }
+
+      section {
+        padding: 70px 0;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .brand-motto {
+        font-size: 8px;
+      }
+
+      .brand img {
+        width: 43px;
+          height: 43px;
+      object-fit: contain;
+    }
+
+    .hero h1 {
+      font-size: 43px;
+      letter-spacing: -1.5px;
+    }
+
+    .hero-description {
+      font-size: 16px;
+    }
+
+    .hero-logo-box {
+      width: 280px;
+      padding: 40px;
+    }
+
+    .floating-label {
+      left: 15px;
+      bottom: 5px;
+    }
+
+    .department-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .level-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admission-box {
+      padding: 32px 22px;
+      gap: 30px;
+    }
+
+    .footer-main {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+    }
+
+    .cta-box {
+      padding: 40px 20px;
+    }
   }
-
-  .menu-btn{
-    display:block;
-  }
-
-  .hero-grid,
-  .about-grid,
-  .admission-grid,
-  .contact,
-  .footer-grid{
-    grid-template-columns:1fr;
-  }
-
-  .principles{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .departments{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .levels{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .steps{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .visual-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .hero{
-    text-align:center;
-  }
-
-  .hero p{
-    margin-left:auto;
-    margin-right:auto;
-  }
-
-  .hero-art{
-    margin-top:15px;
-  }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:560px){
-
-  section{
-    padding:56px 0;
-  }
-
-  .hero{
-    padding:60px 0;
-  }
-
-  .hero h1{
-    font-size:43px;
-  }
-
-  .hero h2{
-    font-size:20px;
-  }
-
-  .hero p{
-    font-size:16px;
-  }
-
-  .principles,
-  .departments,
-  .levels,
-  .steps,
-  .visual-grid{
-    grid-template-columns:1fr;
-  }
-
-  .brand-name{
-    font-size:14px;
-  }
-
-  .brand-tagline{
-    font-size:8px;
-  }
-
-  .brand img{
-    width:42px;
-    height:42px;
-  }
-
-  .admission-box{
-    padding:25px;
-  }
-
-  .section-head h2{
-    font-size:30px;
-  }
-
-  .hero-art-box{
-    width:78%;
-  }
-}
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <nav class="navbar" id="navbar">
 
-<header>
+        <a href="index.html" class="brand">
+          <img src="logo.jpg" alt="RAYHAR ACADEMY Logo">
 
-  <div class="container nav">
-
-    <a class="brand" href="#home">
-
-      <img
-        src="logo.jpg"
-        alt="RAYHAR ACADEMY Logo"
-      >
-
-      <span class="brand-name">
-
-        RAYHAR ACADEMY
-
-        <small class="brand-tagline">
-          FOR KNOWLEDGE AND LEADERSHIP
-        </small>
-
-      </span>
-
-    </a>
-
-
-    <nav>
-
-      <a href="#about">
-        About
-      </a>
-
-      <a href="#academic">
-        Departments
-      </a>
-
-      <a href="#admissions">
-        Admissions
-      </a>
-
-      <a href="#contact">
-        Contact
-      </a>
-
-      <a
-        href="student-auth.html"
-        class="nav-login"
-      >
-        Student Login
-      </a>
-
-    </nav>
-
-
-    <button
-      class="menu-btn"
-      id="menuBtn"
-      aria-label="Open menu"
-    >
-      ☰
-    </button>
-
-  </div>
-
-
-  <div
-    class="mobile-nav"
-    id="mobileNav"
-  >
-
-    <a href="#about">
-      About
-    </a>
-
-    <a href="#academic">
-      Departments
-    </a>
-
-    <a href="#admissions">
-      Admissions
-    </a>
-
-    <a href="#contact">
-      Contact
-    </a>
-
-    <a href="student-auth.html">
-      Student Login
-    </a>
-
-  </div>
-
-</header>
-
-
-<main id="home">
-
-
-<!-- =========================
-     HERO
-========================= -->
-
-<section class="hero">
-
-  <div class="container hero-grid">
-
-    <div>
-
-      <div class="eyebrow">
-        RAYHAR ACADEMY
-      </div>
-
-      <h1>
-        Knowledge &amp; Leadership
-      </h1>
-
-      <h2>
-        For Knowledge and Leadership.
-      </h2>
-
-      <p>
-        RAYHAR ACADEMY provides accessible
-        online learning opportunities designed
-        to help students gain knowledge,
-        develop skills, think critically,
-        and grow into responsible leaders.
-      </p>
-
-
-      <div class="hero-buttons">
-
-        <a
-          class="btn btn-primary"
-          href="student-register.html"
-        >
-          APPLY NOW
+          <div class="brand-text">
+            <div class="brand-name">RAYHAR ACADEMY</div>
+            <div class="brand-motto">For Knowledge and Leadership</div>
+          </div>
         </a>
 
-        <a
-          class="btn btn-outline"
-          href="student-auth.html"
-        >
-          STUDENT LOGIN
-        </a>
-
-        <a
-          class="btn btn-outline"
-          href="#academic"
-        >
-          EXPLORE DEPARTMENTS
-        </a>
-
-      </div>
-
-    </div>
-
-
-    <div class="hero-art">
-
-      <div class="hero-art-box">
-
-        <img
-          src="logo.jpg"
-          alt="RAYHAR ACADEMY official emblem"
-        >
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================
-     ABOUT
-========================= -->
-
-<section id="about">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div class="kicker">
-        About RAYHAR ACADEMY
-      </div>
-
-      <h2>
-        Education With Purpose
-      </h2>
-
-      <p>
-        RAYHAR ACADEMY is built around
-        accessible learning, knowledge,
-        practical development, mentorship
-        and leadership.
-      </p>
-
-    </div>
-
-
-    <div class="about-grid">
-
-      <div class="card">
-
-        <h3>
-          Our Mission
-        </h3>
-
-        <p>
-          To make meaningful education
-          accessible to learners from diverse
-          backgrounds while encouraging
-          knowledge, critical thinking,
-          practical skills, integrity and
-          leadership.
-        </p>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          Our Vision
-        </h3>
-
-        <p>
-          To contribute to a world where
-          access to quality learning is not
-          unnecessarily limited by geography
-          or background, and where educated
-          and capable people can contribute
-          positively to society.
-        </p>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          What We Value
-        </h3>
-
-        <ul>
-
-          <li>
-            Knowledge
-          </li>
-
-          <li>
-            Critical Thinking
-          </li>
-
-          <li>
-            Practical Learning
-          </li>
-
-          <li>
-            Integrity
-          </li>
-
-          <li>
-            Leadership
-          </li>
-
-          <li>
-            Lifelong Learning
-          </li>
-
-        </ul>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          Who Can Apply?
-        </h3>
-
-        <p>
-          RAYHAR ACADEMY welcomes learners
-          interested in developing their
-          knowledge and skills through the
-          available departments and learning
-          opportunities.
-        </p>
-
-
-        <div class="notice">
-
-          <strong>
-            Admission is open.
-          </strong>
-
-          <br>
-
-          There is no admission fee.
-
+        <div class="nav-links" id="navLinks">
+          <a href="#about">About</a>
+          <a href="#departments">Departments</a>
+          <a href="#levels">Study Levels</a>
+          <a href="#admission">Admission</a>
+          <a href="#contact">Contact</a>
         </div>
 
-      </div>
+        <div class="nav-actions">
+          <a href="student-auth.html" class="btn btn-outline">Student Login</a>
+          <a href="student-register.html" class="btn btn-gold">Apply Now</a>
+        </div>
 
+        <button
+          class="menu-btn"
+          id="menuBtn"
+          type="button"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+
+      </nav>
     </div>
+  </header>
 
-  </div>
+  <main>
 
-</section>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
 
+        <div class="hero-inner">
 
-<!-- =========================
-     PRINCIPLES
-========================= -->
+          <div class="hero-content">
 
-<section
-  style="background:#f6f8fc"
->
+            <div class="eyebrow">
+              RAYHAR ACADEMY
+            </div>
 
-  <div class="container">
+            <h1>
+              Knowledge that shapes
+              <span>leaders.</span>
+            </h1>
 
-    <div class="section-head">
+            <p class="hero-description">
+              Welcome to RAYHAR ACADEMY — a learning community committed to
+              knowledge, discipline, personal growth and leadership.
+              Explore your field of interest and begin your academic journey.
+            </p>
 
-      <div class="kicker">
-        Our Principles
-      </div>
+            <div class="hero-actions">
+              <a href="student-register.html" class="btn btn-gold">
+                Apply for Admission
+              </a>
 
-      <h2>
-        What Guides Our Learning
-      </h2>
+              <a href="#departments" class="btn btn-outline">
+                Explore Departments
+              </a>
+            </div>
 
-      <p>
-        Our learning environment is built
-        around principles that support
-        knowledge, character and purposeful
-        growth.
-      </p>
+            <p class="hero-note">
+              Admission is currently open. No admission fee.
+            </p>
 
-    </div>
+          </div>
 
+          <div class="hero-card">
 
-    <div class="principles">
+            <div class="hero-logo-box">
+              <img
+                src="logo.jpg"
+                alt="RAYHAR ACADEMY"
+              >
+            </div>
 
-      <div class="principle">
-        <b>
-          Accessibility
-        </b>
+            <div class="floating-label">
+              <strong>Our Motto</strong>
+              For Knowledge and Leadership
+            </div>
 
-        Learning opportunities without
-        unnecessary barriers.
-      </div>
-
-
-      <div class="principle">
-        <b>
-          Academic Excellence
-        </b>
-
-        Building strong academic
-        foundations.
-      </div>
-
-
-      <div class="principle">
-        <b>
-          Practical Learning
-        </b>
-
-        Applying knowledge to real-world
-        situations.
-      </div>
-
-
-      <div class="principle">
-        <b>
-          Mentorship
-        </b>
-
-        Supporting students throughout
-        their learning journey.
-      </div>
-
-
-      <div class="principle">
-        <b>
-          Critical Thinking
-        </b>
-
-        Encouraging independent and
-        analytical thinking.
-      </div>
-
-
-      <div class="principle">
-        <b>
-          Leadership
-        </b>
-
-        Developing responsible and
-        purposeful leaders.
-      </div>
-
-
-      <div class="principle">
-        <b>
-          Integrity
-        </b>
-
-        Promoting responsibility and
-        ethical conduct.
-      </div>
-
-
-      <div class="principle">
-        <b>
-          Lifelong Learning
-        </b>
-
-        Encouraging continuous development.
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================
-     LEARNING EXPERIENCE
-========================= -->
-
-<section class="visual-strip">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div class="kicker">
-        The Learning Experience
-      </div>
-
-      <h2>
-        Learn With Purpose
-      </h2>
-
-      <p>
-        A simple online learning environment
-        focused on accessible education and
-        personal development.
-      </p>
-
-    </div>
-
-
-    <div class="visual-grid">
-
-      <div class="visual-card">
-
-        <div class="visual-top">
-
-          <div class="visual-icon">
-            📚
           </div>
 
         </div>
 
-        <div class="visual-body">
-
-          <h3>
-            Knowledge
-          </h3>
-
-          <p>
-            Build a strong foundation through
-            focused learning and continuous
-            study.
-          </p>
-
-        </div>
-
       </div>
+    </section>
 
+    <!-- ABOUT -->
+    <section class="intro" id="about">
+      <div class="container">
 
-      <div class="visual-card">
+        <div class="intro-grid">
 
-        <div class="visual-top">
+          <div class="intro-copy">
 
-          <div class="visual-icon">
-            💡
+            <div class="section-heading">
+              <div class="section-kicker">About RAYHAR</div>
+
+              <h2>
+                Learning with purpose, discipline and direction.
+              </h2>
+
+              <p>
+                RAYHAR ACADEMY is built around the idea that education should
+                develop more than academic knowledge. It should encourage
+                discipline, curiosity, responsibility and the ability to lead.
+              </p>
+            </div>
+
+            <p>
+              Our academic community brings together students with different
+              interests and backgrounds while giving them an environment in
+              which they can learn, develop their abilities and work toward
+              meaningful goals.
+            </p>
+
+            <p>
+              Whether you are beginning your academic journey or developing
+              your knowledge further, RAYHAR ACADEMY provides a structured
+              pathway for learning.
+            </p>
+
+            <div class="intro-highlight">
+              Education is not only about what you know — it is also about
+              what you become.
+            </div>
+
+          </div>
+
+          <div class="principles">
+
+            <div class="principle">
+              <div class="principle-icon">◆</div>
+              <div>
+                <h3>Knowledge</h3>
+                <p>
+                  Encourage curiosity, understanding and continuous learning.
+                </p>
+              </div>
+            </div>
+
+            <div class="principle">
+              <div class="principle-icon">✓</div>
+              <div>
+                <h3>Discipline</h3>
+                <p>
+                  Develop responsible habits and a serious approach to study.
+                </p>
+              </div>
+            </div>
+
+            <div class="principle">
+              <div class="principle-icon">★</div>
+              <div>
+                <h3>Leadership</h3>
+                <p>
+                  Prepare students to contribute positively and responsibly.
+                </p>
+              </div>
+            </div>
+
+            <div class="principle">
+              <div class="principle-icon">∞</div>
+              <div>
+                <h3>Growth</h3>
+                <p>
+                  Support students as they develop academically and personally.
+                </p>
+              </div>
+            </div>
+
           </div>
 
         </div>
 
-        <div class="visual-body">
+      </div>
+    </section>
 
-          <h3>
-            Skills &amp; Thinking
-          </h3>
+    <!-- MISSION / VISION / VALUES -->
+    <section class="dark-section">
+      <div class="container">
+
+        <div class="section-heading center">
+          <div class="section-kicker">What Guides Us</div>
+
+          <h2>
+            Built around meaningful education.
+          </h2>
 
           <p>
-            Develop practical skills, curiosity
-            and the ability to think independently.
+            Our approach is centered on learning, character and responsible
+            leadership.
           </p>
-
         </div>
 
-      </div>
+        <div class="mvv-grid">
 
+          <div class="mvv-card">
+            <div class="mvv-number">01 / MISSION</div>
 
-      <div class="visual-card">
+            <h3>To promote learning.</h3>
 
-        <div class="visual-top">
+            <p>
+              To provide students with opportunities to develop knowledge,
+              skills and confidence through purposeful education.
+            </p>
+          </div>
 
-          <div class="visual-icon">
-            🎓
+          <div class="mvv-card">
+            <div class="mvv-number">02 / VISION</div>
+
+            <h3>To inspire responsible leaders.</h3>
+
+            <p>
+              To encourage a generation of knowledgeable, disciplined and
+              responsible individuals who can positively influence their
+              communities.
+            </p>
+          </div>
+
+          <div class="mvv-card">
+            <div class="mvv-number">03 / VALUES</div>
+
+            <h3>Knowledge. Integrity. Growth.</h3>
+
+            <p>
+              We value learning, responsibility, respect, discipline,
+              integrity and continuous personal development.
+            </p>
           </div>
 
         </div>
 
-        <div class="visual-body">
+      </div>
+    </section>
 
-          <h3>
-            Leadership
-          </h3>
+    <!-- DEPARTMENTS -->
+    <section class="departments" id="departments">
+      <div class="container">
+
+        <div class="section-heading center">
+          <div class="section-kicker">Academic Departments</div>
+
+          <h2>
+            Explore your field of interest.
+          </h2>
 
           <p>
-            Grow in confidence, responsibility
-            and the values needed to serve others.
+            Choose from a range of academic areas designed to support
+            different interests and learning goals.
+          </p>
+        </div>
+
+        <div class="department-grid">
+
+          <div class="department-card">
+            <div>
+              <div class="department-icon">ع</div>
+              <h3>Arabic Department</h3>
+            </div>
+            <span>Language &amp; Literature</span>
+          </div>
+
+          <div class="department-card">
+            <div>
+              <div class="department-icon">&lt;/&gt;</div>
+              <h3>Computer Science Department</h3>
+            </div>
+            <span>Computing &amp; Technology</span>
+          </div>
+
+          <div class="department-card">
+            <div>
+              <div class="department-icon">A</div>
+              <h3>English Department</h3>
+            </div>
+            <span>Language &amp; Communication</span>
+          </div>
+
+          <div class="department-card">
+            <div>
+              <div class="department-icon">✦</div>
+              <h3>Fine Art Department</h3>
+            </div>
+            <span>Creative Arts</span>
+          </div>
+
+          <div class="department-card">
+            <div>
+              <div class="department-icon">∑</div>
+              <h3>Mathematics Department</h3>
+            </div>
+            <span>Mathematical Sciences</span>
+          </div>
+
+          <div class="department-card">
+            <div>
+              <div class="department-icon">✚</div>
+              <h3>Medical Science Department</h3>
+            </div>
+            <span>Health &amp; Medical Studies</span>
+          </div>
+
+          <div class="department-card">
+            <div>
+              <div class="department-icon">☪</div>
+              <h3>Quran &amp; Islamic Studies Department</h3>
+            </div>
+            <span>Quran &amp; Islamic Knowledge</span>
+          </div>
+
+          <div class="department-card">
+            <div>
+              <div class="department-icon">⚗</div>
+              <h3>Science Department</h3>
+            </div>
+            <span>Natural Sciences</span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STUDY LEVELS -->
+    <section class="levels" id="levels">
+      <div class="container">
+
+        <div class="section-heading center">
+          <div class="section-kicker">Study Levels</div>
+
+          <h2>
+            A pathway for different stages of learning.
+          </h2>
+
+          <p>
+            Select the level that best matches your current academic journey.
+          </p>
+        </div>
+
+        <div class="level-grid">
+
+          <div class="level">
+            <div class="level-number">01</div>
+            <h3>Beginner</h3>
+          </div>
+
+          <div class="level">
+            <div class="level-number">02</div>
+            <h3>Intermediate</h3>
+          </div>
+
+          <div class="level">
+            <div class="level-number">03</div>
+            <h3>Advanced</h3>
+          </div>
+
+          <div class="level">
+            <div class="level-number">04</div>
+            <h3>Certificate</h3>
+          </div>
+
+          <div class="level">
+            <div class="level-number">05</div>
+            <h3>Diploma</h3>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LEARNING EXPERIENCE -->
+    <section class="experience">
+      <div class="container">
+
+        <div class="section-heading center">
+          <div class="section-kicker">The Learning Experience</div>
+
+          <h2>
+            More than simply attending classes.
+          </h2>
+
+          <p>
+            RAYHAR ACADEMY encourages students to develop knowledge,
+            confidence and practical habits that support lifelong learning.
+          </p>
+        </div>
+
+        <div class="experience-grid">
+
+          <div class="experience-card">
+            <div class="experience-icon">📚</div>
+
+            <h3>Focused Learning</h3>
+
+            <p>
+              Build a stronger understanding of your chosen area through
+              structured study and consistent learning.
+            </p>
+          </div>
+
+          <div class="experience-card">
+            <div class="experience-icon">💡</div>
+
+            <h3>Critical Thinking</h3>
+
+            <p>
+              Ask questions, explore ideas and develop the ability to think
+              carefully and independently.
+            </p>
+          </div>
+
+          <div class="experience-card">
+            <div class="experience-icon">🤝</div>
+
+            <h3>Community</h3>
+
+            <p>
+              Learn alongside other students and become part of an academic
+              community built around mutual respect.
+            </p>
+          </div>
+
+          <div class="experience-card">
+            <div class="experience-icon">🎯</div>
+
+            <h3>Purpose</h3>
+
+            <p>
+              Connect your education with personal goals and a clear sense of
+              direction.
+            </p>
+          </div>
+
+          <div class="experience-card">
+            <div class="experience-icon">🌱</div>
+
+            <h3>Personal Growth</h3>
+
+            <p>
+              Develop confidence, discipline and habits that can support you
+              beyond the classroom.
+            </p>
+          </div>
+
+          <div class="experience-card">
+            <div class="experience-icon">★</div>
+
+            <h3>Leadership</h3>
+
+            <p>
+              Develop qualities that encourage responsibility, service and
+              positive contribution.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ADMISSION -->
+    <section class="admission" id="admission">
+      <div class="container">
+
+        <div class="admission-box">
+
+          <div>
+
+            <div class="section-kicker">
+              Admissions
+            </div>
+
+            <h2>
+              Your academic journey can begin here.
+            </h2>
+
+            <p>
+              Apply to RAYHAR ACADEMY by creating your student account and
+              completing your application information.
+            </p>
+
+            <div class="fee-note">
+              ✓ No admission fee
+            </div>
+
+            <div style="margin-top: 25px;">
+              <a href="student-register.html" class="btn btn-gold">
+                Start Your Application
+              </a>
+            </div>
+
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+              <div class="step-number">1</div>
+
+              <div>
+                <strong>Create your account</strong>
+                <span>Register as a student.</span>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+
+              <div>
+                <strong>Complete your biodata</strong>
+                <span>Provide the required information.</span>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">3</div>
+
+              <div>
+                <strong>Submit your application</strong>
+                <span>Your application is recorded for review.</span>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">4</div>
+
+              <div>
+                <strong>Check your student portal</strong>
+                <span>Follow your admission status online.</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="container">
+
+        <div class="cta-box">
+
+          <div class="section-kicker">
+            Begin Your Journey
+          </div>
+
+          <h2>
+            Ready to take the next step?
+          </h2>
+
+          <p>
+            Explore our departments, choose your study level and begin your
+            application to RAYHAR ACADEMY.
           </p>
 
+          <div class="cta-actions">
+
+            <a href="student-register.html" class="btn btn-dark">
+              Apply Now
+            </a>
+
+            <a
+              href="student-auth.html"
+              class="btn btn-outline"
+              style="background: var(--navy); color: white;"
+            >
+              Student Login
+            </a>
+
+          </div>
+
         </div>
 
       </div>
+    </section>
 
-    </div>
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="container">
 
-  </div>
+        <div class="contact-grid">
 
-</section>
+          <div>
 
+            <div class="section-kicker">
+              Contact RAYHAR
+            </div>
 
-<!-- =========================
-     DEPARTMENTS
-========================= -->
+            <h2>
+              We are here to help.
+            </h2>
 
-<section id="academic">
+            <p class="contact-intro">
+              If you have questions about admission, departments, study
+              levels or your student account, please contact RAYHAR ACADEMY.
+            </p>
 
-  <div class="container">
+            <div class="contact-list">
 
-    <div class="section-head">
+              <div class="contact-item">
+                <div class="contact-icon">✉</div>
+                <span>Contact the Academy for admission enquiries</span>
+              </div>
 
-      <div class="kicker">
-        Academic
-      </div>
+              <div class="contact-item">
+                <div class="contact-icon">🎓</div>
+                <span>Student support through the student portal</span>
+              </div>
 
-      <h2>
-        Our Departments
-      </h2>
+              <div class="contact-item">
+                <div class="contact-icon">📚</div>
+                <span>Academic information and department enquiries</span>
+              </div>
 
-      <p>
-        Students can choose from the
-        departments available at
-        RAYHAR ACADEMY.
-      </p>
+            </div>
 
-    </div>
+          </div>
 
+          <div class="contact-card">
 
-    <div class="departments">
+            <h3>Student Portal</h3>
 
-      <div class="dept">
+            <p>
+              Already registered with RAYHAR ACADEMY? Sign in to access your
+              student information, announcements and admission details.
+            </p>
 
-        <h3>
-          Arabic Department
-        </h3>
+            <div style="margin-top: 22px;">
+              <a href="student-auth.html" class="btn btn-gold">
+                Open Student Portal
+              </a>
+            </div>
 
-        <p>
-          Arabic language arabic language and related
-      areas of study.
-    </p>
+          </div>
 
-  </div>
-
-
-  <div class="dept">
-
-    <h3>
-      Computer Science Department
-    </h3>
-
-    <p>
-      Computing, technology and
-      computer science.
-    </p>
-
-  </div>
-
-
-  <div class="dept">
-
-    <h3>
-      English Department
-    </h3>
-
-    <p>
-      English language and related
-      academic areas.
-    </p>
-
-  </div>
-
-
-  <div class="dept">
-
-    <h3>
-      Fine Art Department
-    </h3>
-
-    <p>
-      Creative learning and
-      artistic development.
-    </p>
-
-  </div>
-
-
-  <div class="dept">
-
-    <h3>
-      Mathematics Department
-    </h3>
-
-    <p>
-      Mathematics, reasoning and
-      problem solving.
-    </p>
-
-  </div>
-
-
-  <div class="dept">
-
-    <h3>
-      Medical Science Department
-    </h3>
-
-    <p>
-      Learning in available
-      medical science areas.
-    </p>
-
-  </div>
-
-
-  <div class="dept">
-
-    <h3>
-      Quran &amp; Islamic Studies
-    </h3>
-
-    <p>
-      Qur'an and Islamic studies.
-    </p>
-
-  </div>
-
-
-  <div class="dept">
-
-    <h3>
-      Science Department
-    </h3>
-
-    <p>
-      Academic learning across
-      science-related areas.
-    </p>
-
-  </div>
-
-</div>
-
-
-<!-- STUDY LEVELS -->
-
-<div
-  class="section-head"
-  style="margin-top:60px"
->
-
-  <div class="kicker">
-    Study Levels
-  </div>
-
-  <h2>
-    Choose Your Level
-  </h2>
-
-</div>
-
-
-<div class="levels">
-
-  <div class="level">
-
-    <b>
-      Beginner
-    </b>
-
-    Starting your learning journey.
-
-  </div>
-
-
-  <div class="level">
-
-    <b>
-      Intermediate
-    </b>
-
-    Building on existing knowledge.
-
-  </div>
-
-
-  <div class="level">
-
-    <b>
-      Advanced
-    </b>
-
-    Developing deeper knowledge.
-
-  </div>
-
-
-  <div class="level">
-
-    <b>
-      Certificate
-    </b>
-
-    Structured certificate-level
-    learning.
-
-  </div>
-
-
-  <div class="level">
-
-    <b>
-      Diploma
-    </b>
-
-    More comprehensive study.
-
-  </div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     ADMISSION PROCESS
-========================= -->
-
-<section
-  style="background:#f6f8fc"
->
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div class="kicker">
-        Simple Process
-      </div>
-
-      <h2>
-        How Admission Works
-      </h2>
-
-      <p>
-        Your journey from application to
-        admission is designed to be
-        straightforward.
-      </p>
-
-    </div>
-
-
-    <div class="steps">
-
-      <div class="step">
-
-        <div class="step-num">
-          01
         </div>
 
-        <h3>
-          Create an Account
-        </h3>
-
-        <p>
-          Register for a RAYHAR ACADEMY
-          student account.
-        </p>
-
       </div>
+    </section>
 
+  </main>
 
-      <div class="step">
+  <!-- FOOTER -->
+  <footer>
 
-        <div class="step-num">
-          02
-        </div>
+    <div class="container">
 
-        <h3>
-          Complete Biodata
-        </h3>
-
-        <p>
-          Provide your personal information
-          and upload your required photo.
-        </p>
-
-      </div>
-
-
-      <div class="step">
-
-        <div class="step-num">
-          03
-        </div>
-
-        <h3>
-          Application Review
-        </h3>
-
-        <p>
-          Your submitted information is
-          reviewed through the academy system.
-        </p>
-
-      </div>
-
-
-      <div class="step">
-
-        <div class="step-num">
-          04
-        </div>
-
-        <h3>
-          Receive Admission
-        </h3>
-
-        <p>
-          Once admitted, your admission letter
-          becomes available in your student portal.
-        </p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================
-     ADMISSIONS
-========================= -->
-
-<section id="admissions">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div class="kicker">
-        Admissions
-      </div>
-
-      <h2>
-        Start Your Learning Journey
-      </h2>
-
-      <p>
-        Admission is open and there is
-        no admission fee.
-      </p>
-
-    </div>
-
-
-    <div class="admission-box">
-
-      <div class="admission-grid">
+      <div class="footer-main">
 
         <div>
 
-          <h3>
-            Admission Is Open Now
-          </h3>
+          <div class="footer-brand">
 
-          <ul>
-
-            <li>
-              Admission is open.
-            </li>
-
-            <li>
-              There is no admission fee.
-            </li>
-
-            <li>
-              Students can choose their
-              preferred department.
-            </li>
-
-            <li>
-              Students can select their
-              study level during registration.
-            </li>
-
-            <li>
-              Learning is conducted online.
-            </li>
-
-          </ul>
-
-
-          <div class="admission-buttons">
-
-            <a
-              class="btn btn-primary"
-              href="student-register.html"
+            <img
+              src="logo.jpg"
+              alt="RAYHAR ACADEMY Logo"
             >
-              APPLY NOW
-            </a>
 
-
-            <a
-              class="btn btn-outline"
-              href="student-auth.html"
-            >
-              EXISTING STUDENT? LOGIN
-            </a>
+            <div>
+              <h3>RAYHAR ACADEMY</h3>
+              <p>For Knowledge and Leadership</p>
+            </div>
 
           </div>
 
-        </div>
-
-
-        <div class="requirements">
-
-          <h4>
-            Before You Apply
-          </h4>
-
-          <p>
-            Have your basic personal information
-            ready, including your date of birth,
-            nationality, residential details,
-            next-of-kin information and a clear
-            student photo.
-          </p>
-
-          <p>
-            During registration, select the
-            department or departments and study
-            level that match your learning goals.
+          <p style="
+            margin-top: 18px;
+            max-width: 430px;
+            font-size: 13px;
+            line-height: 1.7;
+          ">
+            A learning community committed to knowledge, discipline,
+            personal growth and responsible leadership.
           </p>
 
         </div>
 
-      </div>
+        <div class="footer-column">
 
-    </div>
+          <h4>Explore</h4>
 
-  </div>
-
-</section>
-
-
-<!-- =========================
-     CTA
-========================= -->
-
-<section class="cta">
-
-  <div class="container">
-
-    <div class="kicker">
-      Your Next Step
-    </div>
-
-    <h2>
-      Ready to Begin?
-    </h2>
-
-    <p>
-      Join RAYHAR ACADEMY and begin your
-      learning journey in an accessible
-      online environment built around
-      knowledge and leadership.
-    </p>
-
-
-    <a
-      class="btn btn-primary"
-      href="student-register.html"
-    >
-      APPLY NOW
-    </a>
-
-
-    <a
-      class="btn btn-outline"
-      href="student-auth.html"
-    >
-      STUDENT LOGIN
-    </a>
-
-  </div>
-
-</section>
-
-
-<!-- =========================
-     CONTACT
-========================= -->
-
-<section id="contact">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div class="kicker">
-        Contact
-      </div>
-
-      <h2>
-        Connect With RAYHAR ACADEMY
-      </h2>
-
-      <p>
-        RAYHAR ACADEMY is an online academy
-        serving learners beyond geographical
-        boundaries.
-      </p>
-
-    </div>
-
-
-    <div class="contact">
-
-      <div class="card">
-
-        <h3>
-          Academy Information
-        </h3>
-
-
-        <div class="contact-item">
-
-          <div class="contact-icon">
-            🌐
-          </div>
-
-          <div>
-
-            <strong>
-              Location
-            </strong>
-
-            <span>
-              Online — serving learners from
-              different backgrounds.
-            </span>
-
-          </div>
+          <a href="#about">About RAYHAR</a>
+          <a href="#departments">Departments</a>
+          <a href="#levels">Study Levels</a>
+          <a href="#admission">Admission</a>
 
         </div>
 
+        <div class="footer-column">
 
-        <div class="contact-item">
+          <h4>Student</h4>
 
-          <div class="contact-icon">
-            📱
-          </div>
-
-          <div>
-
-            <strong>
-              Phone / WhatsApp
-            </strong>
-
-            <span>
-              Contact RAYHAR ACADEMY through
-              the official contact channel.
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="contact-item">
-
-          <div class="contact-icon">
-            🎓
-          </div>
-
-          <div>
-
-            <strong>
-              Student Services
-            </strong>
-
-            <span>
-              Registration, biodata submission
-              and admission are handled through
-              the student portal.
-            </span>
-
-          </div>
+          <a href="student-register.html">Apply Now</a>
+          <a href="student-auth.html">Student Login</a>
+          <a href="student-portal.html">Student Portal</a>
 
         </div>
 
       </div>
 
+      <div class="footer-bottom">
 
-      <div class="card">
+        <span>
+          © <span id="year"></span> RAYHAR ACADEMY. All rights reserved.
+        </span>
 
-        <h3>
-          Student Access
-        </h3>
-
-        <p>
-          New students can begin their
-          application online. Existing students
-          can use the student portal to access
-          their information and admission
-          documents.
-        </p>
-
-
-        <a
-          class="btn btn-primary"
-          href="student-register.html"
-        >
-          START APPLICATION
-        </a>
-
-
-        <a
-          class="btn"
-          style="color:var(--navy)"
-          href="student-auth.html"
-        >
-          STUDENT LOGIN
-        </a>
+        <span>
+          For Knowledge and Leadership
+        </span>
 
       </div>
 
     </div>
 
-  </div>
+  </footer>
 
-</section>
+  <!-- JAVASCRIPT -->
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const navbar = document.getElementById("navbar");
+    const navLinks = document.querySelectorAll("#navLinks a");
 
-</main>
+    menuBtn.addEventListener("click", () => {
+      navbar.classList.toggle("mobile-open");
 
+      menuBtn.textContent =
+        navbar.classList.contains("mobile-open") ? "✕" : "☰";
+    });
 
-<!-- =========================
-     FOOTER
-========================= -->
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        navbar.classList.remove("mobile-open");
+        menuBtn.textContent = "☰";
+      });
+    });
 
-<footer>
-
-  <div class="container">
-
-    <div class="footer-grid">
-
-      <div>
-
-        <h3>
-          RAYHAR ACADEMY
-        </h3>
-
-        <p>
-          For Knowledge and Leadership.
-        </p>
-
-        <p class="small">
-          An online learning academy focused
-          on accessible education, practical
-          development, integrity and leadership.
-        </p>
-
-      </div>
-
-
-      <div>
-
-        <h3>
-          Quick Links
-        </h3>
-
-        <div class="footer-links">
-
-          <a href="#about">
-            About
-          </a>
-
-          <a href="#academic">
-            Departments
-          </a>
-
-          <a href="#admissions">
-            Admissions
-          </a>
-
-          <a href="#contact">
-            Contact
-          </a>
-
-        </div>
-
-      </div>
-
-
-      <div>
-
-        <h3>
-          Student
-        </h3>
-
-        <div class="footer-links">
-
-          <a href="student-register.html">
-            Apply Now
-          </a>
-
-          <a href="student-auth.html">
-            Student Login
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="footer-bottom">
-
-      <span class="small">
-
-        ©
-        <span id="year"></span>
-        RAYHAR ACADEMY.
-        All rights reserved.
-
-      </span>
-
-      <span class="small">
-        For Knowledge and Leadership.
-      </span>
-
-    </div>
-
-  </div>
-
-</footer>
-
-
-<script>
-
-const menuBtn =
-document.getElementById("menuBtn");
-
-const mobileNav =
-document.getElementById("mobileNav");
-
-
-menuBtn.addEventListener("click", function(){
-
-  mobileNav.classList.toggle("open");
-
-  menuBtn.textContent =
-    mobileNav.classList.contains("open")
-    ? "✕"
-    : "☰";
-
-});
-
-
-mobileNav
-.querySelectorAll("a")
-.forEach(function(link){
-
-  link.addEventListener("click", function(){
-
-    mobileNav.classList.remove("open");
-
-    menuBtn.textContent = "☰";
-
-  });
-
-});
-
-
-document.getElementById("year").textContent =
-new Date().getFullYear();
-
-</script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
 
 </body>
-  </html>
+</body>
+</html>  
